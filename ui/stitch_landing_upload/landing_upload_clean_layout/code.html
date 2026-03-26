@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                        "steel": {
+                            "700": "#314668",
+                            "800": "#223149",
+                            "900": "#16202f"
+                        }
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<title>QuoteAI - Industrial CAD-to-Quote</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<header class="border-b border-steel-800 bg-background-light dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl" style="">settings_input_component</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight" style="">Quote<span class="text-primary" style="">AI</span></h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary transition-colors" href="#" style=""><br/></a>
+<a class="hover:text-primary transition-colors" href="#" style=""><br/></a>
+<a class="hover:text-primary transition-colors" href="#" style=""><br/></a>
+</nav>
+<div class="h-6 w-px bg-steel-800"></div>
+<div class="flex items-center gap-3">
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all" style="">
+<span class="material-symbols-outlined text-sm" style="">add</span>
+                        New Quote
+                    </button>
+<div class="w-9 h-9 rounded-full bg-steel-800 border border-steel-700 flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Professional user profile avatar photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq_FKPFAgtTy5QtqCS6Nyi49JPUkIiRAQwd_XZXLgDk08drB6_57DJ448BBn09M8-c2z4qCtWFZXxa_FXKozt6VOLJg0xjbnvVx0E0AU7Y6Lrc9wJDG003s4vgK1FTMxSoSbrZnEyXMEaZEyVyop_poT22cEOd_qp_i3NHGBJh-mg5T-6HuHR-HItAAzENHrF4sFHS4e0HIdLq_nk-cSjeJpS1ZlkSNuJ-uOAOcNeeZOjwRWWyGESqlxMpQnOq7u91488TE7Zyhns" style=""/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 max-w-5xl mx-auto w-full">
+<div class="text-center mb-10">
+<h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight" style="">CAD-to-Quote AI Agent</h2>
+<p class="text-lg text-slate-400 max-w-2xl mx-auto" style="">Instant, transparent manufacturing quotes from 3D part data</p>
+</div>
+<div class="w-full bg-steel-900/50 rounded-xl p-2 border border-steel-800 mb-12">
+<div class="border-2 border-dashed border-steel-700 rounded-lg h-[300px] flex flex-col items-center justify-center gap-4 bg-background-dark transition-colors hover:bg-steel-900/80 group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="">cloud_upload</span>
+</div>
+<div class="text-center">
+<h3 class="text-xl font-bold text-white mb-1" style="">Drop your STEP file here</h3>
+<p class="text-slate-500 text-sm" style="">Supports .step and .stp files up to 100MB</p>
+</div>
+<button class="mt-2 bg-steel-800 hover:bg-steel-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold border border-steel-700 transition-colors" style="">
+                    Browse Files
+                </button>
+</div>
+</div>
+<div class="w-full">
+<div class="flex items-center justify-between mb-6">
+<h4 class="text-sm font-bold uppercase tracking-widest text-slate-500" style="">Industry Samples</h4>
+<div class="h-px flex-grow mx-4 bg-steel-800"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="group bg-steel-900 border border-steel-800 rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer">
+<div class="aspect-square bg-background-dark rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-steel-800">
+<img alt="Steel Bracket" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Technical wireframe of a steel industrial bracket" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUMHzMvvzHtkHPrtg22gqPK2aqY2GNGwrErO0631h4rWhyHaRIOTpjXHdHHnUch2eG6FEuxmfPeh-Vu0o6NXbr7vA2gqGFmoKUxGVSdjD-Zd2kODbjSDTauvW99w_xfQGxzTdFCzWAVRR1MOXlc1X5H3Y4y3u8Re_IpIa4IeQQJsgeBFFg8F5BWCVCq9rNXbIGwSL6XF6Jnoz5fansCkqKLgz6hPe5Xt90CRVpFLKTI5C_z3Bnz9tVCIuqtK28HFQftZTCS7WGJMg" style=""/>
+</div>
+<h5 class="text-white font-bold text-lg" style="">Steel Bracket</h5>
+<p class="text-slate-500 text-sm mt-1" style="">Specs: 10 x 5 x 2cm</p>
+<div class="mt-3 flex items-center gap-2 text-primary text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity" style="">
+                        VIEW ANALYSIS <span class="material-symbols-outlined text-xs" style="">arrow_forward</span>
+</div>
+</div>
+<div class="group bg-steel-900 border border-steel-800 rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer">
+<div class="aspect-square bg-background-dark rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-steel-800">
+<img alt="Aluminum Housing" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Technical wireframe of aluminum machine housing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxCMX3oAfXQoUFnwDAK9ZZAvssBivNeAFKUwh-cw5wqpQXOyKykXY4PqldIgKb_cP0OQRjTf19Dwocd5t9jmma3rL2LqwUv9-BsWyNHHVoaYZ3yLwLGmda7U05b64fFUF97NrP8VM7FmGXy4c7M6IT1pz1j_5h4B2a36t_yzr-Q7moaA_hRiYHMowkMzLjSx3otjf3yT8Qw94Esk2P3gUFXGHz0azqBO7eQ5I0qZpkCM-g-XN3BAAE111Hnfv22XqX-ZNc89FRdmA" style=""/>
+</div>
+<h5 class="text-white font-bold text-lg" style="">Aluminum Housing</h5>
+<p class="text-slate-500 text-sm mt-1" style="">Specs: 15 x 15 x 10cm</p>
+<div class="mt-3 flex items-center gap-2 text-primary text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity" style="">
+                        VIEW ANALYSIS <span class="material-symbols-outlined text-xs" style="">arrow_forward</span>
+</div>
+</div>
+<div class="group bg-steel-900 border border-steel-800 rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer">
+<div class="aspect-square bg-background-dark rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-steel-800">
+<img alt="Titanium Shaft" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Technical wireframe of a titanium shaft component" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkdzrdHDe_xP3uhOExO1JrR4TERDh7OhFepLqVcTtYSZ4FSVTgSigdsM7YBs7VrWPx2c_iBD7gTJUiEviHSdTKboM3cQm7__JvUK7rrvG1lKzzO7AgUM3A0wwsEQpNOJcEoK1Td0POxGbN0OBpPlhKh0ZIe-oKtzsPweF7ElyAkNazf4k0o0m3yKRZF1jbcpbmbNCywclJCncKQOAfb1ad0LvE2Zsr3AfoS534AkPczIi7voYbm4I-_k1_Mvdyo7Jwcjcky_6IqUM" style=""/>
+</div>
+<h5 class="text-white font-bold text-lg" style="">Titanium Shaft</h5>
+<p class="text-slate-500 text-sm mt-1" style="">Specs: Ø20 x 200mm</p>
+<div class="mt-3 flex items-center gap-2 text-primary text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity" style="">
+                        VIEW ANALYSIS <span class="material-symbols-outlined text-xs" style="">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

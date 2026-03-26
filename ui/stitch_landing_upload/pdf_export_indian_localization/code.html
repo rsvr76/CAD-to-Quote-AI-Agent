@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quote Summary Preview - QuoteAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-3 bg-background-light dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">QuoteAI</h2>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium hover:text-primary transition-colors text-primary" href="#">Quotes</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex flex-1 flex-col items-center p-4 md:p-8">
+<!-- Breadcrumbs & Actions Row -->
+<div class="w-full max-w-5xl flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-1">
+<span>Quotes</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Export Preview</span>
+</div>
+<h1 class="text-2xl font-bold">Document Export</h1>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center gap-3 mr-4 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-slate-400 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+<span class="text-sm font-medium">Include DFM Comparison</span>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded-lg font-bold text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                            Print
+                        </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg font-bold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                            Download PDF
+                        </button>
+</div>
+</div>
+<!-- A4 Preview Container -->
+<div class="w-full max-w-[210mm] bg-white text-slate-900 shadow-2xl p-[15mm] md:p-[20mm] rounded-sm mb-12 min-h-[297mm] flex flex-col relative overflow-hidden">
+<!-- Subtle Watermark for Preview -->
+<div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none rotate-[-45deg]">
+<span class="text-9xl font-black">PREVIEW</span>
+</div>
+<!-- PDF Header -->
+<div class="flex justify-between items-start border-b-2 border-slate-900 pb-6 mb-8">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<div class="text-primary size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<span class="font-bold text-xl uppercase tracking-tighter">L&amp;T Product Development Centre</span>
+</div>
+<h1 class="text-3xl font-black uppercase mb-1">Manufacturing Quote</h1><p class="text-[10px] text-slate-400 font-medium">L&amp;T Knowledge City, Vadodara, Gujarat</p>
+<p class="text-slate-500 font-medium">Quote Summary &amp; Technical Assessment</p>
+</div>
+<div class="text-right">
+<div class="mb-4">
+<p class="text-xs uppercase text-slate-400 font-bold">Reference ID</p>
+<p class="text-lg font-bold">QAI-2023-0891</p>
+</div>
+<div>
+<p class="text-xs uppercase text-slate-400 font-bold">Date Issued</p>
+<p class="text-sm font-medium">October 24, 2023</p>
+</div>
+</div>
+</div>
+<!-- Project Info -->
+<div class="grid grid-cols-2 gap-8 mb-8">
+<div>
+<p class="text-xs uppercase text-slate-400 font-bold mb-1">Client Company</p>
+<p class="text-base font-semibold">Tata Motors Ltd.</p>
+<p class="text-sm text-slate-600">Pimpri-Chinchwad, Pune, Maharashtra, India</p>
+</div>
+<div class="text-right">
+<p class="text-xs uppercase text-slate-400 font-bold mb-1">Part Specification</p>
+<p class="text-base font-semibold">Tata Motors Ltd.</p>
+<p class="text-sm text-slate-600">Pimpri-Chinchwad, Pune, Maharashtra, India</p>
+</div>
+</div>
+<!-- Main Sections -->
+<div class="space-y-8 flex-1">
+<!-- Inputs Summary & Process Routing -->
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-4">
+<h3 class="text-xs font-black uppercase tracking-widest border-l-4 border-primary pl-2">Inputs Summary</h3>
+<table class="w-full text-xs">
+<tbody><tr class="border-b border-slate-100">
+<td class="py-2 text-slate-500">Stock Size</td>
+<td class="py-2 text-right font-medium">120 x 80 x 40 mm</td>
+</tr>
+<tr class="border-b border-slate-100">
+<td class="py-2 text-slate-500">Surface Finish</td>
+<td class="py-2 text-right font-medium">Bead Blast (Ra 1.6)</td>
+</tr>
+<tr class="border-b border-slate-100">
+<td class="py-2 text-slate-500">Critical Tolerances</td>
+<td class="py-2 text-right font-medium">±0.025 mm (5 zones)</td>
+</tr>
+<tr class="border-b border-slate-100">
+<td class="py-2 text-slate-500">Threads</td>
+<td class="py-2 text-right font-medium">8x M4x0.7 (Blind)</td>
+</tr>
+</tbody></table>
+</div>
+<div class="space-y-4">
+<h3 class="text-xs font-black uppercase tracking-widest border-l-4 border-primary pl-2">Process Routing</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-3 p-2 bg-slate-50 rounded">
+<span class="text-[10px] font-bold bg-slate-200 w-5 h-5 flex items-center justify-center rounded-full">1</span>
+<span class="text-xs font-medium">Saw Cut - Raw Material</span>
+</div>
+<div class="flex items-center gap-3 p-2 bg-slate-50 rounded">
+<span class="text-[10px] font-bold bg-slate-200 w-5 h-5 flex items-center justify-center rounded-full">2</span>
+<span class="text-xs font-medium">CNC 3-Axis Milling (Op 10)</span>
+</div>
+<div class="flex items-center gap-3 p-2 bg-slate-50 rounded">
+<span class="text-[10px] font-bold bg-slate-200 w-5 h-5 flex items-center justify-center rounded-full">3</span>
+<span class="text-xs font-medium">CNC 5-Axis Finishing (Op 20)</span>
+</div>
+<div class="flex items-center gap-3 p-2 bg-slate-50 rounded">
+<span class="text-[10px] font-bold bg-slate-200 w-5 h-5 flex items-center justify-center rounded-full">4</span>
+<span class="text-xs font-medium">Manual Deburring &amp; QC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Cost Breakdown Table -->
+<div class="space-y-4">
+<h3 class="text-xs font-black uppercase tracking-widest border-l-4 border-primary pl-2">Cost Breakdown</h3>
+<div class="overflow-hidden rounded border border-slate-200">
+<table class="w-full text-xs">
+<thead class="bg-slate-900 text-white">
+<tr>
+<th class="py-2 px-3 text-left">Category</th>
+<th class="py-2 px-3 text-left">Details</th>
+<th class="py-2 px-3 text-right">Unit Price</th>
+<th class="py-2 px-3 text-right">Total</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr>
+<td class="py-2 px-3 font-semibold">Material</td>
+<td class="py-2 px-3 text-slate-500">Aluminum 6061-T6 Plate</td>
+<td class="py-2 px-3 text-right">₹85</td>
+<td class="py-2 px-3 text-right">₹4,250.00</td>
+</tr>
+<tr>
+<td class="py-2 px-3 font-semibold">Machining</td>
+<td class="py-2 px-3 text-slate-500">Milling Ops (142 min total)</td>
+<td class="py-2 px-3 text-right">₹450</td>
+<td class="py-2 px-3 text-right">₹22,500.00</td>
+</tr>
+<tr>
+<td class="py-2 px-3 font-semibold">Finishing</td>
+<td class="py-2 px-3 text-slate-500">Bead Blast &amp; Anodize</td>
+<td class="py-2 px-3 text-right">₹35</td>
+<td class="py-2 px-3 text-right">₹1,750.00</td>
+</tr>
+<tr class="bg-slate-50">
+<td class="py-2 px-3 text-right font-bold" colspan="3">Total Quote Amount (INR)</td>
+<td class="py-2 px-3 text-right font-black text-primary text-sm">₹28,400</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Analysis Row -->
+<div class="grid grid-cols-2 gap-6">
+<div class="p-4 bg-slate-50 rounded-lg space-y-3">
+<h3 class="text-[10px] font-black uppercase text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                    Top Cost Drivers
+                                </h3>
+<ul class="text-[11px] space-y-2">
+<li class="flex justify-between items-center">
+<span class="font-medium">1. Deep Pocketing (Ratio 12:1)</span>
+<span class="text-red-500 font-bold">42%</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="font-medium">2. Setup Time (3 fixture changes)</span>
+<span class="text-orange-500 font-bold">28%</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="font-medium">3. Tool Wear (Hardened zones)</span>
+<span class="text-orange-400 font-bold">15%</span>
+</li>
+</ul>
+</div>
+<div class="p-4 bg-primary/5 rounded-lg space-y-3">
+<h3 class="text-[10px] font-black uppercase text-primary/70 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lightbulb</span>
+                                    DFM Suggestions
+                                </h3>
+<ul class="text-[11px] space-y-2">
+<li class="flex gap-2">
+<span class="text-primary font-bold">•</span>
+<span>Increase internal radii to 3.2mm to allow larger tool diameter.</span>
+</li>
+<li class="flex gap-2">
+<span class="text-primary font-bold">•</span>
+<span>Modify blind holes to through-holes where possible.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- PDF Footer -->
+<div class="mt-12 pt-4 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+<div class="flex items-center gap-2">
+<div class="size-4">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<span>Generated by <strong>QuoteAI</strong> Advanced Quoting Engine</span>
+</div>
+<div>Page 1 of 1</div>
+</div>
+</div>
+<!-- Secondary Info Section -->
+<div class="w-full max-w-5xl bg-slate-200/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 grid md:grid-cols-3 gap-8 mb-12">
+<div class="flex flex-col gap-2">
+<h4 class="font-bold text-sm text-primary uppercase">Security Status</h4>
+<div class="flex items-center gap-2 text-green-500">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="text-sm font-medium">Verified by Blockchain Hash</span>
+</div>
+<p class="text-xs text-slate-500">This document's integrity is digitally signed and encrypted.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-bold text-sm text-primary uppercase">Validity</h4>
+<div class="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+<span class="text-sm font-medium">Valid until Nov 24, 2023</span>
+</div>
+<p class="text-xs text-slate-500">Pricing subject to material market rate fluctuations.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-bold text-sm text-primary uppercase">Export Settings</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span class="text-xs font-bold">PDF/A-1b</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">high_res</span>
+<span class="text-xs font-bold">300 DPI</span>
+</div>
+</div>
+<p class="text-xs text-slate-500">Optimized for high-fidelity technical printing.</p>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Toolbar (Mobile Only/Extra visibility) -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 flex gap-2">
+<button class="flex-1 py-3 bg-primary text-white rounded-lg font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">download</span> Download
+                </button>
+<button class="w-14 py-3 bg-slate-200 dark:bg-slate-800 rounded-lg font-bold flex items-center justify-center">
+<span class="material-symbols-outlined">print</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

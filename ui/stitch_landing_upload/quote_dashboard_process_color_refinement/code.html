@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manufacturing Quote Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .waterfall-bar-up { background-color: #ef4444; }
+        .waterfall-bar-down { background-color: #10b981; }
+        .waterfall-bar-neutral { background-color: #64748b; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-10 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">Manufacturing Quote — Steel Bracket</h2>
+</div>
+<div class="flex gap-3">
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold transition hover:bg-primary/90">
+<span class="material-symbols-outlined mr-2 text-sm">add</span>
+<span class="truncate">New Quote</span>
+</button>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm font-bold transition hover:bg-slate-300 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined mr-2 text-sm">download</span>
+<span class="truncate">Export PDF</span>
+</button>
+</div>
+</header>
+<main class="max-w-[1400px] mx-auto p-6 space-y-6">
+<!-- Row 1: Total Cost Card & Confidence -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 flex flex-col md:flex-row gap-6 p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm items-center">
+<div class="flex-1 space-y-1">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Estimated Total Cost</p>
+<h1 class="text-slate-900 dark:text-slate-100 text-5xl font-extrabold tracking-tight">₹28,400</h1>
+<div class="flex items-center gap-2 pt-2">
+<span class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold uppercase">Medium Risk</span>
+<span class="text-slate-400 text-xs">Margin of error: ±4.2%</span>
+</div>
+</div>
+<div class="flex-1 w-full space-y-3">
+<div class="flex justify-between items-end">
+<p class="text-sm font-medium">Confidence Range</p>
+<p class="text-xs text-slate-500">Predicted Variance</p>
+</div>
+<div class="relative h-6 w-full rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800">
+<div class="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-400 to-amber-500 opacity-80"></div>
+<!-- Indicator Arrow -->
+<div class="absolute top-0 bottom-0 w-1 bg-white dark:bg-slate-100 shadow-lg" style="left: 65%;">
+<div class="absolute -top-1 -left-1 text-white text-[10px] bg-slate-900 px-1 rounded">₹28.4k</div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400 uppercase font-bold tracking-tighter">
+<span>Low (₹26k)</span>
+<span>Nominal</span>
+<span>High (₹32k)</span>
+</div>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-center items-center text-center">
+<div class="size-16 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-primary text-3xl">timer</span>
+</div>
+<h3 class="text-2xl font-bold">7.5 <span class="text-sm font-normal text-slate-500">mins</span></h3>
+<p class="text-slate-500 text-sm">Estimated Cycle Time</p>
+</div>
+</div>
+<!-- Row 2: Cost & Process Analysis -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- A. Cost Breakdown Table -->
+<div class="lg:col-span-4 p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">pie_chart</span>
+                    Cost Breakdown
+                </h3>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Material</span>
+<span class="font-bold">₹12,200</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 43%;"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Machining</span>
+<span class="font-bold">₹9,400</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 33%;"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Setup</span>
+<span class="font-bold">₹4,000</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 14%;"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Overhead</span>
+<span class="font-bold">₹2,800</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 10%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- B & C. Process Breakdown & Donut -->
+<div class="lg:col-span-8 p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_tree</span>
+                    Process Details
+                </h3>
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex-1 overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-slate-500 uppercase text-xs font-bold border-b border-slate-200 dark:border-slate-800">
+<tr>
+<th class="py-3 pr-4">Process</th>
+<th class="py-3 px-4">Time (min)</th>
+<th class="py-3 px-4">Rate (/hr)</th>
+<th class="py-3 pl-4 text-right">Cost</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full" style="background-color: #10B981;"></span>CNC Milling</div></td>
+<td class="py-3 px-4">4.2</td>
+<td class="py-3 px-4">₹4,500</td>
+<td class="py-3 pl-4 text-right font-bold" style="color: #10B981;">₹3,150</td>
+</tr>
+<tr>
+<td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full" style="background-color: #F59E0B;"></span>Hole Drilling</div></td>
+<td class="py-3 px-4">1.8</td>
+<td class="py-3 px-4">₹3,000</td>
+<td class="py-3 pl-4 text-right font-bold text-primary">₹900</td>
+</tr>
+<tr>
+<td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full" style="background-color: #A855F7;"></span>Surface Grinding</div></td>
+<td class="py-3 px-4">1.5</td>
+<td class="py-3 px-4">₹2,800</td>
+<td class="py-3 pl-4 text-right font-bold text-primary">₹700</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[180px]">
+<div class="relative size-32">
+<svg class="size-full transform -rotate-90" viewbox="0 0 36 36"><circle class="stroke-slate-200 dark:stroke-slate-800" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle><circle cx="18" cy="18" fill="none" r="16" stroke-dasharray="56, 100" stroke-width="4" style="stroke: #10B981;"></circle><circle cx="18" cy="18" fill="none" r="16" stroke-dasharray="24, 100" stroke-dashoffset="-56" stroke-width="4" style="stroke: #F59E0B;"></circle><circle cx="18" cy="18" fill="none" r="16" stroke-dasharray="20, 100" stroke-dashoffset="-80" stroke-width="4" style="stroke: #A855F7;"></circle></svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col"><span class="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Machining</span><span class="text-sm font-bold">Share</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Row 3: SHAP Waterfall & Formulas -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- D. SHAP Waterfall -->
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-12">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-bold">Why does this part take 7.5 min?</h3>
+<span class="text-xs bg-primary/20 text-primary px-2 py-1 rounded font-mono">SHAP Explainability</span>
+</div>
+<div class="space-y-4">
+<!-- Waterfall items -->
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500">Base Prediction</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-neutral h-full rounded-sm" style="width: 40%; margin-left: 0;"></div>
+</div>
+<span class="text-xs font-bold w-12">5.0m</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500 font-medium">Surface Area</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-up h-full rounded-sm" style="width: 15%; margin-left: 40%;"></div>
+</div>
+<span class="text-xs font-bold text-red-500 w-12">+1.2m</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500 font-medium">Hole Density</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-up h-full rounded-sm" style="width: 10%; margin-left: 55%;"></div>
+</div>
+<span class="text-xs font-bold text-red-500 w-12">+0.8m</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500 font-medium">Low Tolerance</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-down h-full rounded-sm" style="width: 5%; margin-left: 60%;"></div>
+</div>
+<span class="text-xs font-bold text-emerald-500 w-12">-0.4m</span>
+</div>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<span class="text-xs w-28 font-bold">Final Cycle</span>
+<div class="flex-1 h-8 relative">
+<div class="bg-primary h-full rounded-sm" style="width: 60%; margin-left: 0;"></div>
+</div>
+<span class="text-sm font-black w-12">7.5m</span>
+</div>
+</div>
+</div>
+<!-- E. Formula Transparency -->
+</div>
+<!-- Row 4: DFM Suggestions -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold">DFM Optimization Suggestions</h3>
+<span class="text-sm text-primary font-medium cursor-pointer flex items-center gap-1">View all insights <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- Suggestion 1 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-amber-500 bg-amber-500/10 p-2 rounded-lg">straighten</span>
+<span class="text-emerald-500 text-sm font-bold">-₹1,200</span>
+</div>
+<h4 class="font-bold text-sm">Relax Tolerances</h4>
+<p class="text-xs text-slate-500">Tight tolerance on bore increases machining time by 15%.</p>
+</div>
+<button class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+<!-- Suggestion 2 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-blue-500 bg-blue-500/10 p-2 rounded-lg">texture</span>
+<span class="text-emerald-500 text-sm font-bold">-₹4,500</span>
+</div>
+<h4 class="font-bold text-sm">Reduce Holes</h4>
+<p class="text-xs text-slate-500">Combining 4 small holes into 2 larger ones reduces drilling ops.</p>
+</div>
+<button class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+<!-- Suggestion 3 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-purple-500 bg-purple-500/10 p-2 rounded-lg">category</span>
+<span class="text-emerald-500 text-sm font-bold">-₹2,800</span>
+</div>
+<h4 class="font-bold text-sm">Switch Material</h4>
+<p class="text-xs text-slate-500">Grade 304 Stainless is 20% cheaper than Grade 316 for this spec.</p>
+</div>
+<button class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+<!-- Suggestion 4 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-red-500 bg-red-500/10 p-2 rounded-lg">architecture</span>
+<span class="text-emerald-500 text-sm font-bold">-₹800</span>
+</div>
+<h4 class="font-bold text-sm">Simplify Pockets</h4>
+<p class="text-xs text-slate-500">Internal radii &lt; 3mm require specialty tools. Increase to 5mm.</p>
+</div>
+<button class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Stats Overlay (Fixed) -->
+<div class="fixed bottom-6 right-6 flex gap-2">
+<div class="bg-slate-900 text-white px-4 py-2 rounded-full shadow-2xl flex items-center gap-3 border border-slate-800">
+<div class="flex items-center gap-1">
+<div class="size-2 bg-emerald-500 rounded-full animate-pulse"></div>
+<span class="text-xs font-medium">Model v4.2 Live</span>
+</div>
+<div class="h-4 w-px bg-slate-700"></div>
+<span class="text-xs text-slate-400">Analysis complete: 1.2s</span>
+</div>
+</div>
+</body></html>

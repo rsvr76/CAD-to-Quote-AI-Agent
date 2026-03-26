@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                        "steel": {
+                            "700": "#314668",
+                            "800": "#223149",
+                            "900": "#16202f"
+                        }
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<title>QuoteAI - Industrial CAD-to-Quote</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<header class="border-b border-steel-800 bg-background-light dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl" style="">settings_input_component</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight" style="">Quote<span class="text-primary" style="">AI</span></h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary transition-colors" href="#" style=""><br/></a>
+<a class="hover:text-primary transition-colors" href="#" style=""><br/></a>
+<a class="hover:text-primary transition-colors" href="#" style=""><br/></a>
+</nav>
+<div class="h-6 w-px bg-steel-800"></div>
+<div class="flex items-center gap-3">
+<button onclick="window.location.href='/'" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all" style="">
+<span class="material-symbols-outlined text-sm" style="">add</span>
+                        New Quote
+                    </button>
+<div class="w-9 h-9 rounded-full bg-steel-800 border border-steel-700 flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Professional user profile avatar photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq_FKPFAgtTy5QtqCS6Nyi49JPUkIiRAQwd_XZXLgDk08drB6_57DJ448BBn09M8-c2z4qCtWFZXxa_FXKozt6VOLJg0xjbnvVx0E0AU7Y6Lrc9wJDG003s4vgK1FTMxSoSbrZnEyXMEaZEyVyop_poT22cEOd_qp_i3NHGBJh-mg5T-6HuHR-HItAAzENHrF4sFHS4e0HIdLq_nk-cSjeJpS1ZlkSNuJ-uOAOcNeeZOjwRWWyGESqlxMpQnOq7u91488TE7Zyhns" style=""/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 max-w-5xl mx-auto w-full">
+<div class="text-center mb-10">
+<h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight" style="">CAD-to-Quote AI Agent</h2>
+<p class="text-lg text-slate-400 max-w-2xl mx-auto" style="">Instant, transparent manufacturing quotes from 3D part data</p>
+</div>
+<div class="w-full bg-steel-900/50 rounded-xl p-2 border border-steel-800 mb-4">
+<!-- Hidden file input -->
+<input type="file" id="step-file-input" accept=".step,.stp" class="hidden" onchange="handleFileSelect(this)"/>
+<!-- Drop zone -->
+<div id="drop-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" class="border-2 border-dashed border-steel-700 rounded-lg h-[300px] flex flex-col items-center justify-center gap-4 bg-background-dark transition-all hover:bg-steel-900/80 group cursor-pointer" onclick="document.getElementById('step-file-input').click()">
+<div id="upload-icon" class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">cloud_upload</span>
+</div>
+<div class="text-center">
+<h3 id="drop-label" class="text-xl font-bold text-white mb-1">Drop your STEP file here</h3>
+<p id="drop-sublabel" class="text-slate-500 text-sm">Supports .step and .stp files up to 100MB</p>
+</div>
+<button type="button" onclick="event.stopPropagation(); document.getElementById('step-file-input').click()" class="mt-2 bg-steel-800 hover:bg-steel-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold border border-steel-700 transition-colors">
+Browse Files
+</button>
+</div>
+</div>
+<!-- Error / success banner -->
+<div id="file-error" class="hidden w-full mb-4 flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-5 py-3">
+<span class="material-symbols-outlined">error</span>
+<span class="text-sm font-semibold">Please select a valid .step or .stp file before continuing.</span>
+</div>
+<div id="file-ready" class="hidden w-full mb-4 flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl px-5 py-3">
+<span class="material-symbols-outlined">check_circle</span>
+<span id="file-ready-name" class="text-sm font-semibold">File ready</span>
+<button onclick="proceedWithFile()" class="ml-auto bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg text-sm font-bold transition-all">Analyse →</button>
+</div>
+<div class="w-full">
+<div class="flex items-center justify-between mb-6">
+<h4 class="text-sm font-bold uppercase tracking-widest text-slate-500" style="">Industry Samples</h4>
+<div class="h-px flex-grow mx-4 bg-steel-800"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div onclick="loadSample('steel_bracket', this)" class="group bg-steel-900 border border-steel-800 rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer">
+<div class="aspect-square bg-background-dark rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-steel-800">
+<img alt="Steel Bracket" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Technical wireframe of a steel industrial bracket" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUMHzMvvzHtkHPrtg22gqPK2aqY2GNGwrErO0631h4rWhyHaRIOTpjXHdHHnUch2eG6FEuxmfPeh-Vu0o6NXbr7vA2gqGFmoKUxGVSdjD-Zd2kODbjSDTauvW99w_xfQGxzTdFCzWAVRR1MOXlc1X5H3Y4y3u8Re_IpIa4IeQQJsgeBFFg8F5BWCVCq9rNXbIGwSL6XF6Jnoz5fansCkqKLgz6hPe5Xt90CRVpFLKTI5C_z3Bnz9tVCIuqtK28HFQftZTCS7WGJMg" style=""/>
+</div>
+<h5 class="text-white font-bold text-lg" style="">Steel Bracket</h5>
+<p class="text-slate-500 text-sm mt-1" style="">160 × 45 × 35mm · Steel · Fine</p>
+<div class="mt-3 flex items-center gap-2 text-primary text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity" style="">
+                        VIEW ANALYSIS <span class="material-symbols-outlined text-xs" style="">arrow_forward</span>
+</div>
+</div>
+<div onclick="loadSample('aluminum_housing', this)" class="group bg-steel-900 border border-steel-800 rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer">
+<div class="aspect-square bg-background-dark rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-steel-800">
+<img alt="Aluminum Housing" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Technical wireframe of aluminum machine housing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxCMX3oAfXQoUFnwDAK9ZZAvssBivNeAFKUwh-cw5wqpQXOyKykXY4PqldIgKb_cP0OQRjTf19Dwocd5t9jmma3rL2LqwUv9-BsWyNHHVoaYZ3yLwLGmda7U05b64fFUF97NrP8VM7FmGXy4c7M6IT1pz1j_5h4B2a36t_yzr-Q7moaA_hRiYHMowkMzLjSx3otjf3yT8Qw94Esk2P3gUFXGHz0azqBO7eQ5I0qZpkCM-g-XN3BAAE111Hnfv22XqX-ZNc89FRdmA" style=""/>
+</div>
+<h5 class="text-white font-bold text-lg" style="">Aluminum Housing</h5>
+<p class="text-slate-500 text-sm mt-1" style="">120 × 110 × 70mm · Aluminium · Standard</p>
+<div class="mt-3 flex items-center gap-2 text-primary text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity" style="">
+                        VIEW ANALYSIS <span class="material-symbols-outlined text-xs" style="">arrow_forward</span>
+</div>
+</div>
+<div onclick="loadSample('titanium_shaft', this)" class="group bg-steel-900 border border-steel-800 rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer">
+<div class="aspect-square bg-background-dark rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-steel-800">
+<img alt="Titanium Shaft" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Technical wireframe of a titanium shaft component" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkdzrdHDe_xP3uhOExO1JrR4TERDh7OhFepLqVcTtYSZ4FSVTgSigdsM7YBs7VrWPx2c_iBD7gTJUiEviHSdTKboM3cQm7__JvUK7rrvG1lKzzO7AgUM3A0wwsEQpNOJcEoK1Td0POxGbN0OBpPlhKh0ZIe-oKtzsPweF7ElyAkNazf4k0o0m3yKRZF1jbcpbmbNCywclJCncKQOAfb1ad0LvE2Zsr3AfoS534AkPczIi7voYbm4I-_k1_Mvdyo7Jwcjcky_6IqUM" style=""/>
+</div>
+<h5 class="text-white font-bold text-lg" style="">Titanium Shaft</h5>
+<p class="text-slate-500 text-sm mt-1" style="">280 × 32 × 30mm · Titanium · Ultra-Fine</p>
+<div class="mt-3 flex items-center gap-2 text-primary text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity" style="">
+                        VIEW ANALYSIS <span class="material-symbols-outlined text-xs" style="">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+    // Clear previous session on landing page load
+    localStorage.removeItem('quoteSession');
+
+    function getBackendOrigin() {
+        // If the UI is served by the FastAPI app, same-origin is correct.
+        // If served elsewhere (e.g. Live Server), fall back to the backend default.
+        return window.location.port === '5000' ? '' : 'http://127.0.0.1:5000';
+    }
+
+    let selectedFile = null;
+
+        function _escapeXml(text) {
+                return String(text)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&apos;');
+        }
+
+        function makeUploadThumbnail(partName) {
+                // Small SVG placeholder so screens can show a “design preview” even
+                // though we don't parse/render STEP geometry in this demo.
+                const name = _escapeXml(partName || 'Uploaded Part');
+                const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#101722"/>
+            <stop offset="1" stop-color="#16202f"/>
+        </linearGradient>
+    </defs>
+    <rect width="800" height="500" fill="url(#bg)"/>
+    <g opacity="0.16" stroke="#3c83f6" stroke-width="2" fill="none">
+        <path d="M110 120 L340 70 L610 160 L380 210 Z"/>
+        <path d="M110 120 L120 330 L390 420 L380 210"/>
+        <path d="M380 210 L390 420 L670 310 L610 160"/>
+        <path d="M120 330 L340 280 L670 310"/>
+        <path d="M340 70 L340 280"/>
+    </g>
+    <g opacity="0.10" stroke="#ffffff" stroke-width="1" fill="none">
+        <rect x="90" y="90" width="620" height="320" rx="18"/>
+    </g>
+    <text x="120" y="430" fill="#e2e8f0" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">${name}</text>
+    <text x="120" y="458" fill="#94a3b8" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="500">Uploaded STEP (demo preview)</text>
+</svg>`;
+                return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+    // ── File input handler ──
+    function handleFileSelect(input) {
+        const file = input.files[0];
+        if (!file) return;
+        validateAndSetFile(file);
+    }
+
+    function validateAndSetFile(file) {
+        const name = file.name.toLowerCase();
+        const errorBanner = document.getElementById('file-error');
+        const readyBanner = document.getElementById('file-ready');
+        const dropZone = document.getElementById('drop-zone');
+        const dropLabel = document.getElementById('drop-label');
+        const dropSublabel = document.getElementById('drop-sublabel');
+
+        if (!name.endsWith('.step') && !name.endsWith('.stp')) {
+            selectedFile = null;
+            errorBanner.classList.remove('hidden');
+            errorBanner.classList.add('flex');
+            readyBanner.classList.add('hidden');
+            readyBanner.classList.remove('flex');
+            dropZone.classList.add('border-red-500/60');
+            dropZone.classList.remove('border-steel-700');
+            return;
+        }
+
+        selectedFile = file;
+        errorBanner.classList.add('hidden');
+        errorBanner.classList.remove('flex');
+        readyBanner.classList.remove('hidden');
+        readyBanner.classList.add('flex');
+        dropZone.classList.remove('border-red-500/60');
+        dropZone.classList.add('border-emerald-500/60', 'bg-emerald-500/5');
+        dropLabel.textContent = '✓ ' + file.name;
+        dropSublabel.textContent = (file.size / 1024).toFixed(1) + ' KB — Ready to analyse';
+        document.getElementById('file-ready-name').textContent = file.name + ' — Ready';
+    }
+
+    // ── Drag / Drop ──
+    function handleDragOver(e) {
+        e.preventDefault();
+        document.getElementById('drop-zone').classList.add('border-primary', 'bg-primary/5');
+    }
+    function handleDragLeave(e) {
+        document.getElementById('drop-zone').classList.remove('border-primary', 'bg-primary/5');
+    }
+    function handleDrop(e) {
+        e.preventDefault();
+        handleDragLeave(e);
+        const file = e.dataTransfer.files[0];
+        if (file) validateAndSetFile(file);
+    }
+
+    // ── Proceed with uploaded file ──
+    async function proceedWithFile() {
+        if (!selectedFile) {
+            document.getElementById('file-error').classList.remove('hidden');
+            document.getElementById('file-error').classList.add('flex');
+            return;
+        }
+        const partName = selectedFile.name.replace(/\.s[t]?ep$/i, '');
+        const sizeKB = Math.max(1, Math.round(selectedFile.size / 1024));
+
+        const analyseBtn = document.querySelector('#file-ready button');
+        if (analyseBtn) {
+            analyseBtn.disabled = true;
+            analyseBtn.textContent = 'Analysing…';
+        }
+
+        const base = getBackendOrigin();
+        try {
+            const fd = new FormData();
+            fd.append('file', selectedFile, selectedFile.name);
+
+            const res = await fetch(base + '/api/step/extract', {
+                method: 'POST',
+                body: fd,
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.detail || err.error || 'STEP extraction failed');
+            }
+            const out = await res.json();
+            const extractedGeo = out.geometry;
+            const previewUrl = out.preview_image_url || makeUploadThumbnail(partName);
+
+            const stubInputs = {
+                num_holes: 0, num_pockets: 0, max_depth_mm: 0,
+                material: 'Steel', quantity: 1, tolerance_class: 'Standard'
+            };
+            localStorage.setItem('quoteSession', JSON.stringify({
+                sample_name: null,
+                sample_meta: { display_name: partName, subtitle: `Uploaded STEP (~${sizeKB} KB)`, image_url: previewUrl },
+                uploaded_file: selectedFile.name,
+                geometry: extractedGeo,
+                inputs: stubInputs,
+            }));
+            window.location.href = base + '/geometry';
+            return;
+        } catch (err) {
+            console.warn('STEP extraction failed; falling back to estimate:', err);
+        } finally {
+            if (analyseBtn) {
+                analyseBtn.disabled = false;
+                analyseBtn.textContent = 'Analyse →';
+            }
+        }
+
+        // Rough heuristic: bigger STEP file → more complex / larger part.
+        // Keep values in plausible demo ranges.
+        const volume_cm3 = Math.min(450, Math.max(25, Math.round(sizeKB / 2)));
+        const surface_area_cm2 = Math.round(volume_cm3 * 1.8);
+
+        // Convert volume to a characteristic length scale.
+        // 1 cm^3 = 1000 mm^3.
+        const char_mm = Math.max(20, Math.min(220, Math.round(Math.cbrt(volume_cm3 * 1000))));
+        const bbox_x_mm = Math.round(char_mm * 1.6);
+        const bbox_y_mm = Math.round(char_mm * 1.0);
+        const bbox_z_mm = Math.round(char_mm * 0.8);
+        const aspect_ratio = Number((bbox_x_mm / Math.max(1, bbox_z_mm)).toFixed(2));
+
+        const num_faces = Math.min(2500, Math.max(120, sizeKB * 3));
+        const num_edges = Math.min(4000, Math.max(200, sizeKB * 5));
+
+        const stubGeo = {
+            part_name: partName,
+            volume_cm3,
+            surface_area_cm2,
+            bbox_x_mm,
+            bbox_y_mm,
+            bbox_z_mm,
+            aspect_ratio,
+            num_faces,
+            num_edges,
+        };
+        const stubInputs = {
+            num_holes: 0, num_pockets: 0, max_depth_mm: 0,
+            material: 'Steel', quantity: 1, tolerance_class: 'Standard'
+        };
+        localStorage.setItem('quoteSession', JSON.stringify({
+            sample_name: null,
+            sample_meta: { display_name: partName, subtitle: `Uploaded STEP (~${sizeKB} KB)`, image_url: makeUploadThumbnail(partName) },
+            uploaded_file: selectedFile.name,
+            geometry: stubGeo,
+            inputs: stubInputs,
+        }));
+        window.location.href = base + '/geometry';
+    }
+
+    // ── Sample loader ──
+    async function loadSample(name, cardEl) {
+        try {
+            const base = getBackendOrigin();
+            const res = await fetch(base + '/api/samples/' + name);
+            if (!res.ok) throw new Error('Failed to load sample');
+            const data = await res.json();
+
+            const meta = { name };
+            if (cardEl) {
+                const img = cardEl.querySelector('img');
+                const title = cardEl.querySelector('h5');
+                const subtitle = cardEl.querySelector('p');
+                if (img && img.src) meta.image_url = img.src;
+                if (title && title.textContent) meta.title = title.textContent.trim();
+                if (subtitle && subtitle.textContent) meta.subtitle = subtitle.textContent.trim();
+            }
+            localStorage.setItem('quoteSession', JSON.stringify({
+                sample_name: name,
+                sample_meta: meta,
+                geometry: data.geometry,
+                inputs: data.inputs,
+            }));
+            window.location.href = base + '/geometry';
+        } catch (err) {
+            console.error(err);
+            alert('Failed to load sample part. Is the server running?');
+        }
+    }
+</script>
+</body></html>

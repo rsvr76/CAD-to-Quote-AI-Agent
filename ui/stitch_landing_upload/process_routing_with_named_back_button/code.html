@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Process Routing &amp; Machine Assignment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center size-10 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Process Routing</h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 h-10 rounded-lg border border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-[20px] text-primary">arrow_back</span>
+<span class="text-sm font-bold tracking-wider">BACK</span>
+</button><button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col max-w-5xl mx-auto w-full p-4 md:p-8 gap-6">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-xl border border-primary/20 bg-primary/5 p-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">info</span>
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Process Selection Tip</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">You can toggle processes manually if the auto-detection needs adjustment.</p>
+</div>
+</div>
+<a class="text-sm font-bold leading-normal tracking-[0.015em] flex items-center gap-2 text-primary" href="#">
+                            Learn more
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-amber-500 mt-0.5">warning</span>
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Warning: Drilling Required</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Drilling is ON but you have holes &gt; 0. Ensure tool clearance before proceeding.</p>
+</div>
+</div>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-amber-500 text-white text-sm font-bold">
+                            View Details
+                        </button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Machine Assignment</h3>
+<span class="text-slate-500 text-sm">4 Processes Detected</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- TURNING (OFF) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors opacity-70 group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">TURNING</span>
+<span class="text-[10px] bg-slate-700 text-slate-400 px-1.5 py-0.5 rounded uppercase font-bold">Off</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">Aspect ratio 1.5 (below 2.0 threshold)</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-500 py-2 px-3" disabled="">
+<option>CNC Lathe</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-slate-700 rounded-full"></div>
+<div class="absolute left-1 top-1 bg-slate-500 w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+<!-- MILLING (ON) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">view_in_ar</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">MILLING</span>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">On</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">2 pockets detected</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0">
+<option>3-Axis VMC</option>
+<option>5-Axis CNC</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-primary rounded-full"></div>
+<div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+<!-- DRILLING (ON) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">adjust</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">DRILLING</span>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">On</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">6 holes detected</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0">
+<option>VMC Drill</option>
+<option>Radial Drill Press</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-primary rounded-full"></div>
+<div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+<!-- GRINDING (ON) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">texture</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">GRINDING</span>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">On</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">Tolerance class = Fine</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0">
+<option>Surface Grinder</option>
+<option>Cylindrical Grinder</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-primary rounded-full"></div>
+<div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-end">
+<button class="flex items-center justify-center gap-2 rounded-xl h-14 px-10 bg-primary text-white text-lg font-bold shadow-xl shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+                        Confirm Routing
+                        <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+</main>
+</div>
+</div>
+</body></html>

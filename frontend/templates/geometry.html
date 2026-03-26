@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<title>CAD Analysis Pro - Validation</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-10 py-3 bg-background-light dark:bg-background-dark">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">deployed_code</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">CAD Analysis Pro</h2>
+</div>
+<div class="flex gap-2">
+<button onclick="window.location.href='/'" class="flex items-center gap-2 px-4 rounded-lg h-10 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-xl text-primary">arrow_back</span>
+<span class="text-xs font-bold uppercase tracking-wider">Back</span>
+</button><button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+</button>
+</div>
+</header>
+<main class="flex flex-1 flex-col px-4 md:px-10 lg:px-40 py-8 gap-8">
+<!-- Header Section -->
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl font-bold tracking-tight">CAD Validation &amp; Geometry Extraction</h1>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+<span class="text-sm font-medium">Step 2 of 5: Validating structural integrity and feature extraction</span>
+</div>
+</div>
+<!-- No-session warning banner -->
+<div id="no-session-banner" class="hidden items-center gap-3 bg-red-500/10 border border-red-500/40 text-red-400 rounded-xl px-5 py-4">
+<span class="material-symbols-outlined text-2xl">warning</span>
+<div>
+<p class="font-bold text-sm">No file or sample loaded.</p>
+<p class="text-xs mt-0.5">Please go back and either upload a STEP file or select an industry sample to continue.</p>
+</div>
+<a href="/" class="ml-auto flex items-center gap-1 text-sm font-bold bg-red-500/20 hover:bg-red-500/40 text-red-300 px-4 py-2 rounded-lg transition-all whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">arrow_back</span> Go Back
+</a>
+</div>
+<!-- Pipeline Progress -->
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full w-2/5"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-8">
+<!-- LEFT COLUMN (60%) -->
+<div class="lg:col-span-6 flex flex-col gap-6">
+<!-- Geometry Analysis Card -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<h3 class="font-semibold">Geometry Analysis</h3>
+<span class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold uppercase">
+<span class="material-symbols-outlined text-sm">check_circle</span> Valid STEP
+                                </span>
+</div>
+<span class="text-xs text-slate-500 dark:text-slate-400">Solid bodies: 1</span>
+</div>
+<!-- 3D Viewer Placeholder -->
+<div id="viewer-wrapper" class="relative aspect-video bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center group">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #3c83f6 1px, transparent 0); background-size: 24px 24px;"></div>
+<div id="viewer-cube" class="w-64 h-48 border-2 border-primary/40 rounded-lg flex items-center justify-center relative bg-primary/5" style="transform-origin:center;">
+<img id="part-preview-img" class="absolute inset-0 w-full h-full object-contain opacity-90 hidden" alt="Part preview"/>
+<span id="part-preview-icon" class="material-symbols-outlined text-6xl text-primary/30">category</span>
+<!-- Simulated Wireframe Lines -->
+<div class="absolute inset-4 border border-dashed border-primary/20 rotate-12"></div>
+<div class="absolute inset-10 border border-dashed border-primary/20 -rotate-6"></div>
+</div>
+<!-- Viewer Controls -->
+<div class="absolute bottom-4 right-4 flex gap-2">
+<button id="btn-rotate-zoom" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-lg">
+<span class="material-symbols-outlined text-sm">orbit</span>
+                                    Rotate / Zoom
+                                </button>
+<button id="btn-fullscreen" class="flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-white hover:bg-white/20">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+<!-- File Info Card -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<h3 class="font-semibold">File Metadata</h3>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+<div>
+<p class="text-slate-500 dark:text-slate-400 mb-1">Filename</p>
+<p class="font-medium">bracket_assembly_v4.step</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 mb-1">Created By</p>
+<p class="font-medium">Autodesk Inventor</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 mb-1">Units</p>
+<p class="font-medium">Millimeters (mm)</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 mb-1">Manifold State</p>
+<p class="text-emerald-500 font-medium">Watertight</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 mb-1">Shell Count</p>
+<p class="font-medium">1</p>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 mb-1">Last Validated</p>
+<p class="font-medium">2 mins ago</p>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (40%) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Extracted Features Table -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-200 dark:border-slate-800">
+<h3 class="font-semibold">Extracted Features</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-medium">
+<tr>
+<th class="px-4 py-3">Feature</th>
+<th class="px-4 py-3 text-right">Value</th>
+<th class="px-4 py-3">Unit</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="px-4 py-3">Volume</td>
+<td class="px-4 py-3 text-right font-medium">154,230.4</td>
+<td class="px-4 py-3 text-slate-500">mm³</td>
+</tr>
+<tr>
+<td class="px-4 py-3">Surface Area</td>
+<td class="px-4 py-3 text-right font-medium">42,890.1</td>
+<td class="px-4 py-3 text-slate-500">mm²</td>
+</tr>
+<tr>
+<td class="px-4 py-3">Bounding Box</td>
+<td class="px-4 py-3 text-right font-medium">120x80x45</td>
+<td class="px-4 py-3 text-slate-500">mm</td>
+</tr>
+<tr>
+<td class="px-4 py-3">Aspect Ratio</td>
+<td class="px-4 py-3 text-right font-medium">2.67</td>
+<td class="px-4 py-3 text-slate-500">ratio</td>
+</tr>
+<tr>
+<td class="px-4 py-3">SV Ratio</td>
+<td class="px-4 py-3 text-right font-medium">0.278</td>
+<td class="px-4 py-3 text-slate-500">1/mm</td>
+</tr>
+<tr>
+<td class="px-4 py-3">Slenderness</td>
+<td class="px-4 py-3 text-right font-medium">1.45</td>
+<td class="px-4 py-3 text-slate-500">score</td>
+</tr>
+<tr>
+<td class="px-4 py-3">Face Count</td>
+<td class="px-4 py-3 text-right font-medium">124</td>
+<td class="px-4 py-3 text-slate-500">qty</td>
+</tr>
+<tr>
+<td class="px-4 py-3">Edge Count</td>
+<td class="px-4 py-3 text-right font-medium">288</td>
+<td class="px-4 py-3 text-slate-500">qty</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Detected Features (Auto) Section -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+<h3 class="font-semibold mb-4">Detected Features (Auto)</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">adjust</span>
+<span class="text-sm">Holes (Ø5-12mm)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-500 uppercase">Medium</span>
+<span class="text-sm font-bold">12</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">inventory_2</span>
+<span class="text-sm">Pockets (Blind)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 uppercase">Low</span>
+<span class="text-sm font-bold">4</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">vertical_align_bottom</span>
+<span class="text-sm">Max Depth</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-500 uppercase">Medium</span>
+<span class="text-sm font-bold">32mm</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action Bar -->
+<div class="mt-4 flex justify-between items-center py-6 border-t border-slate-200 dark:border-slate-800">
+<button onclick="window.location.href='/'" class="flex items-center gap-2 px-6 py-3 border border-slate-200 dark:border-slate-800 rounded-xl font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+                    Previous Step
+                </button>
+<button onclick="window.location.href='/input'" class="flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                    Continue to Input Collection
+                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</main>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const geo = session.geometry || {};
+        const inputs = session.inputs || {};
+
+        // Show preview image if available (from landing sample cards)
+        const meta = session.sample_meta || {};
+        const previewImg = document.getElementById('part-preview-img');
+        const previewIcon = document.getElementById('part-preview-icon');
+        if (previewImg && meta.image_url) {
+            previewImg.src = meta.image_url;
+            previewImg.classList.remove('hidden');
+            if (previewIcon) previewIcon.classList.add('hidden');
+        }
+
+        // Guard: no session data → show warning and block Continue
+        const hasData = !!(session.geometry && (session.sample_name || session.uploaded_file));
+        if (!hasData) {
+            const banner = document.getElementById('no-session-banner');
+            if (banner) {
+                banner.classList.remove('hidden');
+                banner.classList.add('flex');
+            }
+            // Disable the Continue button
+            const continueBtn = document.querySelector('button[onclick*="/input"]');
+            if (continueBtn) {
+                continueBtn.disabled = true;
+                continueBtn.classList.add('opacity-40', 'cursor-not-allowed');
+                continueBtn.removeAttribute('onclick');
+            }
+            // All values show as zero already via fallback — no further work needed
+            return;
+        }
+
+        // Populate Extracted Features table
+        const rows = document.querySelectorAll('table tbody tr');
+        const values = [
+            { val: (geo.volume_cm3 || 0).toFixed(1), unit: 'cm³' },
+            { val: (geo.surface_area_cm2 || 0).toFixed(1), unit: 'cm²' },
+            { val: `${geo.bbox_x_mm||0}×${geo.bbox_y_mm||0}×${geo.bbox_z_mm||0}`, unit: 'mm' },
+            { val: (geo.aspect_ratio || 0).toFixed(2), unit: 'ratio' },
+            { val: (geo.surface_area_cm2 && geo.volume_cm3 ? (geo.surface_area_cm2 / geo.volume_cm3).toFixed(3) : '0.000'), unit: '1/mm' },
+            { val: (geo.aspect_ratio ? (geo.aspect_ratio * 0.6).toFixed(2) : '0.00'), unit: 'score' },
+            { val: (geo.num_faces || 0).toString(), unit: 'qty' },
+            { val: (geo.num_edges || 0).toString(), unit: 'qty' },
+        ];
+        rows.forEach((row, i) => {
+            if (values[i]) {
+                const cells = row.querySelectorAll('td');
+                if (cells[1]) cells[1].textContent = values[i].val;
+                if (cells[2]) cells[2].textContent = values[i].unit;
+            }
+        });
+
+        // Populate Detected Features
+        const detectedItems = document.querySelectorAll('.bg-slate-50.dark\\:bg-slate-800\\/50, [class*="bg-slate-800/50"]');
+        if (detectedItems.length >= 3) {
+            const holesVal = detectedItems[0].querySelector('.text-sm.font-bold');
+            if (holesVal) holesVal.textContent = inputs.num_holes || 0;
+            const pocketsVal = detectedItems[1].querySelector('.text-sm.font-bold');
+            if (pocketsVal) pocketsVal.textContent = inputs.num_pockets || 0;
+            const depthVal = detectedItems[2].querySelector('.text-sm.font-bold');
+            if (depthVal) depthVal.textContent = (inputs.max_depth_mm || 0) + 'mm';
+        }
+
+        // Update page title with part name
+        const h1 = document.querySelector('h1');
+        if (h1 && geo.part_name) {
+            h1.textContent = geo.part_name + ' — Geometry Extraction';
+        }
+
+        // --- Viewer controls: rotate / zoom + fullscreen ---
+        const cube = document.getElementById('viewer-cube');
+        const wrapper = document.getElementById('viewer-wrapper');
+        const rotateZoomBtn = document.getElementById('btn-rotate-zoom');
+        const fullscreenBtn = document.getElementById('btn-fullscreen');
+
+        let rotDeg = 0;
+        let zoom = 1;
+
+        function applyView() {
+            if (!cube) return;
+            cube.style.transform = `rotate(${rotDeg}deg) scale(${zoom})`;
+        }
+
+        if (rotateZoomBtn) {
+            rotateZoomBtn.addEventListener('click', (e) => {
+                // Click rotates. Shift+click toggles zoom.
+                if (e.shiftKey) {
+                    zoom = (zoom === 1) ? 1.25 : 1;
+                } else {
+                    rotDeg = (rotDeg + 15) % 360;
+                }
+                applyView();
+            });
+        }
+
+        if (cube) {
+            cube.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = Math.sign(e.deltaY);
+                zoom = Math.min(2.0, Math.max(0.75, zoom + (delta > 0 ? -0.05 : 0.05)));
+                applyView();
+            }, { passive: false });
+        }
+
+        if (fullscreenBtn && wrapper) {
+            fullscreenBtn.addEventListener('click', async () => {
+                try {
+                    if (document.fullscreenElement) {
+                        await document.exitFullscreen();
+                    } else {
+                        await wrapper.requestFullscreen();
+                    }
+                } catch (err) {
+                    console.warn('Fullscreen not available:', err);
+                }
+            });
+        }
+    });
+</script>
+</body></html>

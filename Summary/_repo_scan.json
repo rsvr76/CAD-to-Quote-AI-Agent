@@ -1,0 +1,1370 @@
+{
+  "root": "D:\\Hackathon\\Live\\Pivot Hack",
+  "file_count": 110,
+  "binary_count": 15,
+  "text_count": 95,
+  "items": [
+    {
+      "path": "/Final.py",
+      "ext": ".py",
+      "size_bytes": 14242,
+      "is_binary": false,
+      "line_count": 434,
+      "top_level_defs": [
+        {
+          "name": "QuoteInput",
+          "kind": "ClassDef",
+          "start": 91,
+          "end": 110
+        },
+        {
+          "name": "QuoteResult",
+          "kind": "ClassDef",
+          "start": 114,
+          "end": 129
+        },
+        {
+          "name": "route_processes",
+          "kind": "FunctionDef",
+          "start": 132,
+          "end": 142
+        },
+        {
+          "name": "estimate_cost",
+          "kind": "FunctionDef",
+          "start": 145,
+          "end": 193
+        },
+        {
+          "name": "estimate_confidence",
+          "kind": "FunctionDef",
+          "start": 196,
+          "end": 220
+        },
+        {
+          "name": "build_cost_drivers",
+          "kind": "FunctionDef",
+          "start": 223,
+          "end": 241
+        },
+        {
+          "name": "build_dfm_suggestions",
+          "kind": "FunctionDef",
+          "start": 244,
+          "end": 269
+        },
+        {
+          "name": "prompt_float",
+          "kind": "FunctionDef",
+          "start": 272,
+          "end": 274
+        },
+        {
+          "name": "prompt_int",
+          "kind": "FunctionDef",
+          "start": 277,
+          "end": 279
+        },
+        {
+          "name": "prompt_choice",
+          "kind": "FunctionDef",
+          "start": 282,
+          "end": 288
+        },
+        {
+          "name": "collect_interactive_input",
+          "kind": "FunctionDef",
+          "start": 291,
+          "end": 323
+        },
+        {
+          "name": "format_currency",
+          "kind": "FunctionDef",
+          "start": 326,
+          "end": 327
+        },
+        {
+          "name": "build_cost_contribution",
+          "kind": "FunctionDef",
+          "start": 330,
+          "end": 342
+        },
+        {
+          "name": "print_quote",
+          "kind": "FunctionDef",
+          "start": 345,
+          "end": 386
+        },
+        {
+          "name": "build_part_from_sample",
+          "kind": "FunctionDef",
+          "start": 389,
+          "end": 405
+        },
+        {
+          "name": "parse_args",
+          "kind": "FunctionDef",
+          "start": 408,
+          "end": 412
+        },
+        {
+          "name": "main",
+          "kind": "FunctionDef",
+          "start": 415,
+          "end": 430
+        }
+      ]
+    },
+    {
+      "path": "/implementation_plan.md.resolved",
+      "ext": ".resolved",
+      "size_bytes": 15091,
+      "is_binary": false,
+      "line_count": 356
+    },
+    {
+      "path": "/openapi_tmp.json",
+      "ext": ".json",
+      "size_bytes": 1855,
+      "is_binary": false,
+      "line_count": 1
+    },
+    {
+      "path": "/plan.md",
+      "ext": ".md",
+      "size_bytes": 9412,
+      "is_binary": false,
+      "line_count": 336
+    },
+    {
+      "path": "/task.md.resolved",
+      "ext": ".resolved",
+      "size_bytes": 3325,
+      "is_binary": false,
+      "line_count": 56
+    },
+    {
+      "path": "/ui.md",
+      "ext": ".md",
+      "size_bytes": 2331,
+      "is_binary": false,
+      "line_count": 15
+    },
+    {
+      "path": "/All/PS2-CAD-to-Quote-AI-Agent.pdf",
+      "ext": ".pdf",
+      "size_bytes": 2667765,
+      "is_binary": true
+    },
+    {
+      "path": "/All/Presentation_Round_Guidelines.pdf",
+      "ext": ".pdf",
+      "size_bytes": 410707,
+      "is_binary": true
+    },
+    {
+      "path": "/All/The-Problem.pdf",
+      "ext": ".pdf",
+      "size_bytes": 4243798,
+      "is_binary": true
+    },
+    {
+      "path": "/All/gamma_prompt.md",
+      "ext": ".md",
+      "size_bytes": 10803,
+      "is_binary": false,
+      "line_count": 363
+    },
+    {
+      "path": "/All/Given/Abstract_Submission_Guidelines.pdf",
+      "ext": ".pdf",
+      "size_bytes": 490434,
+      "is_binary": true
+    },
+    {
+      "path": "/All/Given/Guidelines.md",
+      "ext": ".md",
+      "size_bytes": 2873,
+      "is_binary": false,
+      "line_count": 5
+    },
+    {
+      "path": "/All/Given/PS.md",
+      "ext": ".md",
+      "size_bytes": 2725,
+      "is_binary": false,
+      "line_count": 47
+    },
+    {
+      "path": "/All/Given/Strategy.md",
+      "ext": ".md",
+      "size_bytes": 69753,
+      "is_binary": false,
+      "line_count": 1560
+    },
+    {
+      "path": "/All/Given/abstract/ABSTRACT FINAL.md",
+      "ext": ".md",
+      "size_bytes": 2218,
+      "is_binary": false,
+      "line_count": 26
+    },
+    {
+      "path": "/All/Given/abstract/Abstract.md",
+      "ext": ".md",
+      "size_bytes": 12269,
+      "is_binary": false,
+      "line_count": 114
+    },
+    {
+      "path": "/All/Given/round 2/2nd round rules.md",
+      "ext": ".md",
+      "size_bytes": 9513,
+      "is_binary": false,
+      "line_count": 188
+    },
+    {
+      "path": "/All/Given/round 2/ROUND2_BRIEF.md",
+      "ext": ".md",
+      "size_bytes": 3816,
+      "is_binary": false,
+      "line_count": 69
+    },
+    {
+      "path": "/All/Given/round 2/ROUND2_PPT_OUTLINE.md",
+      "ext": ".md",
+      "size_bytes": 3706,
+      "is_binary": false,
+      "line_count": 124
+    },
+    {
+      "path": "/All/Given/round 2/ROUND2_QA.md",
+      "ext": ".md",
+      "size_bytes": 4185,
+      "is_binary": false,
+      "line_count": 63
+    },
+    {
+      "path": "/All/Steps/0.md",
+      "ext": ".md",
+      "size_bytes": 5304,
+      "is_binary": false,
+      "line_count": 159
+    },
+    {
+      "path": "/All/Steps/1.md",
+      "ext": ".md",
+      "size_bytes": 4054,
+      "is_binary": false,
+      "line_count": 137
+    },
+    {
+      "path": "/All/Steps/10.md",
+      "ext": ".md",
+      "size_bytes": 7941,
+      "is_binary": false,
+      "line_count": 243
+    },
+    {
+      "path": "/All/Steps/11.md",
+      "ext": ".md",
+      "size_bytes": 3975,
+      "is_binary": false,
+      "line_count": 137
+    },
+    {
+      "path": "/All/Steps/12.md",
+      "ext": ".md",
+      "size_bytes": 7817,
+      "is_binary": false,
+      "line_count": 222
+    },
+    {
+      "path": "/All/Steps/13.md",
+      "ext": ".md",
+      "size_bytes": 7277,
+      "is_binary": false,
+      "line_count": 236
+    },
+    {
+      "path": "/All/Steps/2.md",
+      "ext": ".md",
+      "size_bytes": 6303,
+      "is_binary": false,
+      "line_count": 171
+    },
+    {
+      "path": "/All/Steps/3.md",
+      "ext": ".md",
+      "size_bytes": 4393,
+      "is_binary": false,
+      "line_count": 145
+    },
+    {
+      "path": "/All/Steps/4.md",
+      "ext": ".md",
+      "size_bytes": 4865,
+      "is_binary": false,
+      "line_count": 138
+    },
+    {
+      "path": "/All/Steps/5.md",
+      "ext": ".md",
+      "size_bytes": 4412,
+      "is_binary": false,
+      "line_count": 137
+    },
+    {
+      "path": "/All/Steps/6.md",
+      "ext": ".md",
+      "size_bytes": 3627,
+      "is_binary": false,
+      "line_count": 120
+    },
+    {
+      "path": "/All/Steps/7.md",
+      "ext": ".md",
+      "size_bytes": 5484,
+      "is_binary": false,
+      "line_count": 154
+    },
+    {
+      "path": "/All/Steps/8.md",
+      "ext": ".md",
+      "size_bytes": 2760,
+      "is_binary": false,
+      "line_count": 112
+    },
+    {
+      "path": "/All/Steps/9.md",
+      "ext": ".md",
+      "size_bytes": 4284,
+      "is_binary": false,
+      "line_count": 135
+    },
+    {
+      "path": "/All/gl/0.md",
+      "ext": ".md",
+      "size_bytes": 2546,
+      "is_binary": false,
+      "line_count": 56
+    },
+    {
+      "path": "/All/gl/1.md",
+      "ext": ".md",
+      "size_bytes": 2208,
+      "is_binary": false,
+      "line_count": 51
+    },
+    {
+      "path": "/All/gl/10.md",
+      "ext": ".md",
+      "size_bytes": 3728,
+      "is_binary": false,
+      "line_count": 107
+    },
+    {
+      "path": "/All/gl/11.md",
+      "ext": ".md",
+      "size_bytes": 2787,
+      "is_binary": false,
+      "line_count": 82
+    },
+    {
+      "path": "/All/gl/12.md",
+      "ext": ".md",
+      "size_bytes": 3259,
+      "is_binary": false,
+      "line_count": 99
+    },
+    {
+      "path": "/All/gl/13.md",
+      "ext": ".md",
+      "size_bytes": 4292,
+      "is_binary": false,
+      "line_count": 120
+    },
+    {
+      "path": "/All/gl/2.md",
+      "ext": ".md",
+      "size_bytes": 2325,
+      "is_binary": false,
+      "line_count": 55
+    },
+    {
+      "path": "/All/gl/3.md",
+      "ext": ".md",
+      "size_bytes": 2047,
+      "is_binary": false,
+      "line_count": 53
+    },
+    {
+      "path": "/All/gl/4.md",
+      "ext": ".md",
+      "size_bytes": 3363,
+      "is_binary": false,
+      "line_count": 82
+    },
+    {
+      "path": "/All/gl/5.md",
+      "ext": ".md",
+      "size_bytes": 2485,
+      "is_binary": false,
+      "line_count": 71
+    },
+    {
+      "path": "/All/gl/6.md",
+      "ext": ".md",
+      "size_bytes": 1833,
+      "is_binary": false,
+      "line_count": 56
+    },
+    {
+      "path": "/All/gl/7.md",
+      "ext": ".md",
+      "size_bytes": 2135,
+      "is_binary": false,
+      "line_count": 59
+    },
+    {
+      "path": "/All/gl/8.md",
+      "ext": ".md",
+      "size_bytes": 2008,
+      "is_binary": false,
+      "line_count": 51
+    },
+    {
+      "path": "/All/gl/9.md",
+      "ext": ".md",
+      "size_bytes": 2030,
+      "is_binary": false,
+      "line_count": 54
+    },
+    {
+      "path": "/Summary/_repo_scan.json",
+      "ext": ".json",
+      "size_bytes": 32305,
+      "is_binary": false,
+      "line_count": 1357
+    },
+    {
+      "path": "/Summary/api_summary.md",
+      "ext": ".md",
+      "size_bytes": 4426,
+      "is_binary": false,
+      "line_count": 183
+    },
+    {
+      "path": "/Summary/backend_summary.md",
+      "ext": ".md",
+      "size_bytes": 6187,
+      "is_binary": false,
+      "line_count": 198
+    },
+    {
+      "path": "/Summary/docs_summary.md",
+      "ext": ".md",
+      "size_bytes": 1520,
+      "is_binary": false,
+      "line_count": 64
+    },
+    {
+      "path": "/Summary/file_details.md",
+      "ext": ".md",
+      "size_bytes": 18582,
+      "is_binary": false,
+      "line_count": 782
+    },
+    {
+      "path": "/Summary/file_index.md",
+      "ext": ".md",
+      "size_bytes": 10298,
+      "is_binary": false,
+      "line_count": 158
+    },
+    {
+      "path": "/Summary/findings.md",
+      "ext": ".md",
+      "size_bytes": 2060,
+      "is_binary": false,
+      "line_count": 55
+    },
+    {
+      "path": "/Summary/frontend_summary.md",
+      "ext": ".md",
+      "size_bytes": 3083,
+      "is_binary": false,
+      "line_count": 112
+    },
+    {
+      "path": "/Summary/ml_data_summary.md",
+      "ext": ".md",
+      "size_bytes": 2394,
+      "is_binary": false,
+      "line_count": 90
+    },
+    {
+      "path": "/Summary/system_overview.md",
+      "ext": ".md",
+      "size_bytes": 2910,
+      "is_binary": false,
+      "line_count": 74
+    },
+    {
+      "path": "/backend/__init__.py",
+      "ext": ".py",
+      "size_bytes": 18,
+      "is_binary": false,
+      "line_count": 1
+    },
+    {
+      "path": "/backend/confidence.py",
+      "ext": ".py",
+      "size_bytes": 4953,
+      "is_binary": false,
+      "line_count": 168,
+      "top_level_defs": [
+        {
+          "name": "_ensure_model_loaded",
+          "kind": "FunctionDef",
+          "start": 22,
+          "end": 42
+        },
+        {
+          "name": "_tree_based_confidence",
+          "kind": "FunctionDef",
+          "start": 45,
+          "end": 106
+        },
+        {
+          "name": "_heuristic_confidence",
+          "kind": "FunctionDef",
+          "start": 109,
+          "end": 153
+        },
+        {
+          "name": "estimate_confidence",
+          "kind": "FunctionDef",
+          "start": 156,
+          "end": 168
+        }
+      ]
+    },
+    {
+      "path": "/backend/cost.py",
+      "ext": ".py",
+      "size_bytes": 5378,
+      "is_binary": false,
+      "line_count": 177,
+      "top_level_defs": [
+        {
+          "name": "get_batch_discount",
+          "kind": "FunctionDef",
+          "start": 69,
+          "end": 73
+        },
+        {
+          "name": "calc_material_cost",
+          "kind": "FunctionDef",
+          "start": 76,
+          "end": 79
+        },
+        {
+          "name": "allocate_time",
+          "kind": "FunctionDef",
+          "start": 82,
+          "end": 96
+        },
+        {
+          "name": "calc_machining_cost",
+          "kind": "FunctionDef",
+          "start": 99,
+          "end": 138
+        },
+        {
+          "name": "calc_setup_cost",
+          "kind": "FunctionDef",
+          "start": 141,
+          "end": 142
+        },
+        {
+          "name": "calc_overhead_cost",
+          "kind": "FunctionDef",
+          "start": 145,
+          "end": 148
+        },
+        {
+          "name": "calculate_full_cost",
+          "kind": "FunctionDef",
+          "start": 155,
+          "end": 177
+        }
+      ]
+    },
+    {
+      "path": "/backend/dfm.py",
+      "ext": ".py",
+      "size_bytes": 3439,
+      "is_binary": false,
+      "line_count": 98,
+      "top_level_defs": [
+        {
+          "name": "generate_dfm_suggestions",
+          "kind": "FunctionDef",
+          "start": 26,
+          "end": 98
+        }
+      ]
+    },
+    {
+      "path": "/backend/explainability.py",
+      "ext": ".py",
+      "size_bytes": 2434,
+      "is_binary": false,
+      "line_count": 64,
+      "top_level_defs": [
+        {
+          "name": "build_cost_drivers",
+          "kind": "FunctionDef",
+          "start": 12,
+          "end": 64
+        }
+      ]
+    },
+    {
+      "path": "/backend/main.py",
+      "ext": ".py",
+      "size_bytes": 14151,
+      "is_binary": false,
+      "line_count": 411,
+      "top_level_defs": [
+        {
+          "name": "_simulate_total_cost_inr",
+          "kind": "FunctionDef",
+          "start": 42,
+          "end": 66
+        },
+        {
+          "name": "landing",
+          "kind": "AsyncFunctionDef",
+          "start": 94,
+          "end": 95
+        },
+        {
+          "name": "geometry",
+          "kind": "AsyncFunctionDef",
+          "start": 99,
+          "end": 100
+        },
+        {
+          "name": "input_setup",
+          "kind": "AsyncFunctionDef",
+          "start": 104,
+          "end": 105
+        },
+        {
+          "name": "process_routing",
+          "kind": "AsyncFunctionDef",
+          "start": 109,
+          "end": 110
+        },
+        {
+          "name": "stock_estimation",
+          "kind": "AsyncFunctionDef",
+          "start": 114,
+          "end": 115
+        },
+        {
+          "name": "progress_overlay",
+          "kind": "AsyncFunctionDef",
+          "start": 119,
+          "end": 120
+        },
+        {
+          "name": "quote_dashboard",
+          "kind": "AsyncFunctionDef",
+          "start": 124,
+          "end": 125
+        },
+        {
+          "name": "dfm_comparison",
+          "kind": "AsyncFunctionDef",
+          "start": 129,
+          "end": 130
+        },
+        {
+          "name": "export_pdf",
+          "kind": "AsyncFunctionDef",
+          "start": 134,
+          "end": 135
+        },
+        {
+          "name": "list_samples",
+          "kind": "AsyncFunctionDef",
+          "start": 143,
+          "end": 145
+        },
+        {
+          "name": "get_sample_part",
+          "kind": "AsyncFunctionDef",
+          "start": 149,
+          "end": 155
+        },
+        {
+          "name": "api_routing",
+          "kind": "AsyncFunctionDef",
+          "start": 159,
+          "end": 168
+        },
+        {
+          "name": "api_stock",
+          "kind": "AsyncFunctionDef",
+          "start": 172,
+          "end": 183
+        },
+        {
+          "name": "api_quote",
+          "kind": "AsyncFunctionDef",
+          "start": 187,
+          "end": 272
+        },
+        {
+          "name": "api_dfm_simulate",
+          "kind": "AsyncFunctionDef",
+          "start": 276,
+          "end": 365
+        },
+        {
+          "name": "api_step_extract",
+          "kind": "AsyncFunctionDef",
+          "start": 369,
+          "end": 407
+        }
+      ]
+    },
+    {
+      "path": "/backend/ml_engine.py",
+      "ext": ".py",
+      "size_bytes": 7411,
+      "is_binary": false,
+      "line_count": 190,
+      "top_level_defs": [
+        {
+          "name": "_ensure_loaded",
+          "kind": "FunctionDef",
+          "start": 46,
+          "end": 71
+        },
+        {
+          "name": "_build_feature_vector",
+          "kind": "FunctionDef",
+          "start": 74,
+          "end": 101
+        },
+        {
+          "name": "_formula_fallback",
+          "kind": "FunctionDef",
+          "start": 105,
+          "end": 115
+        },
+        {
+          "name": "predict_machining_time",
+          "kind": "FunctionDef",
+          "start": 122,
+          "end": 137
+        },
+        {
+          "name": "get_shap_drivers",
+          "kind": "FunctionDef",
+          "start": 140,
+          "end": 190
+        }
+      ]
+    },
+    {
+      "path": "/backend/ml_placeholder.py",
+      "ext": ".py",
+      "size_bytes": 2299,
+      "is_binary": false,
+      "line_count": 70,
+      "top_level_defs": [
+        {
+          "name": "predict_machining_time",
+          "kind": "FunctionDef",
+          "start": 29,
+          "end": 70
+        }
+      ]
+    },
+    {
+      "path": "/backend/models.py",
+      "ext": ".py",
+      "size_bytes": 4199,
+      "is_binary": false,
+      "line_count": 139,
+      "top_level_defs": [
+        {
+          "name": "GeometryData",
+          "kind": "ClassDef",
+          "start": 8,
+          "end": 17
+        },
+        {
+          "name": "UserInputs",
+          "kind": "ClassDef",
+          "start": 20,
+          "end": 26
+        },
+        {
+          "name": "RoutingFlags",
+          "kind": "ClassDef",
+          "start": 29,
+          "end": 33
+        },
+        {
+          "name": "MachineSelection",
+          "kind": "ClassDef",
+          "start": 36,
+          "end": 40
+        },
+        {
+          "name": "OverrideInfo",
+          "kind": "ClassDef",
+          "start": 43,
+          "end": 46
+        },
+        {
+          "name": "RoutingDecisionLayer",
+          "kind": "ClassDef",
+          "start": 49,
+          "end": 51
+        },
+        {
+          "name": "MachineAssignment",
+          "kind": "ClassDef",
+          "start": 54,
+          "end": 55
+        },
+        {
+          "name": "RoutingDecision",
+          "kind": "ClassDef",
+          "start": 58,
+          "end": 61
+        },
+        {
+          "name": "StockEstimate",
+          "kind": "ClassDef",
+          "start": 64,
+          "end": 68
+        },
+        {
+          "name": "CostBreakdown",
+          "kind": "ClassDef",
+          "start": 71,
+          "end": 76
+        },
+        {
+          "name": "ProcessDetail",
+          "kind": "ClassDef",
+          "start": 79,
+          "end": 84
+        },
+        {
+          "name": "MachiningBreakdown",
+          "kind": "ClassDef",
+          "start": 87,
+          "end": 90
+        },
+        {
+          "name": "ConfidenceRange",
+          "kind": "ClassDef",
+          "start": 93,
+          "end": 98
+        },
+        {
+          "name": "CostDriver",
+          "kind": "ClassDef",
+          "start": 101,
+          "end": 104
+        },
+        {
+          "name": "DFMSuggestion",
+          "kind": "ClassDef",
+          "start": 107,
+          "end": 113
+        },
+        {
+          "name": "QuoteRequest",
+          "kind": "ClassDef",
+          "start": 116,
+          "end": 120
+        },
+        {
+          "name": "FullQuoteResponse",
+          "kind": "ClassDef",
+          "start": 123,
+          "end": 132
+        },
+        {
+          "name": "DFMComparison",
+          "kind": "ClassDef",
+          "start": 135,
+          "end": 139
+        }
+      ]
+    },
+    {
+      "path": "/backend/routing.py",
+      "ext": ".py",
+      "size_bytes": 3600,
+      "is_binary": false,
+      "line_count": 103,
+      "top_level_defs": [
+        {
+          "name": "compute_routing_flags",
+          "kind": "FunctionDef",
+          "start": 38,
+          "end": 45
+        },
+        {
+          "name": "build_default_machine_selection",
+          "kind": "FunctionDef",
+          "start": 48,
+          "end": 55
+        },
+        {
+          "name": "route_processes",
+          "kind": "FunctionDef",
+          "start": 58,
+          "end": 72
+        },
+        {
+          "name": "get_routing_reason",
+          "kind": "FunctionDef",
+          "start": 75,
+          "end": 103
+        }
+      ]
+    },
+    {
+      "path": "/backend/sample_parts.py",
+      "ext": ".py",
+      "size_bytes": 2164,
+      "is_binary": false,
+      "line_count": 76,
+      "top_level_defs": [
+        {
+          "name": "get_sample",
+          "kind": "FunctionDef",
+          "start": 72,
+          "end": 76
+        }
+      ]
+    },
+    {
+      "path": "/backend/smoke_step_extract.py",
+      "ext": ".py",
+      "size_bytes": 1994,
+      "is_binary": false,
+      "line_count": 69,
+      "top_level_defs": [
+        {
+          "name": "_make_box_step",
+          "kind": "FunctionDef",
+          "start": 15,
+          "end": 27
+        },
+        {
+          "name": "main",
+          "kind": "FunctionDef",
+          "start": 30,
+          "end": 65
+        }
+      ]
+    },
+    {
+      "path": "/backend/step_extract.py",
+      "ext": ".py",
+      "size_bytes": 9850,
+      "is_binary": false,
+      "line_count": 293,
+      "top_level_defs": [
+        {
+          "name": "StepExtractResult",
+          "kind": "ClassDef",
+          "start": 33,
+          "end": 41
+        },
+        {
+          "name": "_safe_float",
+          "kind": "FunctionDef",
+          "start": 44,
+          "end": 47
+        },
+        {
+          "name": "extract_step_geometry",
+          "kind": "FunctionDef",
+          "start": 50,
+          "end": 171
+        },
+        {
+          "name": "_iter_gmsh_triangles",
+          "kind": "FunctionDef",
+          "start": 174,
+          "end": 222
+        },
+        {
+          "name": "_render_triangles_png",
+          "kind": "FunctionDef",
+          "start": 225,
+          "end": 293
+        }
+      ]
+    },
+    {
+      "path": "/backend/stock.py",
+      "ext": ".py",
+      "size_bytes": 2717,
+      "is_binary": false,
+      "line_count": 86,
+      "top_level_defs": [
+        {
+          "name": "cylindrical_stock_volume",
+          "kind": "FunctionDef",
+          "start": 28,
+          "end": 35
+        },
+        {
+          "name": "block_stock_volume",
+          "kind": "FunctionDef",
+          "start": 38,
+          "end": 42
+        },
+        {
+          "name": "estimate_stock_weight",
+          "kind": "FunctionDef",
+          "start": 45,
+          "end": 49
+        },
+        {
+          "name": "estimate_stock",
+          "kind": "FunctionDef",
+          "start": 52,
+          "end": 86
+        }
+      ]
+    },
+    {
+      "path": "/backend/models_ml/feature_columns.json",
+      "ext": ".json",
+      "size_bytes": 274,
+      "is_binary": false,
+      "line_count": 17
+    },
+    {
+      "path": "/backend/models_ml/rf_machining_model.joblib",
+      "ext": ".joblib",
+      "size_bytes": 23557585,
+      "is_binary": true
+    },
+    {
+      "path": "/backend/models_ml/shap_explainer.joblib",
+      "ext": ".joblib",
+      "size_bytes": 29386798,
+      "is_binary": true
+    },
+    {
+      "path": "/data/training_data.csv",
+      "ext": ".csv",
+      "size_bytes": 542511,
+      "is_binary": false,
+      "truncated": true,
+      "line_count": 2993
+    },
+    {
+      "path": "/frontend/templates/dashboard.html",
+      "ext": ".html",
+      "size_bytes": 28414,
+      "is_binary": false,
+      "line_count": 532,
+      "title": "Manufacturing Quote Dashboard"
+    },
+    {
+      "path": "/frontend/templates/dfm.html",
+      "ext": ".html",
+      "size_bytes": 20225,
+      "is_binary": false,
+      "line_count": 398,
+      "title": "DFM Comparison View"
+    },
+    {
+      "path": "/frontend/templates/export.html",
+      "ext": ".html",
+      "size_bytes": 28189,
+      "is_binary": false,
+      "line_count": 552,
+      "title": "Quote Summary Preview - QuoteAI"
+    },
+    {
+      "path": "/frontend/templates/geometry.html",
+      "ext": ".html",
+      "size_bytes": 17529,
+      "is_binary": false,
+      "line_count": 379,
+      "title": "CAD Analysis Pro - Validation"
+    },
+    {
+      "path": "/frontend/templates/index.html",
+      "ext": ".html",
+      "size_bytes": 19961,
+      "is_binary": false,
+      "line_count": 368,
+      "title": "QuoteAI - Industrial CAD-to-Quote"
+    },
+    {
+      "path": "/frontend/templates/input.html",
+      "ext": ".html",
+      "size_bytes": 23424,
+      "is_binary": false,
+      "line_count": 427,
+      "title": "Smart Guided Setup Form - Manufacturing OS"
+    },
+    {
+      "path": "/frontend/templates/progress.html",
+      "ext": ".html",
+      "size_bytes": 10471,
+      "is_binary": false,
+      "line_count": 219
+    },
+    {
+      "path": "/frontend/templates/routing.html",
+      "ext": ".html",
+      "size_bytes": 20164,
+      "is_binary": false,
+      "line_count": 404,
+      "title": "Process Routing &amp; Machine Assignment"
+    },
+    {
+      "path": "/frontend/templates/stock.html",
+      "ext": ".html",
+      "size_bytes": 21203,
+      "is_binary": false,
+      "line_count": 389,
+      "title": "Stock Estimation &amp; Confirmation"
+    },
+    {
+      "path": "/scripts/generate_dataset.py",
+      "ext": ".py",
+      "size_bytes": 5027,
+      "is_binary": false,
+      "line_count": 137,
+      "top_level_defs": [
+        {
+          "name": "_formula_time",
+          "kind": "FunctionDef",
+          "start": 31,
+          "end": 57
+        },
+        {
+          "name": "generate",
+          "kind": "FunctionDef",
+          "start": 60,
+          "end": 123
+        }
+      ]
+    },
+    {
+      "path": "/scripts/train_model.py",
+      "ext": ".py",
+      "size_bytes": 5188,
+      "is_binary": false,
+      "line_count": 133,
+      "top_level_defs": [
+        {
+          "name": "main",
+          "kind": "FunctionDef",
+          "start": 50,
+          "end": 129
+        }
+      ]
+    },
+    {
+      "path": "/tmp/analyze_wl_range.py",
+      "ext": ".py",
+      "size_bytes": 3822,
+      "is_binary": false,
+      "line_count": 85
+    },
+    {
+      "path": "/tmp/audit_backend.py",
+      "ext": ".py",
+      "size_bytes": 9439,
+      "is_binary": false,
+      "line_count": 224,
+      "top_level_defs": [
+        {
+          "name": "check",
+          "kind": "FunctionDef",
+          "start": 9,
+          "end": 13
+        }
+      ]
+    },
+    {
+      "path": "/tmp/check_dfm_simulate.py",
+      "ext": ".py",
+      "size_bytes": 969,
+      "is_binary": false,
+      "line_count": 31,
+      "top_level_defs": [
+        {
+          "name": "_run",
+          "kind": "AsyncFunctionDef",
+          "start": 12,
+          "end": 27
+        }
+      ]
+    },
+    {
+      "path": "/tmp/gen_file_details.py",
+      "ext": ".py",
+      "size_bytes": 3271,
+      "is_binary": false,
+      "line_count": 115,
+      "parse_error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+    },
+    {
+      "path": "/tmp/scan_repo.py",
+      "ext": ".py",
+      "size_bytes": 3298,
+      "is_binary": false,
+      "line_count": 104,
+      "parse_error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/cad_to_quote_pipeline_progress/code.html",
+      "ext": ".html",
+      "size_bytes": 8606,
+      "is_binary": false,
+      "line_count": 193
+    },
+    {
+      "path": "/ui/stitch_landing_upload/cad_to_quote_pipeline_progress/screen.png",
+      "ext": ".png",
+      "size_bytes": 197218,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/confirm_stock_material_selection_active/code.html",
+      "ext": ".html",
+      "size_bytes": 11194,
+      "is_binary": false,
+      "line_count": 181,
+      "title": "Stock Estimation &amp; Confirmation"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/confirm_stock_material_selection_active/screen.png",
+      "ext": ".png",
+      "size_bytes": 235926,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/geometry_analysis_back_button_added/code.html",
+      "ext": ".html",
+      "size_bytes": 11098,
+      "is_binary": false,
+      "line_count": 245,
+      "title": "CAD Analysis Pro - Validation"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/geometry_analysis_back_button_added/screen.png",
+      "ext": ".png",
+      "size_bytes": 256813,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/landing_upload_clean_layout/code.html",
+      "ext": ".html",
+      "size_bytes": 8888,
+      "is_binary": false,
+      "line_count": 126,
+      "title": "QuoteAI - Industrial CAD-to-Quote"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/landing_upload_clean_layout/screen.png",
+      "ext": ".png",
+      "size_bytes": 384742,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/pdf_export_indian_localization/code.html",
+      "ext": ".html",
+      "size_bytes": 15885,
+      "is_binary": false,
+      "line_count": 317,
+      "title": "Quote Summary Preview - QuoteAI"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/pdf_export_indian_localization/screen.png",
+      "ext": ".png",
+      "size_bytes": 286299,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/process_routing_with_named_back_button/code.html",
+      "ext": ".html",
+      "size_bytes": 9903,
+      "is_binary": false,
+      "line_count": 194,
+      "title": "Process Routing &amp; Machine Assignment"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/process_routing_with_named_back_button/screen.png",
+      "ext": ".png",
+      "size_bytes": 164010,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/quote_dashboard_process_color_refinement/code.html",
+      "ext": ".html",
+      "size_bytes": 15678,
+      "is_binary": false,
+      "line_count": 308,
+      "title": "Manufacturing Quote Dashboard"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/quote_dashboard_process_color_refinement/screen.png",
+      "ext": ".png",
+      "size_bytes": 314672,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/smart_guided_setup_with_named_back_button/code.html",
+      "ext": ".html",
+      "size_bytes": 16516,
+      "is_binary": false,
+      "line_count": 291,
+      "title": "Smart Guided Setup Form - Manufacturing OS"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/smart_guided_setup_with_named_back_button/screen.png",
+      "ext": ".png",
+      "size_bytes": 253743,
+      "is_binary": true
+    },
+    {
+      "path": "/ui/stitch_landing_upload/symmetrical_dfm_comparison_view/code.html",
+      "ext": ".html",
+      "size_bytes": 11640,
+      "is_binary": false,
+      "line_count": 214,
+      "title": "DFM Comparison View"
+    },
+    {
+      "path": "/ui/stitch_landing_upload/symmetrical_dfm_comparison_view/screen.png",
+      "ext": ".png",
+      "size_bytes": 616402,
+      "is_binary": true
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+# Deep Implementation Plan — Backend + Frontend Integration
+
+## Current State Summary
+
+| Layer | Status |
+|---|---|
+| **Frontend** | 9 HTML templates with Tailwind CSS, hardcoded data, `window.location.href` navigation |
+| **Backend** | [backend/main.py](backend/main.py) — FastAPI serving static HTML pages (GET routes only, no processing) |
+| **Logic** | [Final.py](Final.py) — CLI prototype with routing, costing, confidence, DFM logic (not connected) |
+| **ML Model** | Not yet trained — **leave placeholder** for future `joblib` model loading |
+
+Design contract: follow [ui.md](ui.md) when wiring frontend behavior. It maps Stitch design folders → `frontend/templates/*` and lists the intended interactions with line numbers.
+
+---
+
+## Architecture Overview
+
+```
+Frontend (Jinja2 Templates)
+    │  ← HTML forms POST / JS fetch() calls
+    ▼
+FastAPI Backend (backend/main.py)
+    │
+    ├── /api/quote           ← POST: receives inputs, returns full quote JSON
+    ├── /api/routing         ← POST: receives geometry+inputs, returns routing decision + machine selection + override metadata
+    ├── /api/stock           ← POST: receives geometry (incl. bbox)+routing_flags+material, returns stock estimate
+    ├── /api/dfm             ← POST: returns ranked DFM suggestions (advisory)
+    ├── /api/dfm/simulate    ← POST: simulates an applied suggestion (quote variant) + compare
+    │
+    ├── Page Routes (GET)    ← Serve templates with Jinja2 context data
+    │
+    └── Backend Modules (backend/)
+         ├── models.py       ← Pydantic schemas (request/response)
+         ├── routing.py      ← Process routing rules
+         ├── stock.py        ← Stock estimation logic
+         ├── cost.py         ← Cost calculation engine
+         ├── confidence.py   ← Prediction interval / risk estimation
+         ├── explainability.py ← Cost drivers & SHAP placeholder
+         ├── dfm.py          ← DFM suggestion engine
+         ├── ml_placeholder.py ← ML model stub (returns formula-based time)
+         └── sample_parts.py ← 3 sample part definitions
+```
+
+---
+
+## Phase 1: Backend Modules
+
+### 1.1 [NEW] `backend/models.py` — Pydantic Schemas
+
+Data contracts between frontend and backend.
+
+```python
+# Key models:
+class GeometryData        # volume, surface_area, bbox_x/y/z, aspect_ratio, num_faces, num_edges
+class UserInputs          # num_holes, num_pockets, max_depth_mm, material, quantity, tolerance_class
+class RoutingFlags        # is_turning, is_milling, is_drilling, is_grinding
+class MachineSelection    # per-process machine choice (e.g., milling/drilling/...)
+class OverrideInfo        # engineer_override, override_note, contradictions_acknowledged
+class RoutingDecision     # aligns with Steps/4.md: { routing_decision, machine_assignment, overrides }
+class StockEstimate       # stock_shape, stock_volume_cm3, stock_weight_kg, material
+class CostBreakdown       # material_cost, machining_cost, setup_cost, overhead_cost, total_cost
+class ProcessDetail       # process, machine, time_min, rate_per_hr, cost
+class MachiningBreakdown  # process-wise machining minutes + ₹ (canonical: machining_breakdown)
+class ConfidenceRange     # low, nominal, high, risk_level, margin_pct
+class CostDriver          # feature, impact_value, reason
+class DFMSuggestion       # change, savings_inr, reason, icon
+class DFMComparison       # quote_original vs quote_modified + assumption deltas (for side-by-side + export)
+class FullQuoteResponse   # all above combined
+```
+
+---
+
+### 1.2 [NEW] `backend/sample_parts.py` — Sample Part Definitions
+
+Move the 3 sample parts from [Final.py](Final.py) into a reusable module. Each sample provides pre-filled `GeometryData` + `UserInputs` so clicking a sample card on the landing page loads real data.
+
+```python
+SAMPLE_PARTS = {
+    "steel_bracket":    { geometry: {...}, inputs: {...} },
+    "aluminum_housing": { geometry: {...}, inputs: {...} },
+    "titanium_shaft":   { geometry: {...}, inputs: {...} },
+}
+```
+
+---
+
+### 1.3 [NEW] `backend/routing.py` — Process Routing Engine
+
+Port the routing rules from [Final.py](Final.py) and align with [Steps/4.md](Steps/4.md):
+
+| Process | Condition |
+|---|---|
+| Turning | `aspect_ratio > 2.0` |
+| Milling | `num_pockets > 0` OR `surface_area_cm2 > 200` |
+| Drilling | `num_holes > 0` |
+| Grinding | `tolerance_class ∈ {Fine, Ultra-Fine}` |
+
+**Functions:** `route_processes(geometry, user_inputs) → RoutingDecision`
+
+---
+
+### 1.4 [NEW] `backend/stock.py` — Stock Estimation
+
+Port from [Steps/5.md](Steps/5.md) and [Steps/6.md](Steps/6.md):
+
+- Cylindrical stock when turning is active, block stock otherwise
+- Material density lookup → weight in kg
+- Engineer override support (accept `override_kg` parameter)
+
+**Functions:** `estimate_stock(geometry, routing, material) → StockEstimate`
+
+---
+
+### 1.5 [NEW] `backend/ml_placeholder.py` — ML Model Stub
+
+> [!IMPORTANT]
+> This module uses a **deterministic formula** (from [Final.py](Final.py)) as a placeholder.
+> When the trained ML model is ready, replace the `predict()` function with `joblib.load()` + `model.predict()`.
+
+```python
+def predict_machining_time(features: dict) -> float:
+    """Placeholder: formula-based machining time estimation.
+    TODO: Replace with trained RandomForest model.
+    """
+    # Formula from Final.py adapted to the 17-feature schema
+    ...
+    return machining_time_minutes
+```
+
+---
+
+### 1.6 [NEW] `backend/cost.py` — Cost Calculation Engine
+
+Port from [Steps/10.md](Steps/10.md) and [Final.py](Final.py):
+
+| Component | Formula |
+|---|---|
+| Material | `stock_weight_kg × price_per_kg × batch_discount` |
+| Machining | `machining_time × machine_rate` (allocated across active processes) |
+| Setup | `max(2000 / √quantity, 200)` |
+| Overhead | (material + machining + setup) × overhead_rate[material] |
+
+**Functions:**
+- `material_cost(weight, material, qty) → float`
+- `machining_cost(time, routing, machines) → float`
+- `setup_cost(qty) → float`
+- `overhead_cost(mat, mach, setup, material) → float`
+- `calculate_full_quote(...) → CostBreakdown`
+
+---
+
+### 1.7 [NEW] `backend/confidence.py` — Prediction Interval
+
+Port from [Final.py](Final.py) `estimate_confidence()`:
+
+- Base uncertainty 8%, additive factors for Titanium, Ultra-Fine, low qty, high hole count
+- Returns `{ low, nominal, high, risk_level, margin_pct }`
+
+> [!NOTE]
+> When ML model is ready, replace with tree-based percentile intervals ([Steps/9.md](Steps/9.md)).
+
+---
+
+### 1.8 [NEW] `backend/explainability.py` — Cost Drivers
+
+Port from [Final.py](Final.py) `build_cost_drivers()`:
+
+- Rank cost components by impact
+- Return top 4 drivers with human-readable reasons
+
+> [!NOTE]
+> When ML model is ready, add SHAP TreeExplainer waterfall ([Steps/11.md](Steps/11.md)).
+
+---
+
+### 1.9 [NEW] `backend/dfm.py` — DFM Suggestion Engine
+
+Port from [Final.py](Final.py) `build_dfm_suggestions()`:
+
+- Tolerance relaxation → re-quote → savings
+- Hole reduction → re-quote → savings
+- Pocket simplification → re-quote → savings
+- Material substitution → re-quote → savings
+
+**Function:** `generate_dfm_suggestions(inputs, geometry, routing, total_cost) → List[DFMSuggestion]`
+
+---
+
+## Phase 2: API Endpoints (backend/main.py)
+
+### 2.1 [MODIFY] [backend/main.py](backend/main.py) — Add API Routes
+
+Add these **POST** API endpoints alongside existing page routes:
+
+| Endpoint | Input | Output | Purpose |
+|---|---|---|---|
+| `POST /api/quote` | `UserInputs` + `GeometryData` | `FullQuoteResponse` | Complete pipeline (routing → stock → ML → cost → explain → DFM) |
+| `POST /api/routing` | `GeometryData` + `UserInputs` | `RoutingDecision` | Live routing preview + machine selection + override metadata |
+| `POST /api/stock` | `GeometryData` + `RoutingFlags` + `material` | `StockEstimate` | Stock estimation preview (uses `routing_decision.routing_final` flags extracted from RoutingDecision) |
+| `POST /api/dfm` | `FullQuoteResponse` | `List[DFMSuggestion]` | Ranked what-if suggestions (no changes applied) |
+| `POST /api/dfm/simulate` | `FullQuoteResponse` + `suggestion_id` | `DFMComparison` | Re-quote with applied DFM change |
+| `GET /api/samples/{name}` | sample name | `GeometryData` + `UserInputs` | Load pre-filled sample data |
+
+### 2.2 [MODIFY] Page Routes — Pass Jinja2 Context
+
+Convert page routes to accept **query params** or **session state** and pass dynamic data to templates:
+
+```python
+@app.get("/dashboard")
+async def dashboard(request: Request):
+    quote_data = get_session_quote(request)  # from in-memory store or cookie
+    return templates.TemplateResponse("dashboard.html", {"request": request, **quote_data})
+```
+
+---
+
+## Phase 3: Frontend ↔ Backend Integration
+
+Note: the 7-step progress animation is a condensed representation of the full Steps 0–13 pipeline (grouped for UX).
+
+Implementation workflow tip: keep [ui.md](ui.md) open while editing templates; use its line-number pointers to hook JS fetch()/events into the correct UI elements and avoid design drift.
+
+### 3.1 [MODIFY] [frontend/templates/index.html](frontend/templates/index.html) — Sample Part Selection
+
+- Each sample card sends `GET /api/samples/{name}` via `fetch()`
+- Store response in `localStorage` as `quoteSession`
+- Navigate to `/geometry` with data context
+
+### 3.2 [MODIFY] [frontend/templates/geometry.html](frontend/templates/geometry.html) — Display Real Geometry
+
+- On load, read `localStorage.quoteSession`
+- Populate geometry table (volume, area, bbox, faces, edges) from stored data
+- "Continue" button passes data to next step
+
+### 3.3 [MODIFY] [frontend/templates/input.html](frontend/templates/input.html) — Collect & Persist Inputs
+
+- Pre-fill fields from `localStorage.quoteSession` (if sample loaded)
+- On "Generate Quote" click:
+  1. Collect all inputs from the UI
+  2. Store in `localStorage`
+  3. Navigate to `/routing`
+
+### 3.4 [MODIFY] [frontend/templates/routing.html](frontend/templates/routing.html) — Live Routing Toggle
+
+- On load, call `POST /api/routing` with geometry + inputs → display auto-detected routing
+- Toggle switches update routing flags locally
+- "Confirm Routing" stores final routing in `localStorage`, navigates to `/stock`
+
+### 3.5 [MODIFY] [frontend/templates/stock.html](frontend/templates/stock.html) — Stock Estimation Display
+
+- On load, call `POST /api/stock` with geometry + routing + material → populate stock values
+- Diagram updates on material change (already implemented client-side)
+- "Confirm Stock" stores final weight, navigates to `/progress`
+
+### 3.6 [MODIFY] [frontend/templates/progress.html](frontend/templates/progress.html) — Trigger Full Quote API
+
+- On load, call `POST /api/quote` with all collected data
+- Run the 7-step animation while the API processes
+- On API response, store full quote in `localStorage`
+- Redirect to `/dashboard`
+
+### 3.7 [MODIFY] [frontend/templates/dashboard.html](frontend/templates/dashboard.html) — Render Dynamic Quote
+
+- On load, read full quote from `localStorage`
+- Populate with JavaScript:
+  - Total cost, confidence range, risk badge
+  - Cost breakdown bars + values
+    - Process-wise machining breakdown table (from Step 10 `machining_breakdown`)
+    - Cost contribution donut chart (Material/Machining/Setup/Overhead) as in Steps/13.md
+  - SHAP waterfall (cost drivers)
+  - DFM suggestion cards
+
+### 3.8 [MODIFY] [frontend/templates/dfm.html](frontend/templates/dfm.html) — Dynamic Comparison
+
+- On load, read quote from `localStorage`
+- Clicking a suggestion card calls `POST /api/dfm/simulate` → sets a quote variant active + populates comparison view
+- "Revert all changes" clears the active variant and restores the original quote
+
+Applying (or reverting) a DFM suggestion should be recorded as an Engineer override action (audit trail), per Steps/12.md and Steps/13.md.
+
+DFM simulation must follow the Steps constraint (judge-safe): do not edit STEP geometry in hackathon scope.
+On simulate/apply, modify upstream inputs/assumptions, then re-run routing, rebuild features, and re-quote so the variant is internally consistent.
+
+### 3.9 [MODIFY] [frontend/templates/export.html](frontend/templates/export.html) — Dynamic PDF Content
+
+- On load, read quote from `localStorage`
+- Populate all export fields dynamically
+
+Export must support a comparison PDF when a DFM quote variant is active:
+- include `quote_original`, `quote_modified`, and a small list of “assumptions changed” (deltas)
+
+---
+
+## Phase 4: State Management Strategy
+
+Use **`localStorage`** for client-side session state (hackathon-appropriate):
+
+```javascript
+// Key schema:
+localStorage.quoteSession = JSON.stringify({
+    sample_name: "steel_bracket",    // which sample was selected
+    geometry: { ... },                // GeometryData
+    inputs: { ... },                  // UserInputs (holes, material, qty, tolerance)
+    routing: { ... },                 // RoutingDecision (Steps/4.md shape: routing_decision + machine_assignment + overrides)
+    stock: { ... },                   // StockEstimate (final confirmed)
+    quote: { ... },                   // FullQuoteResponse (from /api/quote)
+    dfm_compare: { ... },              // Optional DFMComparison (Original vs Modified assumptions)
+});
+```
+
+Each page reads/writes its section. This avoids server-side session complexity.
+
+---
+
+## File Creation Order (Implementation Sequence)
+
+| # | File | Depends On | Est. Effort |
+|---|---|---|---|
+| 1 | `backend/models.py` | — | Small |
+| 2 | `backend/sample_parts.py` | models | Small |
+| 3 | `backend/routing.py` | models | Small |
+| 4 | `backend/stock.py` | models | Small |
+| 5 | `backend/ml_placeholder.py` | models | Small |
+| 6 | `backend/cost.py` | models, ml_placeholder | Medium |
+| 7 | `backend/confidence.py` | models | Small |
+| 8 | `backend/explainability.py` | models | Small |
+| 9 | `backend/dfm.py` | models, cost, routing | Medium |
+| 10 | [backend/main.py](backend/main.py) (update) | all above | Medium |
+| 11 | Frontend templates (JS) | API endpoints | Large |
+
+---
+
+## ML Integration Placeholder
+
+> [!WARNING]
+> The ML model is **NOT implemented** in this phase. The following stubs are in place:
+> - `backend/ml_placeholder.py` — returns formula-based time
+> - `backend/confidence.py` — returns heuristic intervals
+> - `backend/explainability.py` — returns rule-based cost drivers
+>
+> **When ready:** replace `ml_placeholder.predict_machining_time()` with `joblib.load()` + `model.predict()`, add SHAP explanations, and replace heuristic confidence with tree-based percentiles.
+
+---
+
+## Verification Plan
+
+### Automated
+- Start server: `cd backend && python main.py`
+- Test each API endpoint with `curl` or browser devtools
+- Verify JSON responses match Pydantic schemas
+
+### Manual
+- Click through all 3 sample parts end-to-end
+- Verify all dashboard numbers update dynamically
+- Verify DFM simulation produces different values
+- Verify routing toggles affect downstream calculations

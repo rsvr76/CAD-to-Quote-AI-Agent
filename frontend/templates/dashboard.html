@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manufacturing Quote Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .waterfall-bar-up { background-color: #ef4444; }
+        .waterfall-bar-down { background-color: #10b981; }
+        .waterfall-bar-neutral { background-color: #64748b; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-10 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">Manufacturing Quote — Steel Bracket</h2>
+</div>
+<div class="flex gap-3">
+<button onclick="window.location.href='/'" class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold transition hover:bg-primary/90">
+<span class="material-symbols-outlined mr-2 text-sm">add</span>
+<span class="truncate">New Quote</span>
+</button>
+<button onclick="window.location.href='/export'" class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm font-bold transition hover:bg-slate-300 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined mr-2 text-sm">download</span>
+<span class="truncate">Export PDF</span>
+</button>
+</div>
+</header>
+<main class="max-w-[1400px] mx-auto p-6 space-y-6">
+<!-- Row 1: Total Cost Card & Confidence -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 flex flex-col md:flex-row gap-6 p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm items-center">
+<div class="flex-1 space-y-1">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Estimated Total Cost</p>
+<h1 id="total-cost" class="text-slate-900 dark:text-slate-100 text-5xl font-extrabold tracking-tight">₹28,400</h1>
+<div class="flex items-center gap-2 pt-2">
+<span id="risk-badge" class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold uppercase">Medium Risk</span>
+<span id="margin-error" class="text-slate-400 text-xs">Margin of error: ±4.2%</span>
+</div>
+</div>
+<div class="flex-1 w-full space-y-3">
+<div class="flex justify-between items-end">
+<p class="text-sm font-medium">Confidence Range</p>
+<p class="text-xs text-slate-500">Predicted Variance</p>
+</div>
+<div class="relative h-6 w-full rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800">
+<div class="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-400 to-amber-500 opacity-80"></div>
+<!-- Indicator Arrow -->
+<div id="conf-indicator" class="absolute top-0 bottom-0 w-1 bg-white dark:bg-slate-100 shadow-lg" style="left: 65%;">
+<div id="conf-indicator-label" class="absolute -top-1 -left-1 text-white text-[10px] bg-slate-900 px-1 rounded">₹28.4k</div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400 uppercase font-bold tracking-tighter">
+<span id="conf-low-label">Low (₹26k)</span>
+<span>Nominal</span>
+<span id="conf-high-label">High (₹32k)</span>
+</div>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-center items-center text-center">
+<div class="size-16 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-primary text-3xl">timer</span>
+</div>
+<h3 id="cycle-time" class="text-2xl font-bold">7.5 <span class="text-sm font-normal text-slate-500">mins</span></h3>
+<p class="text-slate-500 text-sm">Estimated Cycle Time</p>
+</div>
+</div>
+<!-- Row 2: Cost & Process Analysis -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- A. Cost Breakdown Table -->
+<div class="lg:col-span-4 p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">pie_chart</span>
+                    Cost Breakdown
+                </h3>
+<div id="cost-breakdown" class="space-y-4">
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Material</span>
+<span class="font-bold">₹12,200</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 43%;"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Machining</span>
+<span class="font-bold">₹9,400</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 33%;"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Setup</span>
+<span class="font-bold">₹4,000</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 14%;"></div>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-sm">
+<span>Overhead</span>
+<span class="font-bold">₹2,800</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 10%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- B & C. Process Breakdown & Donut -->
+<div class="lg:col-span-8 p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_tree</span>
+                    Process Details
+                </h3>
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex-1 overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="text-slate-500 uppercase text-xs font-bold border-b border-slate-200 dark:border-slate-800">
+<tr>
+<th class="py-3 pr-4">Process</th>
+<th class="py-3 px-4">Time (min)</th>
+<th class="py-3 px-4">Rate (/hr)</th>
+<th class="py-3 pl-4 text-right">Cost</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full" style="background-color: #10B981;"></span>CNC Milling</div></td>
+<td class="py-3 px-4">4.2</td>
+<td class="py-3 px-4">₹4,500</td>
+<td class="py-3 pl-4 text-right font-bold" style="color: #10B981;">₹3,150</td>
+</tr>
+<tr>
+<td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full" style="background-color: #F59E0B;"></span>Hole Drilling</div></td>
+<td class="py-3 px-4">1.8</td>
+<td class="py-3 px-4">₹3,000</td>
+<td class="py-3 pl-4 text-right font-bold text-primary">₹900</td>
+</tr>
+<tr>
+<td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full" style="background-color: #A855F7;"></span>Surface Grinding</div></td>
+<td class="py-3 px-4">1.5</td>
+<td class="py-3 px-4">₹2,800</td>
+<td class="py-3 pl-4 text-right font-bold text-primary">₹700</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[180px]">
+<div class="relative size-32">
+<svg class="size-full transform -rotate-90" viewbox="0 0 36 36"><circle class="stroke-slate-200 dark:stroke-slate-800" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle><circle cx="18" cy="18" fill="none" r="16" stroke-dasharray="56, 100" stroke-width="4" style="stroke: #10B981;"></circle><circle cx="18" cy="18" fill="none" r="16" stroke-dasharray="24, 100" stroke-dashoffset="-56" stroke-width="4" style="stroke: #F59E0B;"></circle><circle cx="18" cy="18" fill="none" r="16" stroke-dasharray="20, 100" stroke-dashoffset="-80" stroke-width="4" style="stroke: #A855F7;"></circle></svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col"><span class="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Machining</span><span class="text-sm font-bold">Share</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Row 3: SHAP Waterfall & Formulas -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- D. SHAP Waterfall -->
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-7">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-bold">Why does this part take 7.5 min?</h3>
+<span class="text-xs bg-primary/20 text-primary px-2 py-1 rounded font-mono">SHAP Explainability</span>
+</div>
+<div class="space-y-4">
+<!-- Waterfall items -->
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500">Base Prediction</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-neutral h-full rounded-sm" style="width: 40%; margin-left: 0;"></div>
+</div>
+<span class="text-xs font-bold w-12">5.0m</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500 font-medium">Surface Area</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-up h-full rounded-sm" style="width: 15%; margin-left: 40%;"></div>
+</div>
+<span class="text-xs font-bold text-red-500 w-12">+1.2m</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500 font-medium">Hole Density</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-up h-full rounded-sm" style="width: 10%; margin-left: 55%;"></div>
+</div>
+<span class="text-xs font-bold text-red-500 w-12">+0.8m</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs w-28 text-slate-500 font-medium">Low Tolerance</span>
+<div class="flex-1 h-6 relative">
+<div class="waterfall-bar-down h-full rounded-sm" style="width: 5%; margin-left: 60%;"></div>
+</div>
+<span class="text-xs font-bold text-emerald-500 w-12">-0.4m</span>
+</div>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<span class="text-xs w-28 font-bold">Final Cycle</span>
+<div class="flex-1 h-8 relative">
+<div class="bg-primary h-full rounded-sm" style="width: 60%; margin-left: 0;"></div>
+</div>
+<span class="text-sm font-black w-12">7.5m</span>
+</div>
+</div>
+</div>
+<!-- E. Formula Transparency -->
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-5 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-bold">Pricing Formulas</h3>
+<span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-1 rounded font-mono">100% Transparent</span>
+</div>
+<div class="space-y-4 flex-1">
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Material Cost</div>
+        <div class="font-mono text-sm text-slate-700 dark:text-slate-300">Volume &times; Density &times; Price/kg &times; Discount</div>
+    </div>
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Machining Time</div>
+        <div class="font-mono text-sm text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">account_tree</span>
+            RandomForest(Geo, Inputs, Routing)
+        </div>
+    </div>
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Machining Cost</div>
+        <div class="font-mono text-sm text-slate-700 dark:text-slate-300">&Sigma; (Process Time &times; Machine Hourly Rate)</div>
+    </div>
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Setup Cost</div>
+        <div class="font-mono text-sm text-slate-700 dark:text-slate-300">Base Setup Fee / &radic;Quantity</div>
+    </div>
+    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Cost</div>
+        <div class="font-mono text-sm text-slate-700 dark:text-slate-300">Material + Machining + Setup + Overhead</div>
+    </div>
+</div>
+</div>
+</div>
+<!-- Row 4: DFM Suggestions -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold">DFM Optimization Suggestions</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- Suggestion 1 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-amber-500 bg-amber-500/10 p-2 rounded-lg">straighten</span>
+<span class="text-emerald-500 text-sm font-bold">-₹1,200</span>
+</div>
+<h4 class="font-bold text-sm">Relax Tolerances</h4>
+<p class="text-xs text-slate-500">Tight tolerance on bore increases machining time by 15%.</p>
+</div>
+<button onclick="window.location.href='/dfm'" class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+<!-- Suggestion 2 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-blue-500 bg-blue-500/10 p-2 rounded-lg">texture</span>
+<span class="text-emerald-500 text-sm font-bold">-₹4,500</span>
+</div>
+<h4 class="font-bold text-sm">Reduce Holes</h4>
+<p class="text-xs text-slate-500">Combining 4 small holes into 2 larger ones reduces drilling ops.</p>
+</div>
+<button onclick="window.location.href='/dfm'" class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+<!-- Suggestion 3 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-purple-500 bg-purple-500/10 p-2 rounded-lg">category</span>
+<span class="text-emerald-500 text-sm font-bold">-₹2,800</span>
+</div>
+<h4 class="font-bold text-sm">Switch Material</h4>
+<p class="text-xs text-slate-500">Grade 304 Stainless is 20% cheaper than Grade 316 for this spec.</p>
+</div>
+<button onclick="window.location.href='/dfm'" class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+<!-- Suggestion 4 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-primary transition-colors">
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-red-500 bg-red-500/10 p-2 rounded-lg">architecture</span>
+<span class="text-emerald-500 text-sm font-bold">-₹800</span>
+</div>
+<h4 class="font-bold text-sm">Simplify Pockets</h4>
+<p class="text-xs text-slate-500">Internal radii &lt; 3mm require specialty tools. Increase to 5mm.</p>
+</div>
+<button onclick="window.location.href='/dfm'" class="mt-4 w-full py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition">Simulate</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Stats Removed -->
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const q = session.quoteResult;
+        if (!q) return;
+
+        const cost = q.cost || {};
+        const conf = q.confidence || {};
+        const drivers = q.drivers || [];
+        const dfm = q.dfm_suggestions || [];
+        const geo = q.geometry || {};
+        const inp = q.inputs || {};
+
+        const fmtInr = (v) => '₹' + Math.round(v || 0).toLocaleString('en-IN');
+        const total = cost.total_cost_inr || 0;
+
+        // Header title (avoid default “— Part”)
+        const titleEl = document.querySelector('header h2');
+        if (titleEl) {
+            const partName = session.sample_meta?.display_name || session.sample_name || session.uploaded_file || '';
+            titleEl.textContent = `Manufacturing Quote${partName ? ' — ' + partName : ''}`;
+        }
+
+        // Total cost
+        const totalEl = document.getElementById('total-cost');
+        if (totalEl) totalEl.textContent = fmtInr(total);
+
+        // Risk + margin
+        const riskBadge = document.getElementById('risk-badge');
+        if (riskBadge) riskBadge.textContent = `${conf.risk_level || 'Medium'} Risk`;
+        const marginEl = document.getElementById('margin-error');
+        if (marginEl) marginEl.textContent = `Margin of error: ±${(conf.margin_pct ?? 0).toFixed(1)}%`;
+
+        // Confidence indicator
+        const low = conf.low ?? 0;
+        const nominal = conf.nominal ?? total;
+        const high = conf.high ?? 0;
+        const ind = document.getElementById('conf-indicator');
+        const indLabel = document.getElementById('conf-indicator-label');
+        const lowLabel = document.getElementById('conf-low-label');
+        const highLabel = document.getElementById('conf-high-label');
+        if (lowLabel) lowLabel.textContent = `Low (${fmtInr(low)})`;
+        if (highLabel) highLabel.textContent = `High (${fmtInr(high)})`;
+        if (ind && high > low) {
+            const pct = Math.max(0, Math.min(100, ((nominal - low) / (high - low)) * 100));
+            ind.style.left = pct.toFixed(1) + '%';
+        }
+        if (indLabel) indLabel.textContent = fmtInr(nominal);
+
+        // Cycle time
+        const cycleEl = document.getElementById('cycle-time');
+        const totalTime = (q.machining_breakdown && q.machining_breakdown.total_time_min !== undefined)
+            ? q.machining_breakdown.total_time_min
+            : null;
+        if (cycleEl && totalTime !== null) {
+            cycleEl.innerHTML = `${Number(totalTime).toFixed(1)} <span class="text-sm font-normal text-slate-500">mins</span>`;
+        }
+
+        // Cost breakdown card
+        const breakdownEl = document.getElementById('cost-breakdown');
+        if (breakdownEl && total > 0) {
+            const items = [
+                { label: 'Material', value: cost.material_cost_inr || 0 },
+                { label: 'Machining', value: cost.machining_cost_inr || 0 },
+                { label: 'Setup', value: cost.setup_cost_inr || 0 },
+                { label: 'Overhead', value: cost.overhead_cost_inr || 0 },
+            ];
+
+            const blocks = Array.from(breakdownEl.children || []);
+            blocks.forEach((block, i) => {
+                if (!items[i]) return;
+                const val = items[i].value;
+                const labelSpan = block.querySelector('.flex.justify-between.text-sm span:first-child');
+                const amtSpan = block.querySelector('.flex.justify-between.text-sm span.font-bold');
+                const bar = block.querySelector('.h-2 div.h-full');
+                if (labelSpan) labelSpan.textContent = items[i].label;
+                if (amtSpan) amtSpan.textContent = fmtInr(val);
+                if (bar) bar.style.width = Math.max(0, Math.min(100, (val / total) * 100)).toFixed(0) + '%';
+            });
+        }
+
+        // Process details table
+        const mb = q.machining_breakdown || {};
+        const details = mb.details || [];
+        const tbody = document.querySelector('table tbody.divide-y');
+        if (tbody && Array.isArray(details) && details.length > 0) {
+            tbody.innerHTML = '';
+            details.forEach((d) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-3 pr-4 font-medium"><div class="flex items-center gap-2"><span class="size-2 rounded-full bg-primary"></span>${d.process}</div></td>
+                    <td class="py-3 px-4">${Number(d.time_min || 0).toFixed(1)}</td>
+                    <td class="py-3 px-4">${fmtInr(d.rate_per_hr_inr || 0)}</td>
+                    <td class="py-3 pl-4 text-right font-bold text-primary">${fmtInr(d.cost_inr || 0)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Drivers section (time-based if SHAP drivers available, else cost-based)
+        const shapBadge = Array.from(document.querySelectorAll('span.font-mono')).find(el => (el.textContent || '').includes('SHAP Explainability'));
+        const shapSection = shapBadge ? shapBadge.closest('.p-6') : null;
+        const shapHeader = shapSection ? shapSection.querySelector('h3') : null;
+        const isTimeDrivers = Array.isArray(drivers) && drivers.length > 0
+            ? (drivers.some(d => /\bmin\b/i.test(String(d.reason || ''))) || drivers.some(d => /machining time/i.test(String(d.reason || ''))))
+            : false;
+
+        if (shapHeader) {
+            if (isTimeDrivers && totalTime !== null) {
+                shapHeader.textContent = `Why does this part take ${Number(totalTime).toFixed(1)} min?`;
+            } else {
+                shapHeader.textContent = `Why does this part cost ${fmtInr(total)}?`;
+            }
+        }
+
+        if (Array.isArray(drivers) && drivers.length > 0) {
+            const section = shapSection;
+            const container = section ? section.querySelector('.space-y-4') : null;
+            if (container) {
+                container.innerHTML = '';
+
+                if (isTimeDrivers && totalTime !== null) {
+                    const top = drivers.slice(0, 3).map(d => {
+                        const direction = (d.reason || '').toLowerCase().includes('decreases') ? -1 : 1;
+                        return { feature: d.feature, value: (d.impact_value || 0) * direction };
+                    });
+                    const base = Math.max(0, Number(totalTime) - top.reduce((a, b) => a + b.value, 0));
+
+                    container.appendChild(_wfRow('Base Prediction', base, 'neutral', 0, totalTime, (v) => `${Number(v).toFixed(1)}m`, 'm'));
+                    let acc = base;
+                    top.forEach((t) => {
+                        const kind = t.value >= 0 ? 'up' : 'down';
+                        container.appendChild(_wfRow(t.feature, t.value, kind, acc, totalTime, (v) => `${(v >= 0 ? '+' : '-')}${Math.abs(v).toFixed(1)}m`, 'm'));
+                        acc += t.value;
+                    });
+                    container.appendChild(_wfFinalRow('Final Cycle', totalTime, (v) => `${Number(v).toFixed(1)}m`));
+                } else {
+                    const top = drivers.slice(0, 3).map(d => ({ feature: d.feature, value: Number(d.impact_value || 0) }));
+                    const base = Math.max(0, Number(total) - top.reduce((a, b) => a + b.value, 0));
+
+                    container.appendChild(_wfRow('Base Cost', base, 'neutral', 0, total, (v) => fmtInr(v), '₹'));
+                    let acc = base;
+                    top.forEach((t) => {
+                        container.appendChild(_wfRow(t.feature, t.value, 'up', acc, total, (v) => `+${fmtInr(v)}`, '₹'));
+                        acc += t.value;
+                    });
+                    container.appendChild(_wfFinalRow('Final Cost', total, (v) => fmtInr(v)));
+                }
+            }
+        }
+
+        function _wfRow(label, value, kind, leftBase, totalValue, fmtValue) {
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-4';
+            const denom = totalValue > 0 ? totalValue : 1;
+            const w = Math.max(0, Math.min(100, (Math.abs(value) / denom) * 100));
+            const ml = Math.max(0, Math.min(100, (leftBase / denom) * 100));
+            const cls = kind === 'up' ? 'waterfall-bar-up' : (kind === 'down' ? 'waterfall-bar-down' : 'waterfall-bar-neutral');
+            const color = kind === 'up' ? 'text-red-500' : (kind === 'down' ? 'text-emerald-500' : '');
+            row.innerHTML = `
+                <span class="text-xs w-28 text-slate-500${kind !== 'neutral' ? ' font-medium' : ''}">${label}</span>
+                <div class="flex-1 h-6 relative">
+                    <div class="${cls} h-full rounded-sm" style="width:${w.toFixed(0)}%; margin-left:${ml.toFixed(0)}%;"></div>
+                </div>
+                <span class="text-xs font-bold w-12 ${color}">${fmtValue(value)}</span>
+            `;
+            return row;
+        }
+
+        function _wfFinalRow(label, totalValue, fmtTotal) {
+            const row = document.createElement('div');
+            row.className = 'pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-4';
+            row.innerHTML = `
+                <span class="text-xs w-28 font-bold">${label}</span>
+                <div class="flex-1 h-8 relative">
+                    <div class="bg-primary h-full rounded-sm" style="width:100%; margin-left:0;"></div>
+                </div>
+                <span class="text-sm font-black w-12">${fmtTotal(totalValue)}</span>
+            `;
+            return row;
+        }
+
+        // Update DFM suggestions
+        const dfmCards = document.querySelectorAll('[onclick*="/dfm"]');
+        dfmCards.forEach((btn, i) => {
+            if (dfm[i]) {
+                const card = btn.closest('.p-4');
+                if (!card) return;
+                const titleEl = card.querySelector('h4');
+                const descEl = card.querySelector('p.text-xs');
+                const savingsEl = card.querySelector('.text-emerald-500');
+                if (titleEl) titleEl.textContent = dfm[i].change;
+                if (descEl) descEl.textContent = dfm[i].reason;
+                if (savingsEl) savingsEl.textContent = `-₹${Math.round(dfm[i].savings_inr).toLocaleString('en-IN')}`;
+            }
+            // Store selected index before navigating
+            btn.removeAttribute('onclick');
+            btn.addEventListener('click', function() {
+                localStorage.setItem('selectedDfmIndex', String(i));
+                window.location.href = '/dfm';
+            });
+        });
+    });
+</script>
+</body></html>

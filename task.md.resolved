@@ -1,0 +1,56 @@
+# Task List — Backend + Frontend Integration
+
+## 1. UI Templates (Completed ✅)
+- [x] Build all 9 frontend HTML templates
+- [x] Interactive input synchronization ([frontend/templates/input.html](frontend/templates/input.html))
+- [x] Routing warnings & toggles ([frontend/templates/routing.html](frontend/templates/routing.html))
+- [x] Material-responsive diagram ([frontend/templates/stock.html](frontend/templates/stock.html))
+- [x] Condensed 7-step progress animation ([frontend/templates/progress.html](frontend/templates/progress.html))
+- [x] Remove "Model v4.2 Live" badge from dashboard
+- [x] Update [ui.md](ui.md) mapping for all interactions
+
+Note: the condensed 7-step progress animation is a grouped view of the full Steps 0–13 pipeline.
+
+Design contract: use [ui.md](ui.md) as the source-of-truth mapping from Stitch designs → `frontend/templates/*` → expected interactions (with line numbers). Keep UI wiring consistent with this map during Phase 3.
+
+## 2. Backend Modules (Phase 1) (Completed ✅)
+- [x] `backend/models.py` — Pydantic request/response schemas
+- [x] `backend/sample_parts.py` — 3 sample part definitions
+- [x] `backend/routing.py` — Process routing rules
+- [x] `backend/stock.py` — Stock estimation logic
+- [x] `backend/ml_placeholder.py` — Formula-based ML stub
+- [x] `backend/cost.py` — Cost calculation engine
+- [x] `backend/confidence.py` — Prediction interval / risk
+- [x] `backend/explainability.py` — Cost drivers
+- [x] `backend/dfm.py` — DFM suggestion engine
+
+## 3. API Endpoints (Phase 2) (Completed ✅)
+- [x] `POST /api/quote` — Full pipeline endpoint
+- [x] `POST /api/routing` — Live routing preview
+- [x] `POST /api/stock` — Stock estimation preview
+- [x] `POST /api/dfm` — DFM suggestions (ranked list, advisory)
+- [x] `POST /api/dfm/simulate` — DFM re-quote
+- [x] `GET /api/samples/{name}` — Sample part loader
+
+## 4. Frontend Integration (Phase 3)
+- [ ] [frontend/templates/index.html](frontend/templates/index.html) — Sample selection → localStorage
+- [ ] [frontend/templates/geometry.html](frontend/templates/geometry.html) — Dynamic geometry display
+- [ ] [frontend/templates/input.html](frontend/templates/input.html) — Persist inputs to localStorage
+- [ ] [frontend/templates/routing.html](frontend/templates/routing.html) — Live routing API calls
+- [ ] [frontend/templates/stock.html](frontend/templates/stock.html) — Stock API calls + display
+- [ ] [frontend/templates/progress.html](frontend/templates/progress.html) — Trigger /api/quote + animate
+- [ ] [frontend/templates/dashboard.html](frontend/templates/dashboard.html) — Render dynamic quote data
+- [ ] [frontend/templates/dfm.html](frontend/templates/dfm.html) — Dynamic DFM comparison
+- [ ] [frontend/templates/export.html](frontend/templates/export.html) — Dynamic PDF content
+
+## 5. ML Integration (Future — Not This Phase)
+- [ ] Train RandomForest on synthetic dataset
+- [ ] Replace `ml_placeholder.py` with `joblib.load()`
+- [ ] Add SHAP TreeExplainer waterfall
+- [ ] Replace heuristic confidence with tree-based percentiles
+
+## 6. Verification
+- [ ] Test all API endpoints with curl
+- [ ] End-to-end test: 3 sample parts through full pipeline
+- [ ] Verify dashboard numbers update dynamically
+- [ ] Verify DFM simulation produces different values

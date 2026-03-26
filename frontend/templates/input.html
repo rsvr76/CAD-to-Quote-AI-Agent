@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smart Guided Setup Form - Manufacturing OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                        "steel-card": "#22262E",
+                        "industrial-border": "#314668",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .mono-text {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-industrial-border/50 px-6 lg:px-20 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl" style="">precision_manufacturing</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight uppercase tracking-widest" style="">Manufacturing OS</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#" style=""><br/></a>
+<a class="text-white text-sm font-medium border-b-2 border-primary pb-1" href="#" style=""><br/></a>
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#" style=""><br/></a>
+</nav>
+<div class="flex gap-2">
+<button onclick="window.location.href='/geometry'" class="flex items-center justify-center gap-2 px-4 rounded-lg h-10 bg-steel-card border border-industrial-border hover:bg-industrial-border/30 transition-all text-slate-300" title="Back">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+<span class="text-sm font-bold tracking-wider">BACK</span>
+</button><button class="flex items-center justify-center rounded-lg h-10 w-10 bg-steel-card border border-industrial-border hover:bg-industrial-border/30 transition-all" style="">
+<span class="material-symbols-outlined text-xl" style="">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-steel-card border border-industrial-border hover:bg-industrial-border/30 transition-all relative" style="">
+<span class="material-symbols-outlined text-xl" style="">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-industrial-border" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB8_uZKqoHfwlQraPuTADNzXW1vqx1veEQRJx67a3JcUz0s6tO68I0QJksQ2teS8tDItEr54fpbPDmqxHr3l5oFJCOtehjWicChexG6RNbQEazRfuge1BGT0iOewRgpm3x6_H4jQYuy9Jw44NN-Kdh8q9nVa6O7syMYU8GOsSfdM8sIucuJWjguTAXru-CuT_LttjCNUppKfzIm44gjdJ6Y11hLYwdhaYR0uSiX5zz2f-RITvmQGOoHWWhABsp0xOo50GfqMxqwJsU");'></div>
+</div>
+</header>
+<main class="flex-1 px-6 lg:px-20 py-8">
+<div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-10 gap-8">
+<!-- Left Panel (70%) -->
+<div class="lg:col-span-7 space-y-6">
+<div>
+<h1 class="text-slate-100 text-3xl font-bold tracking-tight mb-2" style="">Confirm Manufacturing Parameters</h1>
+<p class="text-slate-400 text-base" style="">Review the AI-detected geometry values and provide missing requirements for production readiness.</p>
+</div>
+<!-- Parameter Cards List -->
+<div class="space-y-4">
+<!-- 1. Hole Count -->
+<div class="bg-steel-card border border-industrial-border rounded-xl p-5 flex items-center justify-between group hover:border-primary/50 transition-all">
+<div class="flex items-center gap-5 flex-1">
+<div class="bg-primary/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" style="">adjust</span>
+</div>
+<div class="flex-1 max-w-xs">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1" style="">Hole Count</p>
+<input id="input-holes" class="bg-background-dark/50 border-industrial-border text-white mono-text rounded-lg w-full focus:ring-primary focus:border-primary" type="text" value="6"/>
+</div>
+<div class="bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+<p class="text-amber-500 text-[10px] font-bold uppercase tracking-tight" style="">AI Estimate: Medium Confidence</p>
+</div>
+</div>
+<button onclick="toggleConfirm(this)" class="ml-4 px-6 py-2 border-2 border-emerald-500/50 text-emerald-500 hover:bg-emerald-500 hover:text-white font-bold rounded-lg transition-all text-sm uppercase tracking-wider" style="">
+                                Confirm
+                            </button>
+</div>
+<!-- 2. Pocket Count -->
+<div class="bg-steel-card border border-industrial-border rounded-xl p-5 flex items-center justify-between group hover:border-primary/50 transition-all">
+<div class="flex items-center gap-5 flex-1">
+<div class="bg-primary/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" style="">layers</span>
+</div>
+<div class="flex-1 max-w-xs">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1" style="">Pocket Count</p>
+<input id="input-pockets" class="bg-background-dark/50 border-industrial-border text-white mono-text rounded-lg w-full focus:ring-primary focus:border-primary" type="text" value="2"/>
+</div>
+<div class="bg-red-500/10 border border-red-500/30 px-3 py-1 rounded-full">
+<p class="text-red-500 text-[10px] font-bold uppercase tracking-tight" style="">AI Estimate: Low Confidence</p>
+</div>
+</div>
+<button onclick="toggleConfirm(this)" class="ml-4 px-6 py-2 border-2 border-emerald-500/50 text-emerald-500 hover:bg-emerald-500 hover:text-white font-bold rounded-lg transition-all text-sm uppercase tracking-wider" style="">
+                                Confirm
+                            </button>
+</div>
+<!-- 3. Maximum Drilling Depth -->
+<div class="bg-steel-card border border-industrial-border rounded-xl p-5 flex items-center justify-between group hover:border-primary/50 transition-all">
+<div class="flex items-center gap-5 flex-1">
+<div class="bg-primary/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" style="">vertical_align_bottom</span>
+</div>
+<div class="flex-1 max-w-xs">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1" style="">Max Drilling Depth</p>
+<input id="input-depth" class="bg-background-dark/50 border-industrial-border text-white mono-text rounded-lg w-full focus:ring-primary focus:border-primary" type="text" value="25 mm"/>
+</div>
+<div class="bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+<p class="text-amber-500 text-[10px] font-bold uppercase tracking-tight" style="">AI Estimate: Medium Confidence</p>
+</div>
+</div>
+<button onclick="toggleConfirm(this)" class="ml-4 px-6 py-2 border-2 border-emerald-500/50 text-emerald-500 hover:bg-emerald-500 hover:text-white font-bold rounded-lg transition-all text-sm uppercase tracking-wider" style="">
+                                Confirm
+                            </button>
+</div>
+<!-- 4. Material Selection -->
+<div class="bg-steel-card border border-industrial-border rounded-xl p-5 flex flex-col gap-4">
+<div class="flex items-center gap-5">
+<div class="bg-primary/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" style="">category</span>
+</div>
+<p class="text-slate-100 font-semibold" style="">Material Selection</p>
+</div>
+<div id="material-group" class="flex flex-wrap gap-2 pl-[60px]">
+<button onclick="selectMaterial(this)" class="px-5 py-2 rounded-full border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all">Aluminium</button>
+<button onclick="selectMaterial(this)" class="px-5 py-2 rounded-full border border-primary bg-primary/20 text-primary text-sm font-bold shadow-[0_0_15px_rgba(60,131,246,0.3)]">Steel</button>
+<button onclick="selectMaterial(this)" class="px-5 py-2 rounded-full border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all">Brass</button>
+<button onclick="selectMaterial(this)" class="px-5 py-2 rounded-full border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all">Titanium</button>
+<button onclick="selectMaterial(this)" class="px-5 py-2 rounded-full border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all">ABS</button>
+</div>
+</div>
+<!-- 5. Production Quantity -->
+<div class="bg-steel-card border border-industrial-border rounded-xl p-5 flex items-center justify-between">
+<div class="flex items-center gap-5">
+<div class="bg-primary/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" style="">inventory_2</span>
+</div>
+<div>
+<p class="text-slate-100 font-semibold" style="">Production Quantity</p>
+<p class="text-slate-400 text-xs" style="">Batched Manufacturing Order</p>
+</div>
+</div>
+<div class="flex items-center bg-background-dark border border-industrial-border rounded-lg overflow-hidden">
+<button onclick="changeQty(-1)" class="px-4 py-2 hover:bg-industrial-border/30 text-slate-300 transition-colors border-r border-industrial-border">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<input id="input-quantity" class="w-16 bg-transparent border-none text-center text-white mono-text focus:ring-0" type="text" value="50"/>
+<button onclick="changeQty(1)" class="px-4 py-2 hover:bg-industrial-border/30 text-slate-300 transition-colors border-l border-industrial-border">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- 6. Tolerance Class -->
+<div class="bg-steel-card border border-industrial-border rounded-xl p-5 flex flex-col gap-4">
+<div class="flex items-center gap-5">
+<div class="bg-primary/10 p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" style="">straighten</span>
+</div>
+<p class="text-slate-100 font-semibold" style="">Tolerance Class</p>
+</div>
+<div id="tolerance-group" class="flex gap-2 pl-[60px]">
+<button onclick="selectTolerance(this)" class="flex-1 py-2 rounded-lg border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all text-center">Standard</button>
+<button onclick="selectTolerance(this)" class="flex-1 py-2 rounded-lg border border-primary bg-primary/20 text-primary text-sm font-bold shadow-[0_0_15px_rgba(60,131,246,0.3)] text-center">Fine</button>
+<button onclick="selectTolerance(this)" class="flex-1 py-2 rounded-lg border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all text-center">Ultra-Fine</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel (30%) -->
+<div class="lg:col-span-3">
+<div class="sticky top-24 space-y-6">
+<div class="border border-industrial-border rounded-xl overflow-hidden shadow-2xl bg-[#161c27]">
+<div class="bg-industrial-border/20 px-5 py-4 border-b border-industrial-border flex items-center justify-between"><div class="flex items-center gap-3">
+<div class="bg-blue-500/20 p-1 rounded">
+<span class="material-symbols-outlined text-blue-500 text-xl" style="">analytics</span>
+</div>
+<h3 class="text-white font-bold text-lg" style="">Input Summary</h3>
+</div></div>
+<div class="p-6 space-y-4"><div class="space-y-0">
+<!-- Holes -->
+<div class="flex items-center justify-between py-4 border-b border-industrial-border/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500 fill-1" style="">check_circle</span>
+<div>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider" style="">Holes</p>
+<p id="summary-holes" class="text-white font-bold" style="">6 Detected</p>
+</div>
+</div>
+</div>
+<!-- Pockets -->
+<div class="flex items-center justify-between py-4 border-b border-industrial-border/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500 fill-1" style="">check_circle</span>
+<div>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider" style="">Pockets</p>
+<p id="summary-pockets" class="text-white font-bold" style="">2 Detected</p>
+</div>
+</div>
+</div>
+<!-- Max Depth -->
+<div class="flex items-center justify-between py-4 border-b border-industrial-border/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500 fill-1" style="">check_circle</span>
+<div>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider" style="">Max Depth</p>
+<p id="summary-depth" class="text-white font-bold" style="">25mm</p>
+</div>
+</div>
+</div>
+<!-- Material -->
+<div class="flex items-center justify-between py-4 border-b border-industrial-border/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500 fill-1" style="">check_circle</span>
+<div>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider" style="">Material</p>
+<p id="summary-material" class="text-white font-bold" style="">Steel</p>
+</div>
+</div>
+</div>
+<!-- Quantity -->
+<div class="flex items-center justify-between py-4 border-b border-industrial-border/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500 fill-1" style="">check_circle</span>
+<div>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider" style="">Quantity</p>
+<p id="summary-quantity" class="text-white font-bold" style="">50 Units</p>
+</div>
+</div>
+</div>
+<!-- Tolerance -->
+<div class="flex items-center justify-between py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500 fill-1" style="">check_circle</span>
+<div>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider" style="">Tolerance</p>
+<p id="summary-tolerance" class="text-white font-bold" style="">Fine</p>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+<!-- Technical Visualization Hint -->
+<div class="bg-steel-card border border-industrial-border rounded-xl overflow-hidden flex flex-col">
+<div class="bg-industrial-border/20 px-4 py-2 border-b border-industrial-border">
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider flex items-center gap-2" style="">
+<span class="material-symbols-outlined text-sm" style="">videogame_asset</span> MODEL REFERENCE
+        </p>
+</div>
+<div class="relative bg-[#1e2530] aspect-[3/4] flex items-center justify-center">
+<img id="model-reference-img" class="absolute inset-0 w-full h-full object-contain opacity-90 hidden" alt="Model reference"/>
+<span id="model-reference-icon" class="material-symbols-outlined text-6xl text-slate-700/50" style="">deployed_code</span>
+<div class="absolute bottom-3 right-3 flex flex-col gap-2">
+<button class="bg-background-dark/80 p-1.5 rounded border border-industrial-border hover:bg-industrial-border" style="">
+<span class="material-symbols-outlined text-slate-400 text-sm" style="">zoom_in</span>
+</button>
+<button class="bg-background-dark/80 p-1.5 rounded border border-industrial-border hover:bg-industrial-border" style="">
+<span class="material-symbols-outlined text-slate-400 text-sm" style="">refresh</span>
+</button>
+</div>
+</div>
+</div><button onclick="window.location.href='/routing'" class="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all transform active:scale-95 shadow-[0_4px_15px_rgba(37,99,235,0.4)]" style="">
+    Generate Quote
+    <span class="material-symbols-outlined" style="">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+    // Load session data on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const inputs = session.inputs || {};
+
+        // Show preview image if available (from landing sample cards)
+        const meta = session.sample_meta || {};
+        const refImg = document.getElementById('model-reference-img');
+        const refIcon = document.getElementById('model-reference-icon');
+        if (refImg && meta.image_url) {
+            refImg.src = meta.image_url;
+            refImg.classList.remove('hidden');
+            if (refIcon) refIcon.classList.add('hidden');
+        }
+
+        // Pre-fill from session
+        if (inputs.num_holes !== undefined) document.getElementById('input-holes').value = inputs.num_holes;
+        if (inputs.num_pockets !== undefined) document.getElementById('input-pockets').value = inputs.num_pockets;
+        if (inputs.max_depth_mm !== undefined) document.getElementById('input-depth').value = inputs.max_depth_mm + ' mm';
+        if (inputs.quantity !== undefined) document.getElementById('input-quantity').value = inputs.quantity;
+
+        // Pre-select material
+        if (inputs.material) {
+            const btns = document.getElementById('material-group').querySelectorAll('button');
+            btns.forEach(b => {
+                if (b.textContent.trim() === inputs.material) {
+                    selectMaterial(b);
+                }
+            });
+        }
+
+        // Pre-select tolerance
+        if (inputs.tolerance_class) {
+            const btns = document.getElementById('tolerance-group').querySelectorAll('button');
+            btns.forEach(b => {
+                if (b.textContent.trim() === inputs.tolerance_class) {
+                    selectTolerance(b);
+                }
+            });
+        }
+
+        // Sync summaries
+        syncSummary();
+    });
+
+    function syncSummary() {
+        document.getElementById('summary-holes').innerText = document.getElementById('input-holes').value + ' Detected';
+        document.getElementById('summary-pockets').innerText = document.getElementById('input-pockets').value + ' Detected';
+        document.getElementById('summary-depth').innerText = document.getElementById('input-depth').value;
+        document.getElementById('summary-quantity').innerText = document.getElementById('input-quantity').value + ' Units';
+
+        // Get selected material
+        const matBtn = document.querySelector('#material-group button.bg-primary\\/20');
+        if (matBtn) document.getElementById('summary-material').innerText = matBtn.textContent.trim();
+
+        // Get selected tolerance
+        const tolBtn = document.querySelector('#tolerance-group button.bg-primary\\/20');
+        if (tolBtn) document.getElementById('summary-tolerance').innerText = tolBtn.textContent.trim();
+    }
+
+    function getInputValues() {
+        const depthRaw = document.getElementById('input-depth').value.replace(/[^0-9.]/g, '');
+        const matBtn = document.querySelector('#material-group button.bg-primary\\/20');
+        const tolBtn = document.querySelector('#tolerance-group button.bg-primary\\/20');
+        return {
+            num_holes: parseInt(document.getElementById('input-holes').value) || 0,
+            num_pockets: parseInt(document.getElementById('input-pockets').value) || 0,
+            max_depth_mm: parseFloat(depthRaw) || 0,
+            material: matBtn ? matBtn.textContent.trim() : 'Steel',
+            quantity: parseInt(document.getElementById('input-quantity').value) || 1,
+            tolerance_class: tolBtn ? tolBtn.textContent.trim() : 'Standard',
+        };
+    }
+
+    function saveInputsToSession() {
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        session.inputs = getInputValues();
+        localStorage.setItem('quoteSession', JSON.stringify(session));
+    }
+
+    function toggleConfirm(btn) {
+        const card = btn.closest('.bg-steel-card');
+        const input = card.querySelector('input');
+        
+        if (btn.innerText === 'CONFIRM') {
+            btn.innerText = 'CONFIRMED';
+            btn.classList.remove('border-emerald-500/50', 'text-emerald-500');
+            btn.classList.add('bg-emerald-500', 'text-white');
+        } else {
+            btn.innerText = 'CONFIRM';
+            btn.classList.add('border-emerald-500/50', 'text-emerald-500');
+            btn.classList.remove('bg-emerald-500', 'text-white');
+        }
+        syncSummary();
+        saveInputsToSession();
+    }
+
+    function selectMaterial(btn) {
+        const group = document.getElementById('material-group');
+        group.querySelectorAll('button').forEach(b => {
+            b.className = "px-5 py-2 rounded-full border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all";
+        });
+        btn.className = "px-5 py-2 rounded-full border border-primary bg-primary/20 text-primary text-sm font-bold shadow-[0_0_15px_rgba(60,131,246,0.3)]";
+        syncSummary();
+        saveInputsToSession();
+    }
+
+    function selectTolerance(btn) {
+        const group = document.getElementById('tolerance-group');
+        group.querySelectorAll('button').forEach(b => {
+            b.className = "flex-1 py-2 rounded-lg border border-industrial-border text-slate-400 text-sm font-medium hover:border-primary transition-all text-center";
+        });
+        btn.className = "flex-1 py-2 rounded-lg border border-primary bg-primary/20 text-primary text-sm font-bold shadow-[0_0_15px_rgba(60,131,246,0.3)] text-center";
+        syncSummary();
+        saveInputsToSession();
+    }
+
+    function changeQty(delta) {
+        const input = document.getElementById('input-quantity');
+        let val = parseInt(input.value) || 0;
+        val = Math.max(1, val + delta);
+        input.value = val;
+        syncSummary();
+        saveInputsToSession();
+    }
+
+    // Override the Generate Quote button to save and navigate
+    document.addEventListener('DOMContentLoaded', function() {
+        const genBtn = document.querySelector('button[onclick*="/routing"]');
+        if (genBtn) {
+            genBtn.removeAttribute('onclick');
+            genBtn.addEventListener('click', function() {
+                saveInputsToSession();
+                window.location.href = '/routing';
+            });
+        }
+    });
+</script>
+</body></html>

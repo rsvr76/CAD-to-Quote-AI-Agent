@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Process Routing &amp; Machine Assignment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center size-10 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Process Routing</h2>
+</div>
+<div class="flex items-center gap-3">
+<button onclick="window.location.href='/input'" class="flex items-center gap-2 px-4 h-10 rounded-lg border border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-[20px] text-primary">arrow_back</span>
+<span class="text-sm font-bold tracking-wider">BACK</span>
+</button><button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col max-w-5xl mx-auto w-full p-4 md:p-8 gap-6">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-xl border border-primary/20 bg-primary/5 p-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">info</span>
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Process Selection Tip</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">You can toggle processes manually if the auto-detection needs adjustment.</p>
+</div>
+</div>
+<!-- Learn more link removed -->
+</div>
+<div id="drilling-warning" class="hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-amber-500 mt-0.5">warning</span>
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">Warning: Logic Check Required</p>
+<p id="warning-text" class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Drilling is ON but you have holes = 0. Ensure geometry is correct before proceeding.</p>
+</div>
+</div>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-amber-500 text-white text-sm font-bold">
+                            View Details
+                        </button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Machine Assignment</h3>
+<span class="text-slate-500 text-sm">4 Processes Detected</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- TURNING (OFF) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors opacity-70 group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">TURNING</span>
+<span class="text-[10px] bg-slate-700 text-slate-400 px-1.5 py-0.5 rounded uppercase font-bold">Off</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">Aspect ratio 1.5 (below 2.0 threshold)</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-500 py-2 px-3" disabled="">
+<option>CNC Lathe</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div onclick="toggleSwitch(this)" class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-slate-700 rounded-full"></div>
+<div class="absolute left-1 top-1 bg-slate-500 w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+<!-- MILLING (ON) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">view_in_ar</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">MILLING</span>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">On</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">2 pockets detected</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0">
+<option>3-Axis VMC</option>
+<option>5-Axis CNC</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div onclick="toggleSwitch(this)" class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-primary rounded-full"></div>
+<div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+<!-- DRILLING (ON) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">adjust</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">DRILLING</span>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">On</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">6 holes detected</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0">
+<option>VMC Drill</option>
+<option>Radial Drill Press</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div onclick="toggleSwitch(this)" class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-primary rounded-full"></div>
+<div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+<!-- GRINDING (ON) -->
+<div class="flex items-center gap-6 p-4 rounded-xl border border-[#2A2E36] bg-[#22262E] hover:border-primary/50 transition-colors group">
+<div class="flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">texture</span>
+</div>
+<div class="flex flex-col min-w-[180px]">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold">GRINDING</span>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">On</span>
+</div>
+<p class="text-slate-500 text-xs mt-1">Tolerance class = Fine</p>
+</div>
+<div class="flex-grow px-4">
+<select class="w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0">
+<option>Surface Grinder</option>
+<option>Cylindrical Grinder</option>
+</select>
+</div>
+<div class="flex-shrink-0">
+<div onclick="toggleSwitch(this)" class="relative inline-flex items-center cursor-pointer">
+<div class="w-11 h-6 bg-primary rounded-full"></div>
+<div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-end">
+<button onclick="window.location.href='/stock'" class="flex items-center justify-center gap-2 rounded-xl h-14 px-10 bg-primary text-white text-lg font-bold shadow-xl shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+                        Confirm Routing
+                        <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+</main>
+</div>
+</div>
+<script>
+    const MACHINE_OPTIONS = {
+        turning: ['CNC Lathe', 'Manual Lathe'],
+        milling: ['3-Axis VMC', '4-Axis', '5-Axis'],
+        drilling: ['VMC Drill'],
+        grinding: ['Surface Grinder', 'Cylindrical Grinder'],
+    };
+
+    let routingData = null;
+
+    window.addEventListener('DOMContentLoaded', async function() {
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        if (!session.geometry || !session.inputs) {
+            alert('No geometry/inputs found. Please go back.');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/routing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ geometry: session.geometry, inputs: session.inputs })
+            });
+            routingData = await res.json();
+            populateRouting(routingData, session);
+        } catch (err) {
+            console.error('Routing API error:', err);
+        }
+    });
+
+    function populateRouting(data, session) {
+        const flags = data.routing_decision.routing_auto;
+        const machines = data.machine_assignment.machine_selection_final;
+        const processes = [
+            { key: 'turning', name: 'TURNING', icon: 'precision_manufacturing', flag: flags.is_turning, machine: machines.turning },
+            { key: 'milling', name: 'MILLING', icon: 'view_in_ar', flag: flags.is_milling, machine: machines.milling },
+            { key: 'drilling', name: 'DRILLING', icon: 'adjust', flag: flags.is_drilling, machine: machines.drilling },
+            { key: 'grinding', name: 'GRINDING', icon: 'texture', flag: flags.is_grinding, machine: machines.grinding },
+        ];
+
+        // Build reason strings
+        const geo = session.geometry || {};
+        const inp = session.inputs || {};
+        const reasons = {
+            turning: geo.aspect_ratio > 2 ? `Aspect ratio ${geo.aspect_ratio}:1 (> 2.0)` : `Aspect ratio ${(geo.aspect_ratio||0).toFixed(1)} (below 2.0)`,
+            milling: inp.num_pockets > 0 ? `${inp.num_pockets} pockets detected` : (geo.surface_area_cm2 > 200 ? `Large surface area ${geo.surface_area_cm2} cm²` : 'No pockets, low surface area'),
+            drilling: inp.num_holes > 0 ? `${inp.num_holes} holes detected` : 'No holes detected',
+            grinding: ['Fine','Ultra-Fine'].includes(inp.tolerance_class) ? `Tolerance class = ${inp.tolerance_class}` : `Tolerance = ${inp.tolerance_class}`,
+        };
+
+        const processCards = document.querySelectorAll('.flex.items-center.gap-6.p-4');
+        const activeCount = processes.filter(p => p.flag).length;
+        document.querySelector('span.text-slate-500.text-sm').textContent = `${activeCount} Processes Detected`;
+
+        processCards.forEach((card, i) => {
+            if (!processes[i]) return;
+            const proc = processes[i];
+            const isOn = !!proc.flag;
+
+            // Update name
+            const nameEl = card.querySelector('span.font-bold');
+            if (nameEl) nameEl.textContent = proc.name;
+
+            // Update ON/OFF badge
+            const badge = card.querySelector('span.text-\\[10px\\]');
+            if (badge) {
+                badge.textContent = isOn ? 'On' : 'Off';
+                if (isOn) {
+                    badge.className = 'text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold';
+                } else {
+                    badge.className = 'text-[10px] bg-slate-700 text-slate-400 px-1.5 py-0.5 rounded uppercase font-bold';
+                }
+            }
+
+            // Update reason
+            const reasonEl = card.querySelector('p.text-slate-500.text-xs');
+            if (reasonEl) reasonEl.textContent = reasons[proc.key];
+
+            // Update opacity
+            if (!isOn) card.classList.add('opacity-70');
+            else card.classList.remove('opacity-70');
+
+            // Update icon bg
+            const iconDiv = card.querySelector('.flex-shrink-0.size-12');
+            if (iconDiv) {
+                if (isOn) {
+                    iconDiv.className = 'flex-shrink-0 size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary';
+                } else {
+                    iconDiv.className = 'flex-shrink-0 size-12 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500';
+                }
+            }
+
+            // Update toggle switch state
+            const switchEl = card.querySelector('[onclick*="toggleSwitch"]');
+            if (switchEl) {
+                const bg = switchEl.querySelector('div:first-child');
+                const knob = switchEl.querySelector('div:last-child');
+                if (isOn) {
+                    bg.className = 'w-11 h-6 bg-primary rounded-full';
+                    knob.className = 'absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition';
+                } else {
+                    bg.className = 'w-11 h-6 bg-slate-700 rounded-full';
+                    knob.className = 'absolute left-1 top-1 bg-slate-500 w-4 h-4 rounded-full transition';
+                }
+            }
+
+            // Update machine dropdown
+            const select = card.querySelector('select');
+            if (select) {
+                select.innerHTML = '';
+                const options = MACHINE_OPTIONS[proc.key] || [];
+                options.forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.textContent = m;
+                    opt.value = m;
+                    if (m === proc.machine) opt.selected = true;
+                    select.appendChild(opt);
+                });
+                select.disabled = !isOn;
+            }
+        });
+    }
+
+    function toggleSwitch(el) {
+        const bg = el.querySelector('div:first-child');
+        const knob = el.querySelector('div:last-child');
+        const machineCard = el.closest('.flex.items-center.gap-6');
+        const machineName = machineCard.querySelector('span.font-bold').innerText;
+        const statusLabel = machineCard.querySelector('span.text-\\[10px\\]');
+        const select = machineCard.querySelector('select');
+        
+        const isCurrentlyActive = bg.classList.contains('bg-primary');
+        
+        if (isCurrentlyActive) {
+            bg.classList.remove('bg-primary');
+            bg.classList.add('bg-slate-700');
+            knob.classList.remove('right-1', 'bg-white');
+            knob.classList.add('left-1', 'bg-slate-500');
+            machineCard.classList.add('opacity-70');
+            if (select) select.disabled = true;
+            if (statusLabel) {
+                statusLabel.innerText = 'Off';
+                statusLabel.classList.remove('bg-primary/20', 'text-primary');
+                statusLabel.classList.add('bg-slate-700/50', 'text-slate-500');
+            }
+        } else {
+            bg.classList.add('bg-primary');
+            bg.classList.remove('bg-slate-700');
+            knob.classList.add('right-1', 'bg-white');
+            knob.classList.remove('left-1', 'bg-slate-500');
+            machineCard.classList.remove('opacity-70');
+            if (select) select.disabled = false;
+            if (statusLabel) {
+                statusLabel.innerText = 'On';
+                statusLabel.classList.add('bg-primary/20', 'text-primary');
+                statusLabel.classList.remove('bg-slate-700/50', 'text-slate-500');
+            }
+        }
+
+        // Warning logic
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const inp = session.inputs || {};
+        if (machineName === 'DRILLING') {
+            const warningBanner = document.getElementById('drilling-warning');
+            const warningText = document.getElementById('warning-text');
+            if (!isCurrentlyActive && (inp.num_holes || 0) === 0) {
+                warningBanner.classList.remove('hidden');
+                warningText.innerText = 'Drilling is ON but holes = 0.';
+            } else if (isCurrentlyActive && (inp.num_holes || 0) > 0) {
+                warningBanner.classList.remove('hidden');
+                warningText.innerText = `Drilling is OFF but ${inp.num_holes} holes exist.`;
+            } else {
+                warningBanner.classList.add('hidden');
+            }
+        }
+    }
+
+    // Override confirm button to save routing to session
+    document.addEventListener('DOMContentLoaded', function() {
+        const confirmBtn = document.querySelector('button[onclick*="/stock"]');
+        if (confirmBtn) {
+            confirmBtn.removeAttribute('onclick');
+            confirmBtn.addEventListener('click', function() {
+                // Build final routing from current UI state
+                const cards = document.querySelectorAll('.flex.items-center.gap-6.p-4');
+                const processKeys = ['turning', 'milling', 'drilling', 'grinding'];
+                const finalFlags = {};
+                const finalMachines = {};
+
+                cards.forEach((card, i) => {
+                    const key = processKeys[i];
+                    const switchBg = card.querySelector('[onclick*="toggleSwitch"] div:first-child');
+                    const isOn = switchBg && switchBg.classList.contains('bg-primary');
+                    finalFlags['is_' + key] = isOn ? 1 : 0;
+                    const select = card.querySelector('select');
+                    finalMachines[key] = select ? select.value : null;
+                });
+
+                const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+                session.routing = {
+                    routing_decision: {
+                        routing_auto: routingData ? routingData.routing_decision.routing_auto : finalFlags,
+                        routing_final: finalFlags,
+                    },
+                    machine_assignment: { machine_selection_final: finalMachines },
+                    overrides: { engineer_override: false, override_note: null, contradictions_acknowledged: false }
+                };
+                localStorage.setItem('quoteSession', JSON.stringify(session));
+                window.location.href = '/stock';
+            });
+        }
+    });
+</script>
+</body></html>

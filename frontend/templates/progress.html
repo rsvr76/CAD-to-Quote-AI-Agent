@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(16, 23, 34, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(60, 131, 246, 0.2);
+        }
+        .step-connector {
+            width: 2px;
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            bottom: -24px;
+            z-index: 0;
+        }
+        @keyframes rotate-border {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .active-ring-container {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .active-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            padding: 2px;
+            background: conic-gradient(from 0deg, transparent 0%, #3B82F6 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotate-border 2s linear infinite;
+        }
+    </style>
+    <script>
+    const steps = [
+        { title: "CAD Analysis & Geometry Validation", desc: "Extracting B-Rep topology and machining features" },
+        { title: "Manufacturing Intent Mapping", desc: "Finalizing user inputs and design requirements" },
+        { title: "Routing & Stock Engineering", desc: "Optimizing machining processes and material stock" },
+        { title: "AI Machine Time Prediction", desc: "Running ML inference on 17-feature vector" },
+        { title: "Cost Engine Component Synthesis", desc: "Calculating Material, Setup & Overhead ₹" },
+        { title: "SHAP Explainability & DFM Analysis", desc: "Identifying cost drivers and optimizations" },
+        { title: "Final Quote Packaging", desc: "Assembling report and dashboard insights" }
+    ];
+
+    function createStepHTML(step, index, state) {
+        const isCompleted = state === 'completed';
+        const isProcessing = state === 'processing';
+        const color = isCompleted ? '#10B981' : (isProcessing ? '#3B82F6' : '#9CA3AF');
+        const opacity = (isCompleted || isProcessing) ? 'opacity-100' : 'opacity-60';
+        
+        let iconHTML = '';
+        if (isCompleted) {
+            iconHTML = `<div class="z-10 flex items-center justify-center w-10 h-10 rounded-full bg-transparent text-[#10B981] shrink-0 border-2 border-[#10B981]"><span class="material-symbols-outlined text-[20px] font-bold">check</span></div>`;
+        } else if (isProcessing) {
+            iconHTML = `<div class="active-ring-container"><div class="active-ring"></div><span class="material-symbols-outlined text-[#3B82F6] text-[20px]">progress_activity</span></div>`;
+        } else {
+            iconHTML = `<div class="z-10 flex items-center justify-center w-10 h-10 rounded-full bg-transparent text-[#9CA3AF] shrink-0 border-2 border-[#9CA3AF]"><span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span></div>`;
+        }
+
+        const connector = index < steps.length - 1 ? `<div class="step-connector" style="background-color: ${color}"></div>` : '';
+
+        return `
+            <div class="flex items-start gap-6 relative ${opacity}">
+                ${connector}
+                ${iconHTML}
+                <div class="flex flex-1 justify-between items-center py-1">
+                    <div>
+                        <h3 class="text-sm ${isProcessing ? 'font-bold' : 'font-semibold'} text-slate-100">${step.title}</h3>
+                        <p class="text-xs ${isProcessing ? 'text-[#3B82F6]/80' : 'text-slate-500'}">${step.desc}</p>
+                    </div>
+                    <span class="text-xs font-mono ${isCompleted ? 'text-emerald-400' : (isProcessing ? 'text-[#3B82F6] animate-pulse' : 'text-slate-500')}">
+                        ${isCompleted ? (0.2 + Math.random()).toFixed(1) + 's' : (isProcessing ? 'Processing' : 'Pending')}
+                    </span>
+                </div>
+            </div>
+        `;
+    }
+
+    async function runAnimation() {
+        const container = document.getElementById('steps-container');
+        const progressBar = document.getElementById('progress-bar');
+        const totalPercent = document.getElementById('total-percent');
+        const stepCounter = document.getElementById('step-counter');
+
+        // Fire off the API call early (non-blocking)
+        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const quotePromise = fetch('/api/quote', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                geometry: session.geometry,
+                inputs: session.inputs,
+                routing: session.routing || null,
+                stock_override_kg: session.stock_override_kg || null,
+                stock_shape_override: session.stock_shape_override || null,
+            })
+        }).then(r => r.json()).catch(err => {
+            console.error('Quote API error:', err);
+            return null;
+        });
+
+        for (let i = 0; i < steps.length; i++) {
+            container.innerHTML = steps.map((s, idx) => {
+                let state = 'pending';
+                if (idx < i) state = 'completed';
+                if (idx === i) state = 'processing';
+                return createStepHTML(s, idx, state);
+            }).join('');
+
+            const percent = Math.round(((i + 1) / steps.length) * 100);
+            progressBar.style.width = percent + '%';
+            totalPercent.innerText = percent + '% Complete';
+            stepCounter.innerText = `Step ${i + 1} of ${steps.length}`;
+
+            const activeStep = container.children[i];
+            if (activeStep) activeStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // At step 4 (ML Prediction), wait for the API to actually respond
+            if (i === 3) {
+                const quoteResult = await quotePromise;
+                if (quoteResult) {
+                    session.quoteResult = quoteResult;
+                    localStorage.setItem('quoteSession', JSON.stringify(session));
+                }
+            }
+
+            await new Promise(r => setTimeout(r, 500 + Math.random() * 300));
+        }
+
+        // Finalize
+        container.innerHTML = steps.map((s, idx) => createStepHTML(s, idx, 'completed')).join('');
+        progressBar.style.width = '100%';
+        totalPercent.innerText = '100% Complete';
+        
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 800);
+    }
+
+    window.onload = runAnimation;
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
+<!-- Background Mockup (to show glassmorphism effect) -->
+<div class="fixed inset-0 z-0 overflow-hidden opacity-20 pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/30 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px]"></div>
+</div>
+<!-- Centered Modal -->
+<div class="relative z-10 w-full max-w-[520px] glass-panel rounded-xl shadow-2xl overflow-hidden">
+<!-- Header Section -->
+<div class="px-8 pt-8 pb-4 text-center border-b border-slate-800/50">
+<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">sync</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tight text-slate-100 mb-2">Generating manufacturing quote...</h1>
+<p class="text-slate-400 text-sm">Please wait while the AI agent orchestrates the quoting pipeline.</p>
+</div>
+<!-- Vertical Pipeline Stepper -->
+<div class="px-8 py-6 max-h-[450px] overflow-y-auto custom-scrollbar relative">
+<!-- Dynamic Steps Container -->
+<div id="steps-container" class="space-y-6 relative">
+    <!-- Steps will be injected here by JavaScript -->
+</div>
+</div>
+<!-- Progress Footer Section -->
+<div class="p-8 bg-slate-900/40 border-t border-slate-800/50">
+<div class="flex justify-between items-end mb-3">
+<div class="space-y-1">
+<p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pipeline Status</p>
+<p id="total-percent" class="text-sm text-slate-200">0% Complete</p>
+</div>
+<p id="step-counter" class="text-xs text-slate-400">Step 1 of 7</p>
+</div>
+<div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-4">
+<div id="progress-bar" class="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(60,131,246,0.6)] transition-all duration-500" style="width: 0%"></div>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 justify-center">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>Processing CAD geometry in-memory. Do not close this window refresh.</span>
+</div>
+</div>
+</div>
+</body></html>
