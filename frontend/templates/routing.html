@@ -297,6 +297,8 @@
             // Update machine dropdown
             const select = card.querySelector('select');
             if (select) {
+                const enabledSelectClass = 'w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0';
+                const disabledSelectClass = 'w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-500 py-2 px-3';
                 select.innerHTML = '';
                 const options = MACHINE_OPTIONS[proc.key] || [];
                 options.forEach(m => {
@@ -307,6 +309,7 @@
                     select.appendChild(opt);
                 });
                 select.disabled = !isOn;
+                select.className = isOn ? enabledSelectClass : disabledSelectClass;
             }
         });
     }
@@ -327,7 +330,10 @@
             knob.classList.remove('right-1', 'bg-white');
             knob.classList.add('left-1', 'bg-slate-500');
             machineCard.classList.add('opacity-70');
-            if (select) select.disabled = true;
+            if (select) {
+                select.disabled = true;
+                select.className = 'w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-500 py-2 px-3';
+            }
             if (statusLabel) {
                 statusLabel.innerText = 'Off';
                 statusLabel.classList.remove('bg-primary/20', 'text-primary');
@@ -339,7 +345,10 @@
             knob.classList.add('right-1', 'bg-white');
             knob.classList.remove('left-1', 'bg-slate-500');
             machineCard.classList.remove('opacity-70');
-            if (select) select.disabled = false;
+            if (select) {
+                select.disabled = false;
+                select.className = 'w-full bg-[#1A1D23] border border-[#2A2E36] rounded-lg text-sm text-slate-200 py-2 px-3 focus:border-primary focus:ring-0';
+            }
             if (statusLabel) {
                 statusLabel.innerText = 'On';
                 statusLabel.classList.add('bg-primary/20', 'text-primary');

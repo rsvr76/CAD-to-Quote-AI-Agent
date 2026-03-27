@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+jinja2
+python-multipart
+numpy
+matplotlib
+gmsh
+joblib
+scikit-learn
+shap
+httpx

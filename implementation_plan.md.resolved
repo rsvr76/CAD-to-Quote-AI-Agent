@@ -135,7 +135,7 @@ Port from [Steps/10.md](Steps/10.md) and [Final.py](Final.py):
 
 | Component | Formula |
 |---|---|
-| Material | `stock_weight_kg × price_per_kg × batch_discount` |
+| Material | `stock_weight_kg × price_per_kg` |
 | Machining | `machining_time × machine_rate` (allocated across active processes) |
 | Setup | `max(2000 / √quantity, 200)` |
 | Overhead | (material + machining + setup) × overhead_rate[material] |
@@ -197,7 +197,7 @@ Add these **POST** API endpoints alongside existing page routes:
 | `POST /api/quote` | `UserInputs` + `GeometryData` | `FullQuoteResponse` | Complete pipeline (routing → stock → ML → cost → explain → DFM) |
 | `POST /api/routing` | `GeometryData` + `UserInputs` | `RoutingDecision` | Live routing preview + machine selection + override metadata |
 | `POST /api/stock` | `GeometryData` + `RoutingFlags` + `material` | `StockEstimate` | Stock estimation preview (uses `routing_decision.routing_final` flags extracted from RoutingDecision) |
-| `POST /api/dfm` | `FullQuoteResponse` | `List[DFMSuggestion]` | Ranked what-if suggestions (no changes applied) |
+| `POST /api/dfm` | `GeometryData` + `UserInputs` (+ optional `routing`, `total_cost_inr`) | `{ base_total_cost_inr, dfm_suggestions }` | Ranked what-if suggestions (advisory) |
 | `POST /api/dfm/simulate` | `FullQuoteResponse` + `suggestion_id` | `DFMComparison` | Re-quote with applied DFM change |
 | `GET /api/samples/{name}` | sample name | `GeometryData` + `UserInputs` | Load pre-filled sample data |
 

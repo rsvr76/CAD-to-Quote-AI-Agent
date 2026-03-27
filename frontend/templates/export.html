@@ -71,7 +71,7 @@
 <div class="flex flex-wrap items-center gap-3">
 <div class="flex items-center gap-3 mr-4 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg">
 <label class="relative inline-flex items-center cursor-pointer">
-<input id="dfm-toggle" checked="" class="sr-only peer" type="checkbox" value=""/>
+<input id="dfm-toggle" class="sr-only peer" type="checkbox" value=""/>
 <div class="w-9 h-5 bg-slate-400 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
 </label>
 <span class="text-sm font-medium">Include DFM Comparison</span>
@@ -101,7 +101,7 @@
 <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
 </svg>
 </div>
-<span class="font-bold text-xl uppercase tracking-tighter">L&amp;T Product Development Centre</span>
+<span class="font-bold text-xl uppercase tracking-tighter">NEW GOLDEN ENGINEERING</span>
 </div>
 <h1 class="text-3xl font-black uppercase mb-1">Manufacturing Quote</h1><p class="text-[10px] text-slate-400 font-medium">L&amp;T Knowledge City, Vadodara, Gujarat</p>
 <p class="text-slate-500 font-medium">Quote Summary &amp; Technical Assessment</p>
@@ -109,11 +109,11 @@
 <div class="text-right">
 <div class="mb-4">
 <p class="text-xs uppercase text-slate-400 font-bold">Reference ID</p>
-<p class="text-lg font-bold">QAI-2023-0891</p>
+<p id="reference-id" class="text-lg font-bold">QAI-2023-0891</p>
 </div>
 <div>
 <p class="text-xs uppercase text-slate-400 font-bold">Date Issued</p>
-<p class="text-sm font-medium">October 24, 2023</p>
+<p id="date-issued" class="text-sm font-medium">October 24, 2023</p>
 </div>
 </div>
 </div>
@@ -129,6 +129,15 @@
 <p class="text-base font-semibold">Tata Motors Ltd.</p>
 <p class="text-sm text-slate-600">Pimpri-Chinchwad, Pune, Maharashtra, India</p>
 </div>
+</div>
+
+<!-- CAD Preview (optional) -->
+<div id="cad-preview-block" class="mb-8 hidden">
+    <h3 class="text-xs font-black uppercase tracking-widest border-l-4 border-primary pl-2 mb-3">CAD Preview</h3>
+    <div class="rounded border border-slate-200 bg-slate-50 p-3">
+        <img id="cad-preview-img" alt="CAD preview" class="w-full h-auto max-h-[160px] object-contain bg-white rounded" loading="eager" crossorigin="anonymous" src=""/>
+        <p class="mt-2 text-[10px] text-slate-400 font-medium">Preview image extracted from the selected CAD/sample.</p>
+    </div>
 </div>
 <!-- Main Sections -->
 <div class="space-y-8 flex-1">
@@ -223,15 +232,15 @@
     <div class="grid grid-cols-2 gap-4 text-xs">
         <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
             <p class="text-[10px] uppercase text-slate-400 font-bold">Original</p>
-            <div class="flex justify-between"><span class="text-slate-500">Total</span><span id="dfm-orig-total" class="font-bold">₹0</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Holes</span><span id="dfm-orig-holes" class="font-medium">0</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Tolerance</span><span id="dfm-orig-tol" class="font-medium">Standard</span></div>
+            <div class="flex justify-between items-start gap-2"><span class="text-slate-500 shrink-0">Total</span><span id="dfm-orig-total" class="font-bold text-right">₹0</span></div>
+            <div class="flex justify-between items-start gap-2"><span class="text-slate-500 shrink-0">Holes</span><span id="dfm-orig-holes" class="font-medium text-right">0</span></div>
+            <div class="flex justify-between items-start gap-2"><span class="text-slate-500 shrink-0">Tolerance</span><span id="dfm-orig-tol" class="font-medium text-right">Standard</span></div>
         </div>
         <div class="p-4 bg-primary/5 rounded-lg border border-primary/20 space-y-2">
             <p class="text-[10px] uppercase text-primary/70 font-bold">Modified (Simulated)</p>
-            <div class="flex justify-between"><span class="text-slate-500">Total</span><span id="dfm-mod-total" class="font-bold text-emerald-600">₹0</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Savings</span><span id="dfm-savings" class="font-bold text-emerald-600">₹0</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Change</span><span id="dfm-change" class="font-medium">—</span></div>
+            <div class="flex justify-between items-start gap-2"><span class="text-slate-500 shrink-0">Total</span><span id="dfm-mod-total" class="font-bold text-emerald-600 text-right">₹0</span></div>
+            <div class="flex justify-between items-start gap-2"><span class="text-slate-500 shrink-0">Savings</span><span id="dfm-savings" class="font-bold text-emerald-600 text-right">₹0</span></div>
+            <div class="flex justify-between items-start gap-2"><span class="text-slate-500 shrink-0">Change:</span><span id="dfm-change" class="font-medium text-right break-words whitespace-pre-line leading-snug max-w-[65%]">—</span></div>
         </div>
     </div>
 </div>
@@ -303,7 +312,7 @@
 <h4 class="font-bold text-sm text-primary uppercase">Validity</h4>
 <div class="flex items-center gap-2 text-slate-900 dark:text-slate-100">
 <span class="material-symbols-outlined text-[18px]">timer</span>
-<span class="text-sm font-medium">Valid until Nov 24, 2023</span>
+<span id="valid-until" class="text-sm font-medium">Valid until Nov 24, 2023</span>
 </div>
 <p class="text-xs text-slate-500">Pricing subject to material market rate fluctuations.</p>
 </div>
@@ -336,7 +345,10 @@
 </div>
 <script>
     window.addEventListener('DOMContentLoaded', function() {
-        const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const readSession = () => JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        const writeSession = (s) => localStorage.setItem('quoteSession', JSON.stringify(s));
+
+        let session = readSession();
         const q = session.quoteResult;
         if (!q) return;
 
@@ -354,14 +366,42 @@
 
         const partName = session.sample_meta?.display_name || session.sample_name || session.uploaded_file || '';
 
-        // Toggle state (persisted)
+        // --- CAD PREVIEW IMAGE (optional) ---
+        try {
+            const imgUrl = session.sample_meta?.image_url;
+            const block = document.getElementById('cad-preview-block');
+            const img = document.getElementById('cad-preview-img');
+            if (imgUrl && block && img) {
+                img.src = imgUrl;
+                block.classList.remove('hidden');
+            } else if (block) {
+                block.classList.add('hidden');
+            }
+        } catch (e) {
+            // no-op
+        }
+
+        // Toggle state
         const dfmToggle = document.getElementById('dfm-toggle');
         if (dfmToggle) {
-            dfmToggle.checked = session.includeDfmComparison !== false;
-            dfmToggle.addEventListener('change', () => {
+            // Always start OFF when entering Export.
+            // (We still keep dfmComparison saved so the user can enable it.)
+            session.includeDfmComparison = false;
+            writeSession(session);
+            dfmToggle.checked = false;
+            dfmToggle.addEventListener('change', async () => {
+                session = readSession();
                 session.includeDfmComparison = dfmToggle.checked;
-                localStorage.setItem('quoteSession', JSON.stringify(session));
+                writeSession(session);
+
+                if (dfmToggle.checked) {
+                    await ensureDfmComparison();
+                }
+
+                // Re-read session after ensureDfmComparison possibly updated it.
+                session = readSession();
                 renderDfmSection();
+                renderCostBreakdown();
             });
         }
 
@@ -392,16 +432,14 @@
         if (mainTitle) mainTitle.textContent = `Manufacturing Quote${partName ? ' — ' + partName : ''}`;
 
         // Reference ID — generate from session
-        const refEl = document.querySelector('.text-lg.font-bold');
+        const refEl = document.getElementById('reference-id') || document.querySelector('.text-lg.font-bold');
         if (refEl) refEl.textContent = 'QAI-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000) + 1000);
 
-        // Date
-        const dateEl = document.querySelectorAll('.text-sm.font-medium');
-        dateEl.forEach(el => {
-            if (el.textContent.match(/\d{4}$/)) {
-                el.textContent = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
-            }
-        });
+        // Date Issued
+        const issuedEl = document.getElementById('date-issued');
+        if (issuedEl) {
+            issuedEl.textContent = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
 
         // --- Part Spec ---
         const specCols = document.querySelectorAll('.grid.grid-cols-2.gap-8 > div');
@@ -453,25 +491,66 @@
 
         // --- COST BREAKDOWN TABLE ---
         const costTable = document.querySelector('.overflow-hidden.rounded.border tbody');
-        if (costTable) {
-            const costRows = costTable.querySelectorAll('tr');
-            const costData = [
-                ['Material', `${inp.material} Stock (${(stock.stock_weight_kg || 0).toFixed(2)} kg)`, '', '₹' + Math.round(cost.material_cost_inr || 0).toLocaleString('en-IN')],
-                ['Machining', `${machDetails.length} processes`, '', '₹' + Math.round(cost.machining_cost_inr || 0).toLocaleString('en-IN')],
-                ['Setup + Overhead', 'Fixtures & facility', '', '₹' + Math.round((cost.setup_cost_inr || 0) + (cost.overhead_cost_inr || 0)).toLocaleString('en-IN')],
-            ];
-            costRows.forEach((row, i) => {
-                if (i < costData.length) {
-                    const cells = row.querySelectorAll('td');
-                    if (cells[0]) cells[0].textContent = costData[i][0];
-                    if (cells[1]) cells[1].textContent = costData[i][1];
-                    if (cells[3]) cells[3].textContent = costData[i][3];
-                }
-            });
-            // Total row
-            const totalRow = costTable.querySelector('.bg-slate-50 td.text-primary, tr:last-child td:last-child');
-            if (totalRow) totalRow.textContent = '₹' + Math.round(total).toLocaleString('en-IN');
+        function getActiveQuoteForExport() {
+            const enabled = !!(document.getElementById('dfm-toggle')?.checked);
+            const sNow = readSession();
+            const comp = sNow.dfmComparison;
+            const qNow = sNow.quoteResult || q;
+            if (enabled && comp && comp.quote_modified && comp.quote_modified.cost) {
+                return comp.quote_modified;
+            }
+            return qNow;
         }
+
+        function renderCostBreakdown() {
+            if (!costTable) return;
+            const qa = getActiveQuoteForExport();
+            const costA = qa.cost || {};
+            const inpA = qa.inputs || {};
+            const stockA = qa.stock || {};
+            const machA = qa.machining_breakdown || {};
+            const machDetailsA = machA.details || [];
+            const totalA = costA.total_cost_inr || 0;
+
+            const fmtInr = (v) => '₹' + Math.round(v || 0).toLocaleString('en-IN');
+            const rows = [
+                {
+                    cat: 'Material',
+                    details: `${inpA.material || 'Steel'} Stock (${(stockA.stock_weight_kg || 0).toFixed(2)} kg)`,
+                    val: costA.material_cost_inr || 0,
+                },
+                {
+                    cat: 'Machining',
+                    details: `${machDetailsA.length} processes`,
+                    val: costA.machining_cost_inr || 0,
+                },
+                {
+                    cat: 'Setup',
+                    details: 'Fixtures & programming',
+                    val: costA.setup_cost_inr || 0,
+                },
+                {
+                    cat: 'Overhead',
+                    details: 'Facility overhead',
+                    val: costA.overhead_cost_inr || 0,
+                },
+            ];
+
+            costTable.innerHTML = rows.map(r => (
+                `<tr>
+                    <td class="py-2 px-3 font-semibold">${r.cat}</td>
+                    <td class="py-2 px-3 text-slate-500">${r.details}</td>
+                    <td class="py-2 px-3 text-right">${fmtInr(r.val)}</td>
+                    <td class="py-2 px-3 text-right">${fmtInr(r.val)}</td>
+                </tr>`
+            )).join('') +
+            `<tr class="bg-slate-50">
+                <td class="py-2 px-3 text-right font-bold" colspan="3">Total Quote Amount (INR)</td>
+                <td class="py-2 px-3 text-right font-black text-primary text-sm">${fmtInr(totalA)}</td>
+            </tr>`;
+        }
+
+        renderCostBreakdown();
 
         // --- COST DRIVERS ---
         const driverList = document.querySelector('.bg-slate-50.rounded-lg ul');
@@ -492,7 +571,7 @@
         const dfmList = document.querySelector('.bg-primary\\/5 ul');
         if (dfmList && dfm.length > 0) {
             dfmList.innerHTML = '';
-            dfm.slice(0, 3).forEach(s => {
+            dfm.filter(s => Math.round(Number(s?.savings_inr || 0)) > 0).slice(0, 3).forEach(s => {
                 const li = document.createElement('li');
                 li.className = 'flex gap-2';
                 li.innerHTML = `<span class="text-primary font-bold">•</span><span>${s.reason} (Save ₹${Math.round(s.savings_inr).toLocaleString('en-IN')})</span>`;
@@ -503,18 +582,51 @@
         // --- Validity date (30 days from now) ---
         const validDate = new Date();
         validDate.setDate(validDate.getDate() + 30);
-        const validEls = document.querySelectorAll('.text-sm.font-medium');
-        validEls.forEach(el => {
-            if (el.textContent.includes('Valid until') || el.textContent.match(/until/i)) {
-                el.textContent = 'Valid until ' + validDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
-            }
-        });
+        const validUntilEl = document.getElementById('valid-until');
+        if (validUntilEl) {
+            validUntilEl.textContent = 'Valid until ' + validDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
 
         // --- DFM section ---
+        async function ensureDfmComparison() {
+            const enabled = !!(document.getElementById('dfm-toggle')?.checked);
+            if (!enabled) return;
+
+            // Always work with the latest session.
+            session = readSession();
+            const qNow = session.quoteResult || q;
+
+            // If we already have a comparison, keep it.
+            if (session.dfmComparison && session.dfmComparison.quote_original && session.dfmComparison.quote_modified) return;
+
+            // Fallback: re-simulate the last selected suggestion so PDF export can show the comparison.
+            const dfmIdx = parseInt(localStorage.getItem('selectedDfmIndex') || '0');
+            const suggestions = (qNow && Array.isArray(qNow.dfm_suggestions)) ? qNow.dfm_suggestions : [];
+            const selectedSuggestion = suggestions[dfmIdx];
+            if (!selectedSuggestion || !selectedSuggestion.suggestion_id) return;
+
+            try {
+                const res = await fetch('/api/dfm/simulate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ suggestion_id: selectedSuggestion.suggestion_id, quote: qNow }),
+                });
+                if (!res.ok) return;
+                const comparison = await res.json();
+                if (comparison && comparison.quote_original && comparison.quote_modified) {
+                    session.dfmComparison = comparison;
+                    writeSession(session);
+                }
+            } catch (e) {
+                // no-op: export still works without comparison
+            }
+        }
+
         function renderDfmSection() {
             const section = document.getElementById('dfm-compare-section');
             if (!section) return;
             const enabled = !!(document.getElementById('dfm-toggle')?.checked);
+            session = readSession();
             const comp = session.dfmComparison;
             if (!enabled || !comp || !comp.quote_original || !comp.quote_modified) {
                 section.classList.add('hidden');
@@ -540,13 +652,46 @@
             set('dfm-orig-tol', String(orig.inputs?.tolerance_class ?? 'Standard'));
             set('dfm-mod-total', fmtInr(modTotal));
             set('dfm-savings', '-' + fmtInr(savings));
-            const suggestionLabel = Array.isArray(dfm)
-                ? (dfm.find(s => s && s.suggestion_id === comp.applied_suggestion_id)?.change)
-                : null;
-            set('dfm-change', suggestionLabel || comp.applied_suggestion_id || 'Simulated change');
+            // Build concise human-readable diffs from inputs only.
+            const diffs = [];
+            const oInp = orig.inputs || {};
+            const mInp = mod.inputs || {};
+            const fields = [
+                { key: 'material', label: 'Material' },
+                { key: 'num_holes', label: 'Holes' },
+                { key: 'num_pockets', label: 'Pockets' },
+                { key: 'tolerance_class', label: 'Tolerance' },
+                { key: 'quantity', label: 'Qty' },
+                { key: 'max_depth_mm', label: 'Max depth' },
+            ];
+
+            const fmtVal = (key, v) => {
+                if (v === undefined || v === null || String(v).trim() === '') return '—';
+                if (key === 'max_depth_mm') {
+                    const n = Number(v);
+                    if (!Number.isFinite(n)) return String(v);
+                    return `${Number(n.toFixed(1))} mm`;
+                }
+                return String(v);
+            };
+
+            fields.forEach(f => {
+                const a = oInp[f.key];
+                const b = mInp[f.key];
+                if (a === undefined && b === undefined) return;
+                if (String(a ?? '') !== String(b ?? '')) {
+                    diffs.push(`${f.label} : ${fmtVal(f.key, a)} --> ${fmtVal(f.key, b)}`);
+                }
+            });
+
+            set('dfm-change', diffs.length ? diffs.join('\n') : '—');
         }
 
-        renderDfmSection();
+        (async () => {
+            await ensureDfmComparison();
+            renderDfmSection();
+            renderCostBreakdown();
+        })();
     });
 </script>
 </body></html>

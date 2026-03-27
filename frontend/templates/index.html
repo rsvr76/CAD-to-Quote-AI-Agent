@@ -272,9 +272,14 @@ Browse Files
             const extractedGeo = out.geometry;
             const previewUrl = out.preview_image_url || makeUploadThumbnail(partName);
 
+            const suggested = out.suggested_inputs || {};
             const stubInputs = {
-                num_holes: 0, num_pockets: 0, max_depth_mm: 0,
-                material: 'Steel', quantity: 1, tolerance_class: 'Standard'
+                num_holes: (typeof suggested.num_holes === 'number') ? suggested.num_holes : 0,
+                num_pockets: (typeof suggested.num_pockets === 'number') ? suggested.num_pockets : 0,
+                max_depth_mm: (typeof suggested.max_depth_mm === 'number') ? suggested.max_depth_mm : 0,
+                material: 'Steel',
+                quantity: 1,
+                tolerance_class: 'Standard',
             };
             localStorage.setItem('quoteSession', JSON.stringify({
                 sample_name: null,

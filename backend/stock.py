@@ -57,18 +57,42 @@ def estimate_stock(
     stock_shape_override: str | None = None,
 ) -> StockEstimate:
     """Complete stock estimation per Steps 5-6."""
-    chosen_shape = None
     if stock_shape_override in ("block", "cylinder"):
         chosen_shape = stock_shape_override
     else:
         chosen_shape = "cylinder" if bool(routing_flags.is_turning) else "block"
 
+    # Auto-sanity check: choose the shape with much lower waste.
+    # This prevents absurd cylindrical stock for plate-like parts.
+    bbox_x = float(geometry.bbox_x_mm or 0)
+    bbox_y = float(geometry.bbox_y_mm or 0)
+    bbox_z = float(geometry.bbox_z_mm or 0)
+
+    vol_cyl = cylindrical_stock_volume(bbox_x, bbox_y, bbox_z)
+    vol_blk = block_stock_volume(bbox_x, bbox_y, bbox_z)
+
+    def _waste_pct(stock_vol_cm3: float) -> float:
+        if stock_vol_cm3 <= 0 or (geometry.volume_cm3 or 0) <= 0:
+            return 0.0
+        return (1.0 - float(geometry.volume_cm3) / float(stock_vol_cm3)) * 100.0
+
+    waste_cyl = _waste_pct(vol_cyl)
+    waste_blk = _waste_pct(vol_blk)
+
+    if stock_shape_override not in ("block", "cylinder"):
+        # If one option is *significantly* less wasteful, prefer it.
+        # Thresholds chosen to avoid flip-flopping in normal cases.
+        if waste_cyl > 95.0 and waste_blk + 10.0 < waste_cyl:
+            chosen_shape = "block"
+        elif waste_blk > 95.0 and waste_cyl + 10.0 < waste_blk:
+            chosen_shape = "cylinder"
+
     if chosen_shape == "cylinder":
         stock_shape = "cylinder"
-        vol = cylindrical_stock_volume(geometry.bbox_x_mm, geometry.bbox_y_mm, geometry.bbox_z_mm)
+        vol = vol_cyl
     else:
         stock_shape = "block"
-        vol = block_stock_volume(geometry.bbox_x_mm, geometry.bbox_y_mm, geometry.bbox_z_mm)
+        vol = vol_blk
 
     weight = estimate_stock_weight(vol, material)
     final_weight = override_kg if override_kg is not None else weight

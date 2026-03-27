@@ -214,7 +214,7 @@
 </div>
 <div class="flex items-center gap-2">
 <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-500 uppercase">Medium</span>
-<span class="text-sm font-bold">12</span>
+<span id="detected-holes" class="text-sm font-bold">—</span>
 </div>
 </div>
 <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
@@ -224,7 +224,7 @@
 </div>
 <div class="flex items-center gap-2">
 <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 uppercase">Low</span>
-<span class="text-sm font-bold">4</span>
+<span id="detected-pockets" class="text-sm font-bold">—</span>
 </div>
 </div>
 <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
@@ -234,7 +234,7 @@
 </div>
 <div class="flex items-center gap-2">
 <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-500 uppercase">Medium</span>
-<span class="text-sm font-bold">32mm</span>
+<span id="detected-depth" class="text-sm font-bold">—</span>
 </div>
 </div>
 </div>
@@ -309,16 +309,13 @@
             }
         });
 
-        // Populate Detected Features
-        const detectedItems = document.querySelectorAll('.bg-slate-50.dark\\:bg-slate-800\\/50, [class*="bg-slate-800/50"]');
-        if (detectedItems.length >= 3) {
-            const holesVal = detectedItems[0].querySelector('.text-sm.font-bold');
-            if (holesVal) holesVal.textContent = inputs.num_holes || 0;
-            const pocketsVal = detectedItems[1].querySelector('.text-sm.font-bold');
-            if (pocketsVal) pocketsVal.textContent = inputs.num_pockets || 0;
-            const depthVal = detectedItems[2].querySelector('.text-sm.font-bold');
-            if (depthVal) depthVal.textContent = (inputs.max_depth_mm || 0) + 'mm';
-        }
+        // Populate Detected Features (use stable IDs to avoid row-order bugs)
+        const holesVal = document.getElementById('detected-holes');
+        if (holesVal) holesVal.textContent = String(inputs.num_holes ?? 0);
+        const pocketsVal = document.getElementById('detected-pockets');
+        if (pocketsVal) pocketsVal.textContent = String(inputs.num_pockets ?? 0);
+        const depthVal = document.getElementById('detected-depth');
+        if (depthVal) depthVal.textContent = String(inputs.max_depth_mm ?? 0) + 'mm';
 
         // Update page title with part name
         const h1 = document.querySelector('h1');

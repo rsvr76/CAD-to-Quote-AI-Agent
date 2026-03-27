@@ -37,8 +37,28 @@ MACHINE_OPTIONS: dict[str, list[str]] = {
 
 def compute_routing_flags(geometry: GeometryData, inputs: UserInputs) -> RoutingFlags:
     """Apply routing rules from Steps/4.md."""
+    dims = sorted([
+        float(getattr(geometry, "bbox_x_mm", 0) or 0),
+        float(getattr(geometry, "bbox_y_mm", 0) or 0),
+        float(getattr(geometry, "bbox_z_mm", 0) or 0),
+    ])
+    min_dim, mid_dim, max_dim = dims[0], dims[1], dims[2]
+
+    # Turning should only activate for truly rod-like parts.
+    # Plates (very thin in one dimension) can have high aspect_ratio but are not turning parts.
+    # Heuristic: one axis much longer than the other two, and the cross-section is roughly symmetric.
+    is_rod_like = False
+    if min_dim > 0.0:
+        long_ratio = (max_dim / max(mid_dim, 1e-6)) if mid_dim > 0 else 0.0
+        cross_ratio = (mid_dim / max(min_dim, 1e-6))
+        is_rod_like = (
+            long_ratio >= 2.0 and
+            cross_ratio <= 1.6 and
+            min_dim >= 3.0
+        )
+
     return RoutingFlags(
-        is_turning=int(geometry.aspect_ratio > 2.0),
+        is_turning=int(is_rod_like),
         is_milling=int(inputs.num_pockets > 0 or geometry.surface_area_cm2 > 200),
         is_drilling=int(inputs.num_holes > 0),
         is_grinding=int(inputs.tolerance_class in ("Fine", "Ultra-Fine")),

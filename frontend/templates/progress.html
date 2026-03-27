@@ -77,6 +77,9 @@
         { title: "Final Quote Packaging", desc: "Assembling report and dashboard insights" }
     ];
 
+    // Generate per-step durations once so they don't change on each re-render.
+    const stepSeconds = steps.map(() => (0.2 + Math.random()).toFixed(1));
+
     function createStepHTML(step, index, state) {
         const isCompleted = state === 'completed';
         const isProcessing = state === 'processing';
@@ -104,7 +107,7 @@
                         <p class="text-xs ${isProcessing ? 'text-[#3B82F6]/80' : 'text-slate-500'}">${step.desc}</p>
                     </div>
                     <span class="text-xs font-mono ${isCompleted ? 'text-emerald-400' : (isProcessing ? 'text-[#3B82F6] animate-pulse' : 'text-slate-500')}">
-                        ${isCompleted ? (0.2 + Math.random()).toFixed(1) + 's' : (isProcessing ? 'Processing' : 'Pending')}
+                        ${isCompleted ? (stepSeconds[index] + 's') : (isProcessing ? 'Processing' : 'Pending')}
                     </span>
                 </div>
             </div>
@@ -119,6 +122,7 @@
 
         // Fire off the API call early (non-blocking)
         const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
+        let quoteResult = null;
         const quotePromise = fetch('/api/quote', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -129,7 +133,14 @@
                 stock_override_kg: session.stock_override_kg || null,
                 stock_shape_override: session.stock_shape_override || null,
             })
-        }).then(r => r.json()).catch(err => {
+        }).then(async r => {
+            const data = await r.json().catch(() => null);
+            if (!r.ok) {
+                const detail = (data && data.detail) ? data.detail : 'Quote API failed';
+                throw new Error(detail);
+            }
+            return data;
+        }).catch(err => {
             console.error('Quote API error:', err);
             return null;
         });
@@ -152,11 +163,34 @@
 
             // At step 4 (ML Prediction), wait for the API to actually respond
             if (i === 3) {
-                const quoteResult = await quotePromise;
-                if (quoteResult) {
-                    session.quoteResult = quoteResult;
-                    localStorage.setItem('quoteSession', JSON.stringify(session));
+                quoteResult = await quotePromise;
+                const ok = !!(quoteResult && quoteResult.cost && typeof quoteResult.cost.total_cost_inr === 'number');
+                if (!ok) {
+                    container.innerHTML = `
+                        <div class="p-4 rounded-lg border border-red-500/30 bg-red-500/10">
+                            <div class="text-sm font-bold text-red-300">Quote failed</div>
+                            <div class="text-xs text-slate-300 mt-1">We couldn’t generate a quote from the saved inputs. Please go back and try again.</div>
+                            <div class="mt-3 flex gap-2">
+                                <button id="retry-btn" class="px-3 py-2 rounded-md bg-primary text-white text-xs font-bold">Retry</button>
+                                <button id="back-btn" class="px-3 py-2 rounded-md border border-slate-700 text-slate-200 text-xs font-bold">Back</button>
+                            </div>
+                        </div>
+                    `;
+                    progressBar.style.width = '100%';
+                    totalPercent.innerText = 'Quote Failed';
+                    stepCounter.innerText = '';
+
+                    const retryBtn = document.getElementById('retry-btn');
+                    if (retryBtn) retryBtn.onclick = () => window.location.reload();
+
+                    const backBtn = document.getElementById('back-btn');
+                    if (backBtn) backBtn.onclick = () => { window.location.href = '/input'; };
+
+                    return;
                 }
+
+                session.quoteResult = quoteResult;
+                localStorage.setItem('quoteSession', JSON.stringify(session));
             }
 
             await new Promise(r => setTimeout(r, 500 + Math.random() * 300));
@@ -167,7 +201,15 @@
         progressBar.style.width = '100%';
         totalPercent.innerText = '100% Complete';
         
-        setTimeout(() => {
+        setTimeout(async () => {
+            if (!quoteResult) {
+                quoteResult = await quotePromise;
+                const ok = !!(quoteResult && quoteResult.cost && typeof quoteResult.cost.total_cost_inr === 'number');
+                if (ok) {
+                    session.quoteResult = quoteResult;
+                    localStorage.setItem('quoteSession', JSON.stringify(session));
+                }
+            }
             window.location.href = '/dashboard';
         }, 800);
     }

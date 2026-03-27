@@ -75,8 +75,8 @@ def get_batch_discount(quantity: int) -> float:
 
 def calc_material_cost(stock_weight_kg: float, material: str, quantity: int) -> float:
     price = PRICE_PER_KG.get(material, 85.0)
-    discount = get_batch_discount(quantity)
-    return round(stock_weight_kg * price * discount, 2)
+    # Batch discounts removed: material cost is purely weight × price/kg.
+    return round(stock_weight_kg * price, 2)
 
 
 def allocate_time(machining_time_min: float, routing: RoutingFlags) -> dict[str, float]:

@@ -39,6 +39,11 @@ class StepExtractResult:
     num_faces: int
     num_edges: int
     preview_image_url: str | None
+    hole_count_est: int
+    hole_diam_min_mm: float | None
+    hole_diam_max_mm: float | None
+    max_drilling_depth_est_mm: float
+    feature_confidence: str
 
 
 def _safe_float(v: float) -> float:
@@ -107,6 +112,9 @@ def extract_step_geometry(
             bbox_y_mm = max(0.0, _safe_float(ymax - ymin))
             bbox_z_mm = max(0.0, _safe_float(zmax - zmin))
 
+            hole_count_est, hole_dmin, hole_dmax, feat_conf = _estimate_holes_from_curves(gmsh)
+            max_drill_est = _estimate_max_drilling_depth(bbox_x_mm, bbox_y_mm, bbox_z_mm)
+
             # Mass properties
             volume_mm3 = 0.0
             for _dim, vtag in volumes:
@@ -163,12 +171,89 @@ def extract_step_geometry(
             num_faces=int(num_faces),
             num_edges=int(num_edges),
             preview_image_url=preview_url,
+            hole_count_est=int(hole_count_est),
+            hole_diam_min_mm=(round(float(hole_dmin), 2) if hole_dmin is not None else None),
+            hole_diam_max_mm=(round(float(hole_dmax), 2) if hole_dmax is not None else None),
+            max_drilling_depth_est_mm=float(max_drill_est),
+            feature_confidence=str(feat_conf),
         )
     finally:
         try:
             os.unlink(tmp_path)
         except Exception:
             pass
+
+
+def _estimate_holes_from_curves(
+    gmsh_mod,
+    *,
+    min_diam_mm: float = 5.0,
+    max_diam_mm: float = 12.0,
+) -> tuple[int, float | None, float | None, str]:
+    """Heuristic hole recognition.
+
+    We look for OCC curves of type "Circle" whose bounding-box diameter falls
+    inside the UI's displayed range (Ø5–12mm). Many CAD parts represent hole
+    openings as circular edges; through-holes often produce two circular edges.
+
+    Returns: (hole_count_est, hole_dmin_mm, hole_dmax_mm, confidence_label)
+    """
+
+    import math
+
+    try:
+        curves = gmsh_mod.model.getEntities(1)
+    except Exception:
+        return 0, None, None, "Low"
+
+    unique: dict[tuple[float, float, float, float], float] = {}
+    for dim, tag in curves:
+        try:
+            t = gmsh_mod.model.getType(dim, tag)
+        except Exception:
+            continue
+        if not isinstance(t, str) or t.lower() != "circle":
+            continue
+        try:
+            bxmin, bymin, bzmin, bxmax, bymax, bzmax = gmsh_mod.model.getBoundingBox(dim, tag)
+            dx, dy, dz = float(bxmax - bxmin), float(bymax - bymin), float(bzmax - bzmin)
+            diam = max(dx, dy, dz)
+            if not (min_diam_mm - 1e-3 <= diam <= max_diam_mm + 1e-3):
+                continue
+
+            # Center of mass for a circle curve should be at its center
+            cx, cy, cz = gmsh_mod.model.occ.getCenterOfMass(dim, tag)
+            key = (round(float(cx), 1), round(float(cy), 1), round(float(cz), 1), round(float(diam), 1))
+            unique[key] = float(diam)
+        except Exception:
+            continue
+
+    edge_count = len(unique)
+    if edge_count <= 0:
+        return 0, None, None, "Low"
+
+    # Through-holes often yield two circular edges. Use ceil to avoid undercounting.
+    hole_count = int(math.ceil(edge_count / 2.0))
+
+    ds = list(unique.values())
+    dmin = min(ds) if ds else None
+    dmax = max(ds) if ds else None
+
+    # If the number of edges is even, we're a bit more confident.
+    confidence = "Medium" if (edge_count % 2 == 0 and hole_count > 0) else "Low"
+    return hole_count, dmin, dmax, confidence
+
+
+def _estimate_max_drilling_depth(bx: float, by: float, bz: float) -> float:
+    """Estimate a plausible drilling depth from part bounding box.
+
+    Very rough: use ~60% of the smallest dimension, clamped.
+    """
+    dims = [d for d in (float(bx), float(by), float(bz)) if d and d > 1e-6]
+    if not dims:
+        return 0.0
+    m = min(dims)
+    return round(max(0.0, min(m * 0.6, m)), 1)
 
 
 def _iter_gmsh_triangles(

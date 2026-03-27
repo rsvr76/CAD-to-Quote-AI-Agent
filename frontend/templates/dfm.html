@@ -26,9 +26,18 @@
             },
         }
     </script>
+<script>
+        // Prevent flashing placeholder values before JS hydrates from localStorage/API.
+        document.documentElement.classList.add('dfm-prehydrate');
+    </script>
+<style>
+        html.dfm-prehydrate [data-dfm-hydrate] {
+            visibility: hidden;
+        }
+    </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
-<div class="layout-container flex flex-col h-full">
+<div class="layout-container flex flex-col h-full" data-dfm-hydrate>
 <!-- Top Navigation Bar -->
 <header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-4 bg-background-light dark:bg-background-dark sticky top-0 z-10">
 <div class="flex items-center gap-4">
@@ -37,7 +46,7 @@
 </div>
 <div>
 <h2 class="text-lg font-bold leading-tight tracking-tight">DFM Comparison</h2>
-<p class="text-xs text-slate-500 dark:text-slate-400">Project Alpha • Cost Optimization</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">—</p>
 </div>
 </div>
 <div class="flex gap-3">
@@ -61,7 +70,7 @@
 <h3 class="text-2xl font-bold">Original</h3>
 </div>
 <div class="text-right">
-<p class="text-3xl font-bold text-slate-900 dark:text-white">₹28,400</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">₹—</p>
 <p class="text-sm text-slate-500">Per unit cost</p>
 </div>
 </div>
@@ -80,19 +89,19 @@ Key Design Inputs
 <div class="space-y-3">
 <div class="flex justify-between text-sm">
 <span class="text-slate-500">Material</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">Aluminum 6061-T6</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 <div class="flex justify-between text-sm">
 <span class="text-slate-500">Holes</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">6</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 <div class="flex justify-between text-sm">
 <span class="text-slate-500">Tolerance Class</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">Fine (±0.05mm)</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 <div class="flex justify-between text-sm">
-<span class="text-slate-500">Surface Finish</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">Ra 0.8 (Grinding)</span>
+<span class="text-slate-500">Pockets</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 </div>
 </div>
@@ -103,9 +112,9 @@ Cost Breakdown
 </h4>
 <div class="space-y-2">
 <div class="relative h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden flex">
-<div class="h-full bg-primary" style="width: 40%"></div>
-<div class="h-full bg-emerald-500" style="width: 35%"></div>
-<div class="h-full bg-amber-500" style="width: 25%"></div>
+<div class="h-full bg-primary" style="width: 0%"></div>
+<div class="h-full bg-emerald-500" style="width: 0%"></div>
+<div class="h-full bg-amber-500" style="width: 0%"></div>
 </div>
 <div class="grid grid-cols-3 text-[11px] font-medium text-slate-500 pt-1">
 <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Raw Mat.</div>
@@ -124,9 +133,9 @@ Cost Breakdown
 <div class="text-right">
 <div class="flex items-center justify-end gap-2">
 <span class="material-symbols-outlined text-emerald-500 font-bold">arrow_downward</span>
-<p class="text-3xl font-bold text-emerald-500">₹26,000</p>
+<p class="text-3xl font-bold text-emerald-500">₹—</p>
 </div>
-<p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">-₹2,400 (8.4% Save)</p>
+<p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400"></p>
 </div>
 </div>
 <div class="w-full aspect-video rounded-lg bg-slate-900 overflow-hidden relative border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
@@ -144,30 +153,24 @@ Cost Breakdown
 <div class="space-y-3">
 <div class="flex justify-between text-sm">
 <span class="text-slate-500">Material</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">Aluminum 6061-T6</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 <div class="flex justify-between items-center text-sm">
 <span class="text-slate-500">Holes</span>
 <div class="flex items-center gap-2">
-<span class="text-slate-400 text-xs line-through">6</span>
-<span class="material-symbols-outlined text-xs text-primary">trending_flat</span>
-<span class="font-bold text-emerald-600 dark:text-emerald-400">4</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 </div>
 <div class="flex justify-between items-center text-sm">
 <span class="text-slate-500">Tolerance Class</span>
 <div class="flex items-center gap-2">
-<span class="text-slate-400 text-xs line-through">Fine</span>
-<span class="material-symbols-outlined text-xs text-primary">trending_flat</span>
-<span class="font-bold text-emerald-600 dark:text-emerald-400">Standard (±0.15mm)</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 </div>
 <div class="flex justify-between items-center text-sm">
-<span class="text-slate-500">Surface Finish</span>
+<span class="text-slate-500">Pockets</span>
 <div class="flex items-center gap-2">
-<span class="text-slate-400 text-xs line-through">Grinding</span>
-<span class="material-symbols-outlined text-xs text-primary">trending_flat</span>
-<span class="font-bold text-emerald-600 dark:text-emerald-400">Ra 3.2 (Milled)</span>
+<span class="font-medium text-slate-700 dark:text-slate-300">—</span>
 </div>
 </div>
 </div>
@@ -179,9 +182,9 @@ Cost Breakdown
     </h4>
 <div class="space-y-2">
 <div class="relative h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden flex">
-<div class="h-full bg-primary" style="width: 45%"></div>
-<div class="h-full bg-emerald-500" style="width: 30%"></div>
-<div class="h-full bg-amber-500" style="width: 25%"></div>
+<div class="h-full bg-primary" style="width: 0%"></div>
+<div class="h-full bg-emerald-500" style="width: 0%"></div>
+<div class="h-full bg-amber-500" style="width: 0%"></div>
 </div>
 <div class="grid grid-cols-3 text-[11px] font-medium text-slate-500 pt-1">
 <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Raw Mat.</div>
@@ -234,6 +237,7 @@ Cost Breakdown
         }
 
         if (!quoteResult) {
+            document.documentElement.classList.remove('dfm-prehydrate');
             document.querySelector('main').innerHTML = '<div class="flex items-center justify-center h-64 text-slate-400"><p class="text-lg font-semibold">No quote data found. Please generate a quote first.</p></div>';
             return;
         }
@@ -254,7 +258,7 @@ Cost Breakdown
             origInputRows[0].querySelector('span:last-child').textContent = inp.material || 'Steel';
             origInputRows[1].querySelector('span:last-child').textContent = inp.num_holes || 0;
             origInputRows[2].querySelector('span:last-child').textContent = inp.tolerance_class || 'Standard';
-            origInputRows[3].querySelector('span:last-child').textContent = inp.num_pockets + ' pockets';
+            origInputRows[3].querySelector('span:last-child').textContent = inp.num_pockets || 0;
         }
 
         // Cost breakdown bar — Original
@@ -270,7 +274,15 @@ Cost Breakdown
 
         // --- Call /api/dfm/simulate for the selected suggestion ---
         if (dfm.length > 0) {
-            const selectedSuggestion = dfm[Math.min(dfmIdx, dfm.length - 1)];
+            const selectedSuggestion = dfm[dfmIdx];
+            if (!selectedSuggestion) {
+                document.querySelector('main').innerHTML = '<div class="flex items-center justify-center h-64 text-slate-400"><p class="text-lg font-semibold">That DFM suggestion is no longer available. Please go back and select a valid suggestion.</p></div>';
+                document.documentElement.classList.remove('dfm-prehydrate');
+                return;
+            }
+            // Keep the whole page hidden until comparison loads.
+            resetModifiedToLoading();
+
             try {
                 const res = await fetch('/api/dfm/simulate', {
                     method: 'POST',
@@ -287,12 +299,23 @@ Cost Breakdown
                     // Persist comparison so Export can include it
                     const s = JSON.parse(localStorage.getItem('quoteSession') || '{}');
                     s.dfmComparison = comparisonResult;
-                    s.includeDfmComparison = true;
+                    // Keep the comparison saved, but don't auto-enable it on Export.
+                    s.includeDfmComparison = false;
                     localStorage.setItem('quoteSession', JSON.stringify(s));
+                } else {
+                    setModifiedLoadError('Could not load DFM comparison. Please try again.');
                 }
             } catch (err) {
                 console.error('DFM simulate error:', err);
+                setModifiedLoadError('Could not load DFM comparison. Please check your connection and try again.');
+            } finally {
+                // Only show the page after the comparison result (or a clear error) is ready.
+                document.documentElement.classList.remove('dfm-prehydrate');
             }
+        } else {
+            // Nothing to simulate, but still show hydrated Original state.
+            resetModifiedToLoading();
+            document.documentElement.classList.remove('dfm-prehydrate');
         }
 
         // Export button: carry the latest comparison into export
@@ -302,7 +325,8 @@ Cost Breakdown
                 const s = JSON.parse(localStorage.getItem('quoteSession') || '{}');
                 if (comparisonResult) {
                     s.dfmComparison = comparisonResult;
-                    s.includeDfmComparison = true;
+                    // Export page should start with the toggle OFF.
+                    s.includeDfmComparison = false;
                     localStorage.setItem('quoteSession', JSON.stringify(s));
                 }
                 window.location.href = '/export';
@@ -328,14 +352,43 @@ Cost Breakdown
         // Modified inputs with strike-through diffs
         const modInputRows = document.querySelectorAll('.border-2.border-primary .space-y-3 .flex.justify-between');
         if (modInputRows.length >= 4) {
-            // Material
-            modInputRows[0].querySelector('span:last-child').textContent = modInp.material || 'Steel';
-            // Holes — show diff if changed
-            updateDiffCell(modInputRows[1], quoteResult.inputs?.num_holes, modInp.num_holes);
-            // Tolerance
+            updateDiffCell(modInputRows[0], quoteResult.inputs?.material, modInp.material);
+            updateDiffCell(modInputRows[1], quoteResult.inputs?.num_holes ?? 0, modInp.num_holes ?? 0);
             updateDiffCell(modInputRows[2], quoteResult.inputs?.tolerance_class, modInp.tolerance_class);
-            // Pockets
-            updateDiffCell(modInputRows[3], quoteResult.inputs?.num_pockets + ' pockets', modInp.num_pockets + ' pockets');
+            updateDiffCell(modInputRows[3], quoteResult.inputs?.num_pockets ?? 0, modInp.num_pockets ?? 0);
+        }
+
+        // Hide any “feature” row when it is 0 in BOTH original and modified.
+        // If a value changes from/to zero, keep it visible (and diff-highlighted) so the change is obvious.
+        const origInputRows = document.querySelectorAll('.bg-slate-50.dark\\:bg-slate-800\\/50 .space-y-3 .flex.justify-between');
+        if (origInputRows.length >= 4 && modInputRows.length >= 4) {
+            const rows = [
+                {
+                    origEl: origInputRows[0],
+                    modEl: modInputRows[0],
+                    origVal: quoteResult.inputs?.material,
+                    newVal: modInp.material,
+                },
+                {
+                    origEl: origInputRows[1],
+                    modEl: modInputRows[1],
+                    origVal: quoteResult.inputs?.num_holes ?? 0,
+                    newVal: modInp.num_holes ?? 0,
+                },
+                {
+                    origEl: origInputRows[2],
+                    modEl: modInputRows[2],
+                    origVal: quoteResult.inputs?.tolerance_class,
+                    newVal: modInp.tolerance_class,
+                },
+                {
+                    origEl: origInputRows[3],
+                    modEl: modInputRows[3],
+                    origVal: quoteResult.inputs?.num_pockets ?? 0,
+                    newVal: modInp.num_pockets ?? 0,
+                },
+            ];
+            rows.forEach(r => hideIfBothZero(r.origEl, r.modEl, r.origVal, r.newVal));
         }
 
         // Modified cost bars
@@ -359,12 +412,58 @@ Cost Breakdown
     function updateDiffCell(row, origVal, newVal) {
         const lastEl = row.querySelector('.flex.items-center.gap-2') || row.querySelector('span:last-child') || row.querySelector('div:last-child');
         if (!lastEl) return;
-        if (String(origVal) !== String(newVal)) {
-            lastEl.innerHTML = `<span class="text-slate-400 text-xs line-through">${origVal}</span>
+        const dispOrig = (origVal === undefined || origVal === null || String(origVal).trim() === '') ? '—' : String(origVal);
+        const dispNew = (newVal === undefined || newVal === null || String(newVal).trim() === '') ? '—' : String(newVal);
+        if (dispOrig !== dispNew) {
+            lastEl.innerHTML = `<span class="text-slate-400 text-xs line-through">${dispOrig}</span>
                 <span class="material-symbols-outlined text-xs text-primary">trending_flat</span>
-                <span class="font-bold text-emerald-400">${newVal}</span>`;
+                <span class="font-bold text-red-500">${dispNew}</span>`;
         } else {
-            lastEl.textContent = newVal;
+            lastEl.textContent = dispNew;
+        }
+    }
+
+    function hideIfBothZero(origRowEl, modRowEl, origVal, newVal) {
+        const origNum = Number(origVal);
+        const newNum = Number(newVal);
+        const shouldHide = Number.isFinite(origNum) && Number.isFinite(newNum) && origNum === 0 && newNum === 0;
+        if (origRowEl) origRowEl.classList.toggle('hidden', shouldHide);
+        if (modRowEl) modRowEl.classList.toggle('hidden', shouldHide);
+    }
+
+    function resetModifiedToLoading() {
+        // Total
+        const modCostEl = document.querySelector('.border-2.border-primary .text-3xl');
+        if (modCostEl) modCostEl.textContent = '₹—';
+
+        // Savings line
+        const savingsEl = document.querySelector('.border-2.border-primary .text-emerald-600, .border-2.border-primary .text-emerald-400');
+        if (savingsEl) savingsEl.textContent = '';
+
+        // Inputs
+        const modInputRows = document.querySelectorAll('.border-2.border-primary .space-y-3 .flex.justify-between');
+        // Ensure rows are visible during loading/reset.
+        modInputRows.forEach(r => r.classList.remove('hidden'));
+        const origInputRows = document.querySelectorAll('.bg-slate-50.dark\\:bg-slate-800\\/50 .space-y-3 .flex.justify-between');
+        origInputRows.forEach(r => r.classList.remove('hidden'));
+        modInputRows.forEach((row, idx) => {
+            if (idx === 0) {
+                const materialEl = row.querySelector('span:last-child');
+                if (materialEl) materialEl.textContent = quoteResult?.inputs?.material || '—';
+                return;
+            }
+            const last = row.querySelector('.flex.items-center.gap-2') || row.querySelector('span:last-child') || row.querySelector('div:last-child');
+            if (last) last.textContent = '—';
+        });
+    }
+
+    function setModifiedLoadError(message) {
+        // Ensure we don't show misleading placeholders without context.
+        const savingsEl = document.querySelector('.border-2.border-primary .text-emerald-600, .border-2.border-primary .text-emerald-400');
+        if (savingsEl) {
+            savingsEl.textContent = message;
+            savingsEl.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+            savingsEl.classList.add('text-slate-500', 'dark:text-slate-400');
         }
     }
 
@@ -386,7 +485,9 @@ Cost Breakdown
                 if (comparisonResult && comparisonResult.quote_modified) {
                     const session = JSON.parse(localStorage.getItem('quoteSession') || '{}');
                     session.quoteResult = comparisonResult.quote_modified;
-                    session.dfmComparison = null;
+                    // Keep the last comparison so PDF export can show the before/after.
+                    session.dfmComparison = comparisonResult;
+                    // But keep the export toggle OFF by default.
                     session.includeDfmComparison = false;
                     localStorage.setItem('quoteSession', JSON.stringify(session));
                 }

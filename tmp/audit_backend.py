@@ -1,6 +1,10 @@
 """Comprehensive backend audit -- tests all modules, ML consistency, edge cases."""
-import sys, os
-sys.path.insert(0, r"D:\Hackathon\Live\Pivot Hack")
+import sys
+from pathlib import Path
+
+# Make imports work regardless of where the repo is located.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 errors = []
 warnings = []
@@ -12,6 +16,10 @@ def check(name, condition, msg=""):
     else:
         errors.append(f"FAIL: {name} -- {msg}")
 
+
+def warn(name, msg=""):
+    warnings.append(f"WARN: {name} -- {msg}")
+
 # ========================================
 # 1. Module imports
 # ========================================
@@ -22,7 +30,8 @@ print("=" * 60)
 from backend.models import GeometryData, UserInputs, RoutingFlags, CostBreakdown, ProcessDetail
 from backend.routing import route_processes, compute_routing_flags
 from backend.stock import estimate_stock
-from backend.ml_engine import predict_machining_time, get_shap_drivers, _model
+import backend.ml_engine as ml_engine
+from backend.ml_engine import predict_machining_time, get_shap_drivers
 from backend.cost import calculate_full_cost
 from backend.confidence import estimate_confidence
 from backend.explainability import build_cost_drivers
@@ -30,7 +39,18 @@ from backend.dfm import generate_dfm_suggestions
 from backend.sample_parts import SAMPLE_PARTS, get_sample
 
 check("All module imports", True)
-check("ML model loaded", _model is not None, "Model file not found")
+
+# Trigger lazy-load once (model loads on first predict call).
+try:
+    _sample = get_sample("steel_bracket")
+    _geo = GeometryData(**_sample["geometry"])
+    _inp = UserInputs(**_sample["inputs"])
+    _flags = compute_routing_flags(_geo, _inp)
+    _ = predict_machining_time(_geo, _inp, _flags)
+except Exception as _exc:
+    warn("ML lazy-load trigger", str(_exc))
+
+check("ML model loaded", ml_engine._model is not None, "Model not loaded (joblib/sklearn missing or artifact load failed)")
 
 # ========================================
 # 2. SCHEMA VALIDATION
@@ -97,8 +117,10 @@ for name in ("steel_bracket", "aluminum_housing", "titanium_shaft"):
         
         # SHAP drivers
         drivers = get_shap_drivers(geo, inp, flags, top_n=5)
-        check(f"{name}: SHAP drivers count", drivers is not None and len(drivers) == 5,
-              f"count={len(drivers) if drivers else 'None'}")
+        if drivers is None:
+            warn(f"{name}: SHAP drivers", "SHAP explainer not available (ok to fall back to heuristic drivers)")
+        else:
+            check(f"{name}: SHAP drivers count", len(drivers) == 5, f"count={len(drivers)}")
         
         # DFM suggestions
         dfm = generate_dfm_suggestions(geo, inp, flags, cost.total_cost_inr)

@@ -255,7 +255,7 @@ async def api_quote(request_data: dict):
         dfm_scored.append(s.model_copy(update={"savings_inr": savings}))
 
     dfm_scored.sort(key=lambda x: x.savings_inr, reverse=True)
-    dfm = dfm_scored[:4]
+    dfm = [s for s in dfm_scored if (s.savings_inr or 0) >= 0.5][:4]
 
     # Step 13: Full response
     response = FullQuoteResponse(
@@ -270,6 +270,70 @@ async def api_quote(request_data: dict):
         dfm_suggestions=dfm,
     )
     return response.model_dump()
+
+
+@app.post("/api/dfm")
+async def api_dfm(request_data: dict):
+    """Return ranked DFM suggestions (advisory) for the given geometry + inputs.
+
+    Note: The primary workflow returns DFM suggestions inside `/api/quote`.
+    This endpoint exists to match the project plan and to support callers that
+    want *only* the DFM list.
+    """
+    try:
+        geo = GeometryData(**request_data.get("geometry", {}))
+        inp = UserInputs(**request_data.get("inputs", {}))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    routing_override = request_data.get("routing")
+    if routing_override:
+        try:
+            routing_decision = RoutingDecision(**routing_override)
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))
+    else:
+        routing_decision = route_processes(geo, inp)
+
+    final_flags = routing_decision.routing_decision.routing_final
+
+    base_total = request_data.get("total_cost_inr")
+    stock_override_kg = request_data.get("stock_override_kg")
+    if base_total is None:
+        try:
+            base_total = _simulate_total_cost_inr(
+                geo,
+                inp,
+                routing_override=routing_decision,
+                stock_override_kg=stock_override_kg,
+            )
+        except Exception as e:
+            raise HTTPException(status_code=422, detail=f"Could not compute baseline cost: {e}")
+
+    base_total = float(base_total)
+
+    dfm_candidates = generate_dfm_suggestions(geo, inp, final_flags, base_total)
+    dfm_scored = []
+    for s in dfm_candidates:
+        variant = s.variant_inputs or {}
+        if not variant:
+            continue
+        try:
+            inp_variant_data = inp.model_dump()
+            inp_variant_data.update(variant)
+            inp_variant = UserInputs(**inp_variant_data)
+            new_total = _simulate_total_cost_inr(geo, inp_variant)
+            savings = round(max(base_total - float(new_total), 0.0), 2)
+        except Exception:
+            savings = 0.0
+        dfm_scored.append(s.model_copy(update={"savings_inr": savings}))
+
+    dfm_scored.sort(key=lambda x: x.savings_inr, reverse=True)
+
+    return {
+        "base_total_cost_inr": round(base_total, 2),
+        "dfm_suggestions": [s.model_dump() for s in dfm_scored if (s.savings_inr or 0) >= 0.5][:4],
+    }
 
 
 @app.post("/api/dfm/simulate")
@@ -332,7 +396,27 @@ async def api_dfm_simulate(request_data: dict):
     else:
         drivers = build_cost_drivers(inp_modified, cost_breakdown, mach_breakdown)
 
-    dfm = generate_dfm_suggestions(geo, inp_modified, final_flags, cost_breakdown.total_cost_inr)
+    # Recompute DFM suggestions *with savings* for the modified quote, so the dashboard
+    # stays consistent after applying a simulated change.
+    base_total_mod = float(cost_breakdown.total_cost_inr)
+    dfm_candidates = generate_dfm_suggestions(geo, inp_modified, final_flags, base_total_mod)
+    dfm_scored = []
+    for s in dfm_candidates:
+        variant = s.variant_inputs or {}
+        if not variant:
+            continue
+        try:
+            inp_variant_data = inp_modified.model_dump()
+            inp_variant_data.update(variant)
+            inp_variant = UserInputs(**inp_variant_data)
+            new_total = _simulate_total_cost_inr(geo, inp_variant)
+            savings = round(max(base_total_mod - float(new_total), 0.0), 2)
+        except Exception:
+            savings = 0.0
+        dfm_scored.append(s.model_copy(update={"savings_inr": savings}))
+
+    dfm_scored.sort(key=lambda x: x.savings_inr, reverse=True)
+    dfm = [s for s in dfm_scored if (s.savings_inr or 0) >= 0.5][:4]
 
     modified_quote = FullQuoteResponse(
         geometry=geo,
@@ -404,6 +488,16 @@ async def api_step_extract(file: UploadFile = File(...)):
     return {
         "geometry": geo.model_dump(),
         "preview_image_url": res.preview_image_url,
+        "suggested_inputs": {
+            "num_holes": int(getattr(res, "hole_count_est", 0) or 0),
+            "num_pockets": 0,
+            "max_depth_mm": float(getattr(res, "max_drilling_depth_est_mm", 0.0) or 0.0),
+            "confidence": str(getattr(res, "feature_confidence", "Low") or "Low"),
+            "hole_diam_range_mm": [
+                getattr(res, "hole_diam_min_mm", None),
+                getattr(res, "hole_diam_max_mm", None),
+            ],
+        },
     }
 
 
