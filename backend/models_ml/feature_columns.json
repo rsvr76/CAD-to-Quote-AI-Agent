@@ -1,17 +1,1 @@
-[
-  "volume_cm3",
-  "surface_area_cm2",
-  "aspect_ratio",
-  "num_faces",
-  "num_edges",
-  "num_holes",
-  "num_pockets",
-  "max_depth_mm",
-  "machinability",
-  "density",
-  "tolerance_factor",
-  "is_turning",
-  "is_milling",
-  "is_drilling",
-  "is_grinding"
-]
+["volume_cm3", "surface_area_cm2", "aspect_ratio", "num_faces", "num_edges", "num_holes", "num_pockets", "max_depth_mm", "machinability", "density", "tolerance_factor", "is_turning", "is_milling", "is_drilling", "is_grinding"]
