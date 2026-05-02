@@ -1,6 +1,6 @@
 # QuoteAI - Instant Cost Estimation
 
-A FastAPI backend + simple HTML UI for an end-to-end CAD-to-quote workflow
+A FastAPI backend + simple HTML UI for an end-to-end CAD-to-quote workflow.
 
 STEP geometry extraction → guided inputs → process routing → stock estimation → ML machining-time prediction → cost breakdown → confidence → explainability → DFM suggestions.
 
@@ -10,7 +10,7 @@ STEP geometry extraction → guided inputs → process routing → stock estimat
 
 QuoteAI is a small web app + API that turns a CAD part (STEP upload) and a few user inputs into an explainable manufacturing quote.
 
-### Problem
+### Problem:
 
 Manufacturing quotes for machined parts are often slow because they require:
 
@@ -19,7 +19,7 @@ Manufacturing quotes for machined parts are often slow because they require:
 - Estimating material stock and machining time
 - Producing a cost breakdown, confidence range, and actionable DFM suggestions
 
-### Our solution
+### Our solution:
 
 This project implements a guided pipeline that:
 
