@@ -1,6 +1,7 @@
-# QuoteAI — CAD-to-Quote Demo (FastAPI)
+# QuoteAI - Instant Cost Estimation
 
 A FastAPI backend + simple HTML UI for an end-to-end CAD-to-quote workflow:
+
 STEP geometry extraction → guided inputs → process routing → stock estimation → ML machining-time prediction → cost breakdown → confidence → explainability → DFM suggestions.
 
 ## Project Details
