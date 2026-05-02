@@ -58,9 +58,6 @@ pip install -r requirements.txt
 python -m uvicorn backend.main:app --host 0.0.0.0 --port 5000 --reload
 ```
 
-Open:
-- App: [localhost:5000](http://localhost:5000)
-- Docs: [localhost:5000/docs](http://localhost:5000/docs)
 
 ### Quickstart (macOS / Linux)
 
@@ -89,14 +86,14 @@ python -m uvicorn backend.main:app --host 0.0.0.0 --port 5000 --reload
 python Final.py
 ```
 
-### (Optional) Pre-generate training data and train the model
+### Pre-generate training data and train the model (Optional)
 
 ```bash
 python scripts/generate_dataset.py
 python scripts/train_model.py
 ```
 
-### (Optional) Smoke-test STEP extraction
+### Smoke-test STEP extraction  (Optional)
 
 ```bash
 python backend/smoke_step_extract.py
