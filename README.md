@@ -1,4 +1,4 @@
-# QuoteAI - Instant Cost Estimation
+# CAD-to-Quote AI Agent
 
 A FastAPI backend + simple HTML UI for an end-to-end CAD-to-quote workflow.
 
